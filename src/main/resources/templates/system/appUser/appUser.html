@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="system:appUser:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="system:appUser:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-left col-md-2 nopadding">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="blackFlag" class="form-control">
+								<option value="">是否黑名单</option>
+								<option value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="role" class="form-control">
+								<option value="">全部角色</option>
+								<option value="1">销售</option>
+								<option value="2">普通用户</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="memberLevel" class="form-control">
+								<option value="">全部VIP等级</option>
+								<option value="1">VIP 1</option>
+								<option value="2">VIP 2</option>
+								<option value="3">VIP 3</option>
+								<option value="4">VIP 4</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="bindStatus" class="form-control">
+								<option value="">全部绑卡状态</option>
+								<option value="0">未绑定</option>
+								<option value="1">已绑定</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="firstRecharge" class="form-control">
+								<option value="">是否完成首充</option>
+								<option value="0">未完成</option>
+								<option value="1">已完成</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="referralCode" type="text" class="form-control" placeholder="邀请码">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="nikeName" type="text" class="form-control" placeholder="用户昵称">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="mobile" type="text" class="form-control" placeholder="手机号">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="name" type="text" class="form-control" placeholder="银行卡申请人名字">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="parentId" type="text" class="form-control" placeholder="上级用户id">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="id" type="text" class="form-control" placeholder="用户id">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:appUser:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:appUser:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:appUser:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/system/appUser/appUser.js"></script>
+</body>
+</html>

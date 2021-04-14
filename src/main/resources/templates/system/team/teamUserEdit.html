@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <input id="id" name="id" th:value="${user.id}" type="hidden">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">昵称：</label>
+                            <div class="col-sm-8">
+                                <input id="nikeName" name="nikeName" th:value="${user.nikeName}" class="form-control"
+                                       type="text" readonly>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">手机号：</label>
+                            <div class="col-sm-8">
+                                <input id="mobile" name="mobile" th:value="${user.mobile}" class="form-control"
+                                       type="text" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">充值：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="rechargeCheck" id="rechargeCheck" value="1" class="form-control" th:value="1" th:checked="${user.rechargeCheck==1}">开</label>
+                                <label><input type="radio" name="rechargeCheck" id="rechargeCheck" value="0" class="form-control" th:value="0" th:checked="${user.rechargeCheck==0}">关</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">提现：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="withdrawCheck" id="withdrawCheck" value="1" class="form-control" th:value="1" th:checked="${user.withdrawCheck==1}">开</label>
+                                <label><input type="radio" name="withdrawCheck" id="withdrawCheck" value="0" class="form-control" th:value="0" th:checked="${user.withdrawCheck==0}">关</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">刷单：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="sdSwitch" id="sdSwitch" value="1" class="form-control" th:value="1" th:checked="${user.sdSwitch==1}">开</label>
+                                <label><input type="radio" name="sdSwitch" id="sdSwitch" value="0" class="form-control" th:value="0" th:checked="${user.sdSwitch==0}">关</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">利息：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="lxSwitch" id="lxSwitch" value="1" class="form-control" th:value="1" th:checked="${user.lxSwitch==1}">开</label>
+                                <label><input type="radio" name="lxSwitch" id="lxSwitch" value="0" class="form-control" th:value="0" th:checked="${user.lxSwitch==0}">关</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">登录：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="loginFlag" id="loginFlag" value="1" class="form-control" th:value="1" th:checked="${user.loginFlag==1}">允许登录</label>
+                                <label><input type="radio" name="loginFlag" id="loginFlag" value="0" class="form-control" th:value="0" th:checked="${user.loginFlag==0}">禁止登录</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分享：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="shareFlag" id="shareFlag" value="1" class="form-control" th:value="1" th:checked="${user.shareFlag==1}">允许分享</label>
+                                <label><input type="radio" name="shareFlag" id="shareFlag" value="0" class="form-control" th:value="0" th:checked="${user.shareFlag==0}">禁止分享</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">黑名单：</label>
+                            <div class="col-sm-8">
+                                <label><input type="radio" name="blackFlag" id="blackFlag" value="1" class="form-control" th:value="1" th:checked="${user.blackFlag==1}">是黑户</label>
+                                <label><input type="radio" name="blackFlag" id="blackFlag" value="0" class="form-control" th:value="0" th:checked="${user.blackFlag==0}">不是黑户</label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/system/team/teamUserEdit.js">
+</script>
+</body>
+</html>

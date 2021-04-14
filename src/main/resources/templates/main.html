@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>概览</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">数据概览</div>
+    <div class="layui-colla-content layui-show">
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, red, coral); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户总量</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="players">
+                [[${resp.userCountResp.userCount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增用户</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayPlayers">[[${resp.userCountResp.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增用户</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayPlayers">[[${resp.userCountResp.yesterdayCount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, pink, grey); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户裂变人数</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="userReferral">
+                [[${resp.userReferral.userCount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日裂变人数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayuserReferral">[[${resp.userReferral.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日裂变人数</span>&nbsp;&nbsp;
+                <span style="font-size: medium"
+                      id="yesterdayuserReferral">[[${resp.userReferral.yesterdayCount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkkhaki, #e4b9b9); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">客服推广人数</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="saleReferral">
+                [[${resp.saleReferral.userCount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日推广人数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todaysaleReferral">[[${resp.saleReferral.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日推广人数</span>&nbsp;&nbsp;
+                <span style="font-size: medium"
+                      id="yesterdaysaleReferral">[[${resp.saleReferral.yesterdayCount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkorange, lightcoral); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户充值笔数</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="recharges">
+                [[${resp.relCharge.count}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增充值笔数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayRecharges">[[${resp.relCharge.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增充值笔数</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayRecharges">[[${resp.relCharge.yesterdayCount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, orange, yellow); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户提现笔数</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="withdraws">
+                [[${resp.relWithdraw.count}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增提现笔数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayWithdraws">[[${resp.relWithdraw.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增提现笔数</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayWithdraws">[[${resp.relWithdraw.yesterdayCount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, cyan); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户充值</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualRechargeAmount">
+                [[${resp.relCharge.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日充值</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayActualRechargeAmount">[[${resp.relCharge.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日充值</span>&nbsp;&nbsp;
+                <span style="font-size: medium"
+                      id="yesterdayActualRechargeAmount">[[${resp.relCharge.yesterdayAmount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, orangered); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">实际充值</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large"
+                 id="actualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日充值</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日充值</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, dodgerblue, #00F7DE); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户提现</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="withdrawAmount">
+                [[${resp.withdraw.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增提现</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayWithdrawAmount">[[${resp.withdraw.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增提现</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayWithdrawAmount">[[${resp.withdraw.yesterdayAmount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, orangered); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">实际提现</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualWithdrawAmount">
+                [[${resp.relWithdraw.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日实际提现</span>&nbsp;&nbsp;
+                <span style="font-size: x-large"
+                      id="todayActualWithdrawAmount">[[${resp.relWithdraw.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日实际提现</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayActualWithdrawAmount">[[${resp.relWithdraw.yesterdayAmount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, hotpink, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">理财转入</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="inCount">
+                [[${resp.finOrderResp.inCount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日理财转入</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayInCount">[[${resp.finOrderResp.todayInCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日理财转入</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayInCount">[[${resp.finOrderResp.yesterdayInCount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, pink, #d6c0f1); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">理财转出</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="outCount">
+                [[${resp.finOrderResp.outCount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日理财转出</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayOutCount">[[${resp.finOrderResp.todayOutCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日理财转出</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayOutCount">[[${resp.finOrderResp.yesterdayOutCount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, red); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户总余额</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="userAmount">
+                [[${resp.userAmount.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayUserAmount">[[${resp.userAmount.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayUserAmount">[[${resp.userAmount.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, red, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">任务奖励</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="totalFirstRechargeAmount">
+                [[${resp.firstRechargeAmount.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日首冲奖励金额</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayFirstRechargeAmount">[[${resp.firstRechargeAmount.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日首冲奖励金额</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayFirstRechargeAmount">[[${resp.firstRechargeAmount.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, indianred); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">购买VIP单数</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualVIPPayCount">
+                [[${resp.VIPPay.count}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayVIPPayCount">[[${resp.VIPPay.localCount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayVIPPayCount">[[${resp.VIPPay.yesterdayCount}]]</span>
+            </div>
+        </div>
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, mediumvioletred); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">购买VIP金额</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualVIPPay">
+                [[${resp.VIPPay.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayVIPPay">[[${resp.VIPPay.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
+                <span style="font-size: medium" id="yesterdayVIPPay">[[${resp.VIPPay.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户加钱</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="addAmount">
+                [[${resp.addAmount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: medium"></span>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">系统累计提现金额</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="sysPayOut">
+                [[${resp.sysPayOut}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: medium"></span>
+            </div>
+        </div>
+
+
+        <div
+            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, blue, red); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">净利</div>
+            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="totalNetProfitAmount">
+                [[${resp.netProfit.amount}]]
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">今日净利</span>&nbsp;&nbsp;
+                <span style="font-size: x-large" id="todayNetProfitAmount">[[${resp.netProfit.localAmount}]]</span>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium">昨日净利</span>&nbsp;&nbsp;
+                <span style="font-size: medium"
+                      id="yesterdayNetProfitAmount">[[${resp.netProfit.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/openTab.js"></script>
+</html>

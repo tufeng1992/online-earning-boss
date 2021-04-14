@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${financialProduct.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">理财产品名称：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${financialProduct.name}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">日利率：</label>
+								<div class="col-sm-8">
+									<input id="dayRate" name="dayRate" th:value="${financialProduct.dayRate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">锁定期总利率：</label>
+								<div class="col-sm-8">
+									<input id="yearRate" name="yearRate" th:value="${financialProduct.yearRate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">锁定天数：</label>
+								<div class="col-sm-8">
+									<input id="lockDays" name="lockDays" th:value="${financialProduct.lockDays}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">起购金额：</label>
+								<div class="col-sm-8">
+									<input id="startAmount" name="startAmount" th:value="${financialProduct.startAmount}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">单笔上限金额：</label>
+								<div class="col-sm-8">
+									<input id="topAmount" name="topAmount" th:value="${financialProduct.topAmount}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">个人购买上限：</label>
+								<div class="col-sm-8">
+									<input id="totalAmount" name="totalAmount" th:value="${financialProduct.totalAmount}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">起购VIP等级：</label>
+								<div class="col-sm-8">
+									<input id="startVip" name="startVip" th:value="${financialProduct.startVip}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">提前赎回手续费比例：</label>
+								<div class="col-sm-8">
+									<input id="calledRate" name="calledRate" th:value="${financialProduct.calledRate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">优先级：</label>
+								<div class="col-sm-8">
+									<input id="level" name="level" th:value="${financialProduct.level}" class="form-control" type="text">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/system/financialProduct/edit.js">
+	</script>
+</body>
+</html>

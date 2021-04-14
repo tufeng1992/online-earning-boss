@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                    <input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="导出开始时间" id="startTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+                    <span class="columns pull-left col-md-1" style="width: 20px;"> ~ </span>
+                    <input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="导出结束时间" id="endTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+                    <div class="columns pull-left">
+                        <button class="btn btn-primary" shiro:hasPermission="system:pay:payExport" onclick="exportExcel()">导出Excel</button>
+                    </div>
+                </div>
+                <div class="fixed-table-toolbar">
+                    <div class="columns pull-left">
+                        <button shiro:hasPermission="system:pay:add" type="button" class="btn  btn-primary"
+                                onclick="add()">
+                            <i class="fa fa-plus" aria-hidden="true"></i>添加
+                        </button>
+                        <button shiro:hasPermission="system:pay:batchRemove" type="button" class="btn  btn-danger"
+                                onclick="batchRemove()">
+                            <i class="fa fa-trash" aria-hidden="true"></i>删除
+                        </button>
+                    </div>
+                    <div class="columns pull-right">
+                        <button class="btn btn-success" onclick="reLoad()">查询</button>
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <select id="status" class="form-control">
+                            <option value="">全部支付状态</option>
+                            <option value="-1">超时未支付</option>
+                            <option value="1">支付中</option>
+                            <option value="2">已支付</option>
+                            <option value="3">支付失败</option>
+                        </select>
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <select id="type" class="form-control">
+                            <option value="">全部支付类型</option>
+                            <option value="1">充值</option>
+                            <option value="2">购买VIP2</option>
+                            <option value="3">购买VIP3</option>
+                            <option value="99">提现</option>
+                        </select>
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="userMobile" type="text" class="form-control"
+                               placeholder="用户手机号">
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="userId" type="text" class="form-control"
+                               placeholder="用户id">
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="saleNo" type="text" class="form-control"
+                               placeholder="运营编号">
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="orderNo" type="text" class="form-control"
+                               placeholder="内部订单号">
+                    </div>
+                    <div class="columns pull-right col-md-2 nopadding">
+                        <input id="thirdStatus" type="text" class="form-control"
+                               placeholder="三方状态">
+                    </div>
+                </div>
+                <table id="exampleTable" data-mobile-responsive="true">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+    <script type="text/javascript">
+        var s_edit_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var s_resetPwd_h = 'hidden';
+        var s_refreshPay_h = 'hidden';
+        var s_successPay_h = 'hidden';
+    </script>
+</div>
+<div shiro:hasPermission="system:pay:successPay">
+    <script type="text/javascript">
+        s_successPay_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="system:pay:refreshPay">
+    <script type="text/javascript">
+        s_refreshPay_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="system:pay:edit">
+    <script type="text/javascript">
+        s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="system:pay:remove">
+    <script type="text/javascript">
+        var s_remove_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="system:pay:resetPwd">
+    <script type="text/javascript">
+        var s_resetPwd_h = '';
+    </script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/system/pay/pay.js"></script>
+</body>
+</html>

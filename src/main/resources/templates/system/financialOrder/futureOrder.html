@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <table id="exampleTable" data-mobile-responsive="true" class="table table-hover treegrid-table table-bordered table-striped">
+                    <thead class="treegrid-thead">
+                    <tr>
+                        <th style="text-align:center;padding:10px;">还本付息日</th>
+                        <th style="text-align:center;padding:10px;">订单结束时间</th>
+                        <th style="text-align:center;padding:10px;">到期笔数</th>
+                        <th style="text-align:center;padding:10px;">本金</th>
+                        <th style="text-align:center;padding:10px;">利息</th>
+                    </tr>
+                    </thead>
+                    <tbody class="treegrid-tbody">
+                    <tr  th:each="data,dataStat : ${list}" >
+                        <td style="text-align:center;">[[${data.date}]]</td>
+                        <td style="text-align:center;">[[${data.lastDate}]]</td>
+                        <td style="text-align:center;">[[${data.count}]]</td>
+                        <td style="text-align:center;">[[${data.amount}]]</td>
+                        <td style="text-align:center;color: red" th:if="${data.showRed} eq 1">[[${data.interest}]]</td>
+                        <td style="text-align:center;" th:if="${data.showRed} eq 0">[[${data.interest}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+</body>
+</html>

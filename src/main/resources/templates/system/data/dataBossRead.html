@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<script type="text/javascript">
+    function read(id) {
+        layer.open({
+            type : 2,
+            title : '详情',
+            maxmin : true,
+            shadeClose : false,
+            area : [ '800px', '550px' ],
+            content : '/system/data/dataSale/read/' + id
+        });
+    }
+</script>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div>总计</div>
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <table id="exampleTable" data-mobile-responsive="true" class="table table-hover treegrid-table table-bordered table-striped">
+                    <thead class="treegrid-thead">
+                    <tr>
+                        <th style="text-align:center;padding:10px;">邀请总数</th>
+                        <th style="text-align:center;padding:10px;">一级会员注册数</th>
+                        <th style="text-align:center;padding:10px;">一级会员充值人数</th>
+                        <th style="text-align:center;padding:10px;">二级会员注册数</th>
+                        <th style="text-align:center;padding:10px;">二级会员充值人数</th>
+                        <th style="text-align:center;padding:10px;">三级会员注册人数</th>
+                        <th style="text-align:center;padding:10px;">三级会员充值人数</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td style="text-align:center;">[[${userTotal.invitedCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip1RegCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip1RechargeCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip2RegCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip2RechargeCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip3RegCount}]]</td>
+                        <td style="text-align:center;">[[${userTotal.vip3RechargeCount}]]</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>详情</div>
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <table id="exampleTable2" data-mobile-responsive="true" class="table table-hover treegrid-table table-bordered table-striped">
+                    <thead class="treegrid-thead">
+                    <tr>
+                        <th style="text-align:center;padding:10px;">id</th>
+                        <th style="text-align:center;padding:10px;">运营id</th>
+                        <th style="text-align:center;padding:10px;">用户层级</th>
+                        <th style="text-align:center;padding:10px;">手机号</th>
+                        <th style="text-align:center;padding:10px;">名称</th>
+                        <th style="text-align:center;padding:10px;">会员等级</th>
+                        <th style="text-align:center;padding:10px;">总资产</th>
+                        <th style="text-align:center;padding:10px;">充值金额</th>
+                        <th style="text-align:center;padding:10px;">提现金额</th>
+                        <th style="text-align:center;padding:10px;">有效推广人数</th>
+                        <th style="text-align:center;padding:10px;">总推广人数</th>
+                        <th style="text-align:center;padding:10px;">刷单数</th>
+                        <th style="text-align:center;padding:10px;">刷单佣金</th>
+                        <th style="text-align:center;padding:10px;">上级id</th>
+                        <th style="text-align:center;padding:10px;">注册时间</th>
+                        <th style="text-align:center;padding:10px;">下级用户</th>
+                    </tr>
+                    </thead>
+
+                    <tr  th:each="data,dataStat : ${userDetailList}" >
+                        <td style="text-align:center;">[[${data.id}]]</td>
+                        <td style="text-align:center;">[[${data.saleId}]]</td>
+                        <td style="text-align:center;">[[${data.userLevel}]]</td>
+                        <td style="text-align:center;">[[${data.mobile}]]</td>
+                        <td style="text-align:center;">[[${data.name}]]</td>
+                        <td style="text-align:center;">[[${data.level}]]</td>
+                        <td style="text-align:center;">[[${data.totalAssets}]]</td>
+                        <td style="text-align:center;">[[${data.rechargeAmount}]]</td>
+                        <td style="text-align:center;">[[${data.withdrawalAmount}]]</td>
+                        <td style="text-align:center;">[[${data.vaildCount}]]</td>
+                        <td style="text-align:center;">[[${data.totalCount}]]</td>
+                        <td style="text-align:center;">[[${data.clickCount}]]</td>
+                        <td style="text-align:center;">[[${data.clickCommission}]]</td>
+                        <td style="text-align:center;">[[${data.superiorId}]]</td>
+                        <td style="text-align:center;">[[${data.regDate}]]</td>
+                        <td style="text-align:center;">
+                            <a class="btn btn-success btn-sm" href="#" title="下级用户列表"  mce_href="#" th:onclick="'javascript:read(\''+${data.id}+'\');'">详情</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.AppUserDao">
+
+    <select id="selectJustRegNoLoginCount" resultType="java.lang.Integer">
+        select count(1) from user u LEFT JOIN
+        (select distinct(user_id) as user_id from login_log) t
+        on u.id = t.user_id where t.user_id is null
+    </select>
+
+
+    <select id="get" resultType="com.powerboot.system.domain.AppUserDO">
+        select `id`,
+               `device_number`,
+               `nike_name`,
+               `app_id`,
+               `role`,
+               `mobile`,
+               `password`,
+               `fund_password`,
+               `member_level`,
+               `balance`,
+               `parent_id`,
+               `ident_id`,
+               `account_number`,
+               `account_phone`,
+               `account_ifsc`,
+               `name`,
+               `bind_status`,
+               `bind_time`,
+               `sale_id`,
+               `referral_code`,
+               `create_time`,
+               `update_time`,
+               `version`,
+               `contacts_id`,
+               `fundAccount_id`,
+               `first_recharge`,
+               `withdraw_check`,
+               `sd_switch`,
+               `lx_switch`,
+               `recharge_check`,
+               `black_flag`,
+               `share_flag`,
+               `login_flag`,
+               `team_flag`
+        from user
+        where id = #{value}
+    </select>
+
+    <select id="getByMobile" resultType="com.powerboot.system.domain.AppUserDO">
+        select `id`,
+               `device_number`,
+               `nike_name`,
+               `app_id`,
+               `role`,
+               `mobile`,
+               `password`,
+               `fund_password`,
+               `member_level`,
+               `balance`,
+               `parent_id`,
+               `ident_id`,
+               `account_number`,
+               `account_phone`,
+               `account_ifsc`,
+               `name`,
+               `bind_status`,
+               `bind_time`,
+               `sale_id`,
+               `referral_code`,
+               `create_time`,
+               `update_time`,
+               `version`,
+               `contacts_id`,
+               `fundAccount_id`,
+               `first_recharge`,
+               `withdraw_check`,
+               `sd_switch`,
+               `lx_switch`,
+               `team_flag`
+        from user
+        where mobile = #{mobile}
+    </select>
+
+    <select id="getByMobileAndRole" resultType="com.powerboot.system.domain.AppUserDO">
+        select `id`,
+        `device_number`,
+        `nike_name`,
+        `app_id`,
+        `role`,
+        `mobile`,
+        `password`,
+        `fund_password`,
+        `member_level`,
+        `balance`,
+        `parent_id`,
+        `ident_id`,
+        `account_number`,
+        `account_phone`,
+        `account_ifsc`,
+        `name`,
+        `bind_status`,
+        `bind_time`,
+        `sale_id`,
+        `referral_code`,
+        `create_time`,
+        `update_time`,
+        `version`,
+        `contacts_id`,
+        `fundAccount_id`,
+        `first_recharge`,
+        `withdraw_check`,
+        `sd_switch`,
+        `lx_switch`,
+        `team_flag`
+        from user
+        where mobile = #{mobile}
+        and role = #{role}
+    </select>
+
+    <select id="selectIdByMobile" resultType="java.lang.Long">
+        select `id` from user where mobile in
+        <foreach collection="mobileList" separator="," open="(" close=")" item="mobile">
+            #{mobile}
+        </foreach>
+    </select>
+
+    <select id="list" resultType="com.powerboot.system.domain.AppUserDO">
+        select
+        `id`,`device_number`,`nike_name`,`app_id`,`role`,`mobile`,`password`,`fund_password`,
+        `member_level`,`balance`,`parent_id`,`ident_id`,`account_number`,`account_phone`,
+        `account_ifsc`,`name`,`bind_status`,`bind_time`,`sale_id`,`referral_code`,`create_time`,
+        `update_time`,`version`,`contacts_id`,`fundAccount_id`,`first_recharge`,
+        `withdraw_check`,`sd_switch`,`lx_switch`,`email`,`address`,`black_flag`
+        from user
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="deviceNumber != null and deviceNumber != ''">and device_number = #{deviceNumber}</if>
+            <if test="nikeName != null and nikeName != ''">and nike_name = #{nikeName}</if>
+            <if test="appId != null and appId != ''">and app_id = #{appId}</if>
+            <if test="role != null and role != ''">and role = #{role}</if>
+            <if test="mobile != null  and mobile != ''">and mobile = #{mobile}</if>
+            <if test="password != null and password != ''">and password = #{password}</if>
+            <if test="fundPassword != null and fundPassword != ''">and fund_password = #{fundPassword}</if>
+            <if test="memberLevel != null and memberLevel != ''">and member_level = #{memberLevel}</if>
+            <if test="balance != null and balance != ''">and balance = #{balance}</if>
+            <if test="parentId != null and parentId != ''">and parent_id = #{parentId}</if>
+            <if test="identId != null and identId != ''">and ident_id = #{identId}</if>
+            <if test="accountNumber != null  and accountNumber != ''">and account_number = #{accountNumber}</if>
+            <if test="accountPhone != null and accountPhone != ''">and account_phone = #{accountPhone}</if>
+            <if test="accountIfsc != null and accountIfsc != ''">and account_ifsc = #{accountIfsc}</if>
+            <if test="name != null and name != ''">and name = #{name}</if>
+            <if test="bindStatus != null and bindStatus != ''">and bind_status = #{bindStatus}</if>
+            <if test="bindTime != null">and bind_time = #{bindTime}</if>
+            <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+            <if test="referralCode != null and referralCode != ''">and referral_code = #{referralCode}</if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+            <if test="version != null">and version = #{version}</if>
+            <if test="contactsId != null and contactsId != ''">and contacts_id = #{contactsId}</if>
+            <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
+            <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
+            <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="deviceNumber != null and deviceNumber != ''">and device_number = #{deviceNumber}</if>
+            <if test="nikeName != null and nikeName != ''">and nike_name = #{nikeName}</if>
+            <if test="appId != null and appId != ''">and app_id = #{appId}</if>
+            <if test="role != null and role != ''">and role = #{role}</if>
+            <if test="mobile != null  and mobile != ''">and mobile = #{mobile}</if>
+            <if test="password != null and password != ''">and password = #{password}</if>
+            <if test="fundPassword != null and fundPassword != ''">and fund_password = #{fundPassword}</if>
+            <if test="memberLevel != null and memberLevel != ''">and member_level = #{memberLevel}</if>
+            <if test="balance != null and balance != ''">and balance = #{balance}</if>
+            <if test="parentId != null and parentId != ''">and parent_id = #{parentId}</if>
+            <if test="identId != null and identId != ''">and ident_id = #{identId}</if>
+            <if test="accountNumber != null  and accountNumber != ''">and account_number = #{accountNumber}</if>
+            <if test="accountPhone != null and accountPhone != ''">and account_phone = #{accountPhone}</if>
+            <if test="accountIfsc != null and accountIfsc != ''">and account_ifsc = #{accountIfsc}</if>
+            <if test="name != null and name != ''">and name = #{name}</if>
+            <if test="bindStatus != null and bindStatus != ''">and bind_status = #{bindStatus}</if>
+            <if test="bindTime != null">and bind_time = #{bindTime}</if>
+            <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+            <if test="referralCode != null and referralCode != ''">and referral_code = #{referralCode}</if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+            <if test="version != null">and version = #{version}</if>
+            <if test="contactsId != null and contactsId != ''">and contacts_id = #{contactsId}</if>
+            <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
+            <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
+            <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.powerboot.system.domain.AppUserDO">
+		insert into user
+		(
+			`id`, 
+			`device_number`, 
+			`nike_name`, 
+			`app_id`, 
+			`role`, 
+			`mobile`, 
+			`password`, 
+			`fund_password`, 
+			`member_level`, 
+			`balance`, 
+			`parent_id`, 
+			`ident_id`, 
+			`account_number`, 
+			`account_phone`, 
+			`account_ifsc`, 
+			`name`, 
+			`bind_status`, 
+			`bind_time`, 
+			`sale_id`, 
+			`referral_code`, 
+			`create_time`, 
+			`update_time`, 
+			`version`, 
+			`contacts_id`, 
+			`fundAccount_id`, 
+			`first_recharge`
+		)
+		values
+		(
+			#{id}, 
+			#{deviceNumber}, 
+			#{nikeName}, 
+			#{appId}, 
+			#{role}, 
+			#{mobile}, 
+			#{password}, 
+			#{fundPassword}, 
+			#{memberLevel}, 
+			#{balance}, 
+			#{parentId}, 
+			#{identId}, 
+			#{accountNumber}, 
+			#{accountPhone}, 
+			#{accountIfsc}, 
+			#{name}, 
+			#{bindStatus}, 
+			#{bindTime}, 
+			#{saleId}, 
+			#{referralCode}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{version}, 
+			#{contactsId}, 
+			#{fundaccountId}, 
+			#{firstRecharge}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.powerboot.system.domain.AppUserDO">
+        update user
+        <set>
+            <if test="deviceNumber != null">`device_number` = #{deviceNumber},</if>
+            <if test="nikeName != null">`nike_name` = #{nikeName},</if>
+            <if test="appId != null">`app_id` = #{appId},</if>
+            <if test="role != null">`role` = #{role},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="fundPassword != null">`fund_password` = #{fundPassword},</if>
+            <if test="memberLevel != null">`member_level` = #{memberLevel},</if>
+            <if test="balance != null">`balance` = #{balance},</if>
+            <if test="parentId != null">`parent_id` = #{parentId},</if>
+            <if test="identId != null">`ident_id` = #{identId},</if>
+            <if test="accountNumber != null">`account_number` = #{accountNumber},</if>
+            <if test="accountPhone != null">`account_phone` = #{accountPhone},</if>
+            <if test="accountIfsc != null">`account_ifsc` = #{accountIfsc},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="bindStatus != null">`bind_status` = #{bindStatus},</if>
+            <if test="bindTime != null">`bind_time` = #{bindTime},</if>
+            <if test="saleId != null">`sale_id` = #{saleId},</if>
+            <if test="referralCode != null">`referral_code` = #{referralCode},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="version != null">`version` = #{version},</if>
+            <if test="contactsId != null">`contacts_id` = #{contactsId},</if>
+            <if test="fundaccountId != null">`fundAccount_id` = #{fundaccountId},</if>
+            <if test="firstRecharge != null">`first_recharge` = #{firstRecharge}</if>
+            <if test="lxSwitch != null">`lx_switch` = #{lxSwitch}</if>
+            <if test="sdSwitch != null">`sd_switch` = #{sdSwitch}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateSaleIdByUserId">
+        update user set sale_id = #{saleId},team_flag = #{teamFlag}
+        where id in
+        <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <delete id="remove">
+		delete from user where id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <update id="updateMoney">
+		update user
+		set balance = balance + #{amount}
+		where id = #{id}
+		and balance + #{amount} &gt;= 0
+	</update>
+
+    <update id="updateMoneyVip">
+        update user
+        set balance = balance + #{amount},
+        member_level = #{memberLevel}
+        where id = #{id}
+        and balance + #{amount} &gt;= 0
+    </update>
+
+    <update id="updateWithdrawSwitch" parameterType="com.powerboot.system.domain.AppUserDO">
+		update user
+		set
+		withdraw_check = #{withdrawCheck},
+		sd_switch = #{sdSwitch},
+		lx_switch = #{lxSwitch},
+		recharge_check = #{rechargeCheck},
+		share_flag = #{shareFlag},
+        login_flag = #{loginFlag},
+        black_flag = #{blackFlag}
+		where id = #{id}
+	</update>
+
+    <update id="updateFirstRechargeById">
+		update user
+		set
+		first_recharge = 1,
+		version = version+1
+		where id = #{id}
+	</update>
+
+    <update id="updateUserVIP">
+		update user
+		set
+		member_level = #{memberLevel},
+		version = version+1
+		where id = #{id}
+	</update>
+
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(*)
+        from `user`
+        where
+        id > 1
+        <if test="role != null">
+            and role = #{role}
+        </if>
+        <if test="startDate != null">
+            and create_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and create_time &lt;= #{endDate}
+        </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+        <if test="userReferral != null">
+            and parent_id is not null
+        </if>
+        <if test="saleReferral != null">
+            and parent_id is null
+        </if>
+    </select>
+
+    <select id="getIdByMobile" resultType="java.lang.Long">
+        select id from user
+        where mobile = #{mobile}
+    </select>
+
+    <select id="getByParentIdList" resultType="com.powerboot.system.dto.UserDTO">
+        select
+        `id`,
+        `nike_name`,
+        `device_number`,
+        `app_id`,
+        `role`,
+        `mobile`,
+        `member_level`,
+        `balance`,
+        `parent_id`,
+        `ident_id`,
+        `account_number`,
+        `account_phone`,
+        `account_ifsc`,
+        `name`,
+        `bind_status`,
+        `bind_time`,
+        `sale_id`,
+        `referral_code`,
+        `contacts_id`,
+        `fundAccount_id`,
+        `first_recharge`,
+        `create_time`,
+        `update_time`,
+        `withdraw_check`,
+        `email`,
+        `address`
+        from user
+        <where>
+            <if test="list.size() > 0">
+                and parent_id in
+                <foreach collection="list" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserIdByParentId" resultType="com.powerboot.system.dto.UserDTO">
+      select `id`,`mobile` from user where parent_id in
+        <foreach collection="parentIdList" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getByIdList" resultType="com.powerboot.system.dto.UserDTO">
+        select
+        `id`,
+        `nike_name`,
+        `device_number`,
+        `app_id`,
+        `role`,
+        `mobile`,
+        `member_level`,
+        `balance`,
+        `parent_id`,
+        `ident_id`,
+        `account_number`,
+        `account_phone`,
+        `account_ifsc`,
+        `name`,
+        `bind_status`,
+        `bind_time`,
+        `sale_id`,
+        `referral_code`,
+        `contacts_id`,
+        `fundAccount_id`,
+        `first_recharge`,
+        `create_time`,
+        `update_time`,
+        `withdraw_check`,
+        `email`,
+        `address`
+        from user
+        <where>
+            <if test="list.size() > 0">
+                and id in
+                <foreach collection="list" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getAllAmount" resultType="java.math.BigDecimal">
+        select sum(balance)
+        from user
+        where role=2
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and id > 1
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

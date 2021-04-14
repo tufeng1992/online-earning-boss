@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.PayDao">
+    
+    <select id="selectImportPay" resultType="com.powerboot.system.domain.PayImportDo">
+        SELECT
+          p.id,
+          p.type,
+          p.amount,
+          p.third_no,
+          p.create_time,
+          u.mobile
+        FROM
+          pay p
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE
+          status = 2
+          and p.id > #{payId}
+        <if test="createTimeStart != null">
+            <![CDATA[ and p.create_time > #{createTimeStart}]]>
+        </if>
+        <if test="createTimeEnd != null">
+            <![CDATA[ and p.create_time < #{createTimeEnd} ]]>
+        </if>
+        ORDER BY p.id asc limit #{limit}
+    </select>
+
+    <select id="getRechangeCount" resultType="java.lang.Integer">
+        select count(1) from
+        (SELECT
+            user_id,
+            count( 1 ) AS cc
+        FROM
+            pay
+        WHERE
+            `status` = 2
+            AND type = 1
+            AND user_id > 1
+        GROUP BY
+            user_id) t
+    </select>
+
+    <select id="getAgainRechangeCount" resultType="java.lang.Integer">
+        select count(1) from
+        (SELECT
+            user_id,
+            count( 1 ) AS cc
+        FROM
+            pay
+        WHERE
+            `status` = 2
+            AND type = 1
+            AND user_id > 1
+        GROUP BY
+            user_id) t where t.cc > 1
+    </select>
+
+    <select id="get" resultType="com.powerboot.system.domain.PayDO">
+        select `id`,
+               `user_id`,
+               `amount`,
+               `type`,
+               `status`,
+               `third_no`,
+               `third_status`,
+               `third_callback_time`,
+               `order_no`,
+               `create_time`,
+               `update_time`
+        from pay
+        where id = #{value}
+    </select>
+
+    <select id="list" resultType="com.powerboot.system.domain.PayDO">
+        select
+        p.`id`,p.`user_id`,p.`amount`,p.`type`,p.`status`,p.`third_no`,p.`third_status`,
+        p.`third_callback_time`,p.`order_no`,p.`create_time`,p.`update_time`,u.sale_id,u.mobile
+        ,p.apply_status,p.remark,p.third_response
+        from pay p
+        left join user u on u.id = p.user_id
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                and u.sale_id in
+                <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="saleId != null and saleId !=''">
+                and u.sale_id = #{saleId}
+            </if>
+            <if test="userMobile != null and userMobile !=''">
+                and u.mobile = #{userMobile}
+            </if>
+            <if test="id != null and id != ''">and p.id = #{id}</if>
+            <if test="userId != null and userId != ''">and p.user_id = #{userId}</if>
+            <if test="amount != null and amount != ''">and p.amount = #{amount}</if>
+            <if test="status != null and status != ''">and p.status = #{status}</if>
+            <if test="type != null and type != ''">and p.type = #{type}</if>
+            <if test="thirdNo != null and thirdNo != ''">and p.third_no = #{thirdNo}</if>
+            <if test="thirdStatus != null and thirdStatus != ''">and p.third_status = #{thirdStatus}</if>
+            <if test="thirdCallbackTime != null and thirdCallbackTime != ''">and p.third_callback_time =
+                #{thirdCallbackTime}
+            </if>
+            <if test="orderNo != null and orderNo != ''">and p.order_no = #{orderNo}</if>
+            <if test="createTime != null and createTime != ''">and p.create_time = #{createTime}</if>
+            <if test="updateTime != null and updateTime != ''">and p.update_time = #{updateTime}</if>
+            <if test="applyStatus != null and applyStatus != ''">and p.apply_status = #{applyStatus}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from pay p
+        join user u on u.id = p.user_id
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                and u.sale_id in
+                <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="saleId != null and saleId !=''">
+                and u.sale_id = #{saleId}
+            </if>
+            <if test="userMobile != null and userMobile !=''">
+                and u.mobile = #{userMobile}
+            </if>
+            <if test="id != null and id != ''">and p.id = #{id}</if>
+            <if test="userId != null and userId != ''">and p.user_id = #{userId}</if>
+            <if test="amount != null and amount != ''">and p.amount = #{amount}</if>
+            <if test="type != null and type != ''">and p.type = #{type}</if>
+            <if test="status != null and status != ''">and p.status = #{status}</if>
+            <if test="thirdNo != null and thirdNo != ''">and p.third_no = #{thirdNo}</if>
+            <if test="thirdStatus != null and thirdStatus != ''">and p.third_status = #{thirdStatus}</if>
+            <if test="thirdCallbackTime != null and thirdCallbackTime != ''">and p.third_callback_time =
+                #{thirdCallbackTime}
+            </if>
+            <if test="orderNo != null and orderNo != ''">and p.order_no = #{orderNo}</if>
+            <if test="createTime != null and createTime != ''">and p.create_time = #{createTime}</if>
+            <if test="updateTime != null and updateTime != ''">and p.update_time = #{updateTime}</if>
+            <if test="applyStatus != null and applyStatus != ''">and p.apply_status = #{applyStatus}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.powerboot.system.domain.PayDO">
+		insert into pay
+		(
+			`id`, 
+			`user_id`, 
+			`amount`, 
+			`status`, 
+			`third_no`, 
+			`third_status`, 
+			`third_callback_time`, 
+			`order_no`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{id}, 
+			#{userId}, 
+			#{amount}, 
+			#{status}, 
+			#{thirdNo}, 
+			#{thirdStatus}, 
+			#{thirdCallbackTime}, 
+			#{orderNo}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.powerboot.system.domain.PayDO">
+        update pay
+        <set>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="amount != null">`amount` = #{amount},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="thirdNo != null">`third_no` = #{thirdNo},</if>
+            <if test="thirdStatus != null">`third_status` = #{thirdStatus},</if>
+            <if test="thirdCallbackTime != null">`third_callback_time` = #{thirdCallbackTime},</if>
+            <if test="orderNo != null">`order_no` = #{orderNo},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateSaleIdByUserId">
+        update pay set sale_id = #{saleId} where `user_id` in
+        <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <delete id="remove">
+		delete from pay where id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from pay where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getCountByTypeStatusAndDate" resultType="com.powerboot.system.vo.PayVO">
+        select sum(amount) as amount,count(*) as count
+        from pay
+        where
+        user_id > 1
+        and type in
+        <foreach collection="typeList" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="startDate != null">
+            and create_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and create_time &lt;= #{endDate}
+        </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getByUserIdList" resultType="com.powerboot.system.domain.PayDO">
+        select
+        `id`,`user_id`,`amount`,`type`,`status`,`third_no`,`third_status`,`third_callback_time`,`order_no`,`create_time`,`update_time`
+        from pay
+        where user_id in
+        <foreach collection="list" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getByOrderNo" resultType="com.powerboot.system.domain.PayDO">
+        select
+            `id`,`user_id`,`amount`,`type`,`status`,`third_no`,`third_status`,`third_callback_time`,`order_no`,`create_time`,`update_time`
+        from pay
+        where order_no = #{orderNo}
+    </select>
+
+    <select id="getNewOrderByUserId" resultType="com.powerboot.system.domain.PayDO">
+        select `id`,`user_id`,`amount`,`type`,`status`,`third_no`,`third_status`,`third_callback_time`,`order_no`,`create_time`,`update_time`,`apply_status`
+        from pay
+        where user_id = #{userId}
+          and type = 1 and `status` = 2
+        order by id desc
+            limit 1
+    </select>
+</mapper>

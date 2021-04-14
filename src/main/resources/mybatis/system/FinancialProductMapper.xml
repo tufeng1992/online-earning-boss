@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.FinancialProductDao">
+
+    <select id="get" resultType="com.powerboot.system.domain.FinancialProductDO">
+		select `id`,`name`,`day_rate`,`year_rate`,`lock_days`,`start_amount`,`top_amount`,`total_amount`,`start_vip`,
+		`called_rate`,`level`,`create_time`,`update_time`
+		from financial_product where id = #{value}
+	</select>
+
+    <select id="list" resultType="com.powerboot.system.domain.FinancialProductDO">
+        select
+        `id`,`name`,`day_rate`,`year_rate`,`lock_days`,`start_amount`,`top_amount`,`total_amount`,`start_vip`,
+        `called_rate`,`level`,`create_time`,`update_time`
+        from financial_product
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="name != null and name != ''">and name = #{name}</if>
+            <if test="dayRate != null and dayRate != ''">and day_rate = #{dayRate}</if>
+            <if test="yearRate != null and yearRate != ''">and year_rate = #{yearRate}</if>
+            <if test="lockDays != null and lockDays != ''">and lock_days = #{lockDays}</if>
+            <if test="startAmount != null and startAmount != ''">and start_amount = #{startAmount}</if>
+            <if test="calledRate != null and calledRate != ''">and called_rate = #{calledRate}</if>
+            <if test="level != null and level != ''">and level = #{level}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from financial_product
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="name != null and name != ''">and name = #{name}</if>
+            <if test="dayRate != null and dayRate != ''">and day_rate = #{dayRate}</if>
+            <if test="yearRate != null and yearRate != ''">and year_rate = #{yearRate}</if>
+            <if test="lockDays != null and lockDays != ''">and lock_days = #{lockDays}</if>
+            <if test="startAmount != null and startAmount != ''">and start_amount = #{startAmount}</if>
+            <if test="calledRate != null and calledRate != ''">and called_rate = #{calledRate}</if>
+            <if test="level != null and level != ''">and level = #{level}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.powerboot.system.domain.FinancialProductDO">
+		insert into financial_product
+		(
+			`name`, 
+			`day_rate`, 
+			`year_rate`, 
+			`lock_days`, 
+			`start_amount`,
+			`top_amount`,
+			`total_amount`,
+			`start_vip`,
+			`called_rate`, 
+			`level`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{name}, 
+			#{dayRate}, 
+			#{yearRate}, 
+			#{lockDays}, 
+			#{startAmount},
+			#{topAmount},
+			#{totalAmount},
+			#{startVip},
+			#{calledRate}, 
+			#{level}, 
+			now(),
+			now()
+		)
+	</insert>
+
+    <update id="update" parameterType="com.powerboot.system.domain.FinancialProductDO">
+        update financial_product
+        <set>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="dayRate != null">`day_rate` = #{dayRate},</if>
+            <if test="yearRate != null">`year_rate` = #{yearRate},</if>
+            <if test="lockDays != null">`lock_days` = #{lockDays},</if>
+            <if test="startAmount != null">`start_amount` = #{startAmount},</if>
+            <if test="topAmount != null">`top_amount` = #{topAmount},</if>
+            <if test="totalAmount != null">`total_amount` = #{totalAmount},</if>
+            <if test="startVip != null">`start_vip` = #{startVip},</if>
+            <if test="calledRate != null">`called_rate` = #{calledRate},</if>
+            <if test="level != null">`level` = #{level},</if>
+            `update_time` = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="remove">
+		delete from financial_product where id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from financial_product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

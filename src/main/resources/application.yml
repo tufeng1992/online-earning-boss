@@ -1,0 +1,39 @@
+server:
+  session-timeout: 1800
+  port: 99999
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 30Mb
+      max-request-size: 30Mb
+  devtools:
+    restart:
+      enabled: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:config/ehcache.xml
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 5000
+    jedis:
+       pool:
+         max-active: 100
+         min-idle: 2
+         max-idle: 10
+         max-wait: -1
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.powerboot.**.domain

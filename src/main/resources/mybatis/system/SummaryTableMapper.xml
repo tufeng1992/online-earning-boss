@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.SummaryTableDao">
+
+    <sql id="Base_Column_List">
+        `id`,
+		`generated_date`,
+		`vip_count`,
+		`vip1_count`,
+		`vip2_count`,
+		`vip3_count`,
+		`vip4_count`,
+		`vip5_count`,
+		`vip_valid_count`,
+		`recharge_amount`,
+		`vip_balance_count`,
+		`commissions_amount`,
+		`financial_profit_amount`,
+		`local_user_count`,
+		`recharge_count`,
+		`withdraw_count`,
+		`withdraw_amount`,
+		`vip_pay_count`,
+		`vip_pay_amount`,
+		`first_recharge_amount`,
+		`financial_profit_in_amount`,
+		`financial_profit_out_amount`,
+		`financial_profit_count_amount`,
+		`user_referral`,
+		`sale_referral`
+	</sql>
+
+    <select id="getById" resultType="com.powerboot.system.domain.DataBossVo">
+        select
+        <include refid="Base_Column_List"/>
+        from summary_table where id = #{id}
+    </select>
+
+    <select id="list" resultType="com.powerboot.system.domain.DataBossVo">
+        select
+        <include refid="Base_Column_List"/>
+        from summary_table order by id desc
+    </select>
+
+    <select id="listAndLimit" resultType="com.powerboot.system.domain.DataBossVo">
+        select
+        <include refid="Base_Column_List"/>
+        from summary_table
+        order by id desc
+        limit #{limit}
+    </select>
+
+    <select id="listSon" resultType="com.powerboot.system.domain.DataSaleVo">
+        select id,
+        mobile,
+        nike_name name,
+        member_level level,
+        balance totalAssets,
+        if(parent_id is null,sale_id,parent_id) superiorId,
+        sale_id saleId,
+        user_level userLevel,
+        create_time createTime
+        from user
+        where sale_id is not null
+        <if test="param.saleIds != null and param.saleIds.size() > 0">
+            and sale_id in
+            <foreach collection="param.saleIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="param.saleId != null">
+            and sale_id = #{param.saleId}
+        </if>
+        <if test="param.userId != null">
+            and id = #{param.userId}
+        </if>
+        <if test="param.userMobile != null and param.userMobile != ''">
+            and mobile = #{param.userMobile}
+        </if>
+        <if test="param.userLevel != null">
+            and user_level = #{param.userLevel}
+        </if>
+        <if test="param.startTime != null">
+            and create_time &gt;= #{param.startTime}
+        </if>
+        <if test="param.endTime != null">
+            and create_time &lt; #{param.endTime}
+        </if>
+        order by id desc
+        <if test="param.offset != null and param.limit != null">
+            limit #{param.offset},#{param.limit}
+        </if>
+
+    </select>
+
+    <select id="listSonCount" resultType="java.lang.Integer">
+        select count(*) from user
+        where sale_id is not null
+        <if test="param.saleIds != null and param.saleIds.size() > 0">
+            and sale_id in
+            <foreach collection="param.saleIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="param.saleId != null">
+            and sale_id = #{param.saleId}
+        </if>
+        <if test="param.userId != null">
+            and id = #{param.userId}
+        </if>
+        <if test="param.userMobile != null and param.userMobile != ''">
+            and mobile = #{param.userMobile}
+        </if>
+        <if test="param.userLevel != null">
+            and user_level = #{param.userLevel}
+        </if>
+        <if test="param.startTime != null">
+            and create_time = #{param.startTime}
+        </if>
+        <if test="param.endTime != null">
+            and create_time = #{param.endTime}
+        </if>
+    </select>
+
+    <select id="listSonDetail" resultType="com.powerboot.system.domain.DataSaleVo">
+        select id,
+        mobile,
+        nike_name name,
+        member_level level,
+        balance totalAssets,
+        parent_id superiorId,
+        sale_id saleId,
+        user_level userLevel,
+        create_time regDate
+        from user
+        where parent_id = #{parentId}
+    </select>
+
+    <update id="updateById" parameterType="com.powerboot.system.domain.DataBossVo">
+        update summary_table
+        <set>
+            <if test="vipCount != null">`vip_count` = #{vipCount},</if>
+            <if test="localUserCount != null">`local_user_count` = #{localUserCount},</if>
+            <if test="userReferral != null">`user_referral` = #{userReferral},</if>
+            <if test="saleReferral != null">`sale_referral` = #{saleReferral},</if>
+            <if test="rechargeCount != null">`recharge_count` = #{rechargeCount},</if>
+            <if test="withdrawCount != null">`withdraw_count` = #{withdrawCount},</if>
+            <if test="rechargeAmount != null">`recharge_amount` = #{rechargeAmount},</if>
+            <if test="withdrawAmount != null">`withdraw_amount` = #{withdrawAmount},</if>
+            <if test="financialProfitInAmount != null">`financial_profit_in_amount` = #{financialProfitInAmount},</if>
+            <if test="financialProfitAmount != null">`financial_profit_amount` = #{financialProfitAmount},</if>
+            <if test="financialProfitOutAmount != null">`financial_profit_out_amount` = #{financialProfitOutAmount},
+            </if>
+            <if test="commissionsAmount != null">`commissions_amount` = #{commissionsAmount},</if>
+            <if test="vipPayCount != null">`vip_pay_count` = #{vipPayCount},</if>
+            <if test="vipPayAmount != null">`vip_pay_amount` = #{vipPayAmount},</if>
+            <if test="firstRechargeAmount != null">`first_recharge_amount` = #{firstRechargeAmount},</if>
+            <if test="vipBalanceCount != null">`vip_balance_count` = #{vipBalanceCount},</if>
+            <if test="financialProfitCountAmount != null">`financial_profit_count_amount` =
+                #{financialProfitCountAmount}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

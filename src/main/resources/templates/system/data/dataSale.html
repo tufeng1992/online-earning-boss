@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-body">
+                <div class="fixed-table-toolbar">
+                </div>
+                <div style="clear: both"></div>
+                <div class="fixed-table-toolbar">
+                    <span class="columns pull-left col-md-1" style="width: 100px;">日期：</span>
+                    <input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="请输入开始时间" id="startTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+                    <span class="columns pull-left col-md-1" style="width: 20px;"> ~ </span>
+                    <input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="请输入结束时间" id="endTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+                    <div class="columns pull-left col-md-2">
+                        <input id="operateNo" type="text" class="form-control" placeholder="运营号码">
+                    </div>
+                    <div class="columns pull-left col-md-2">
+                        <input id="userMobile" type="text" class="form-control" placeholder="用户手机号">
+                    </div>
+                    <div class="columns pull-left col-md-2">
+                        <input id="userId" type="text" class="form-control" placeholder="用户id">
+                    </div>
+                    <div class="columns pull-left col-md-2">
+                        <input id="userLevel" type="number" class="form-control" placeholder="用户层级">
+                    </div>
+                    <div class="columns pull-right">
+                        <button class="btn btn-success" onclick="reLoad()">查询</button>
+                        <button class="btn btn-primary" shiro:hasPermission="system:data:dataSaleExport" onclick="exportExcel()">导出Excel</button>
+                    </div>
+                </div>
+                <table id="exampleTable" data-mobile-responsive="true">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+    <script type="text/javascript">
+        var s_edit_h = 'hidden';
+        var s_mobile_h = 'hidden';
+    </script>
+</div>
+<div shiro:hasPermission="business:businessCustomer:edit">
+    <script type="text/javascript">
+        s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="business:businessCustomer:mobile">
+    <script type="text/javascript">
+        s_mobile_h = '';
+    </script>
+</div>
+
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/system/data/dataSale.js"></script>
+</body>
+</html>

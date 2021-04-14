@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${financialOrder.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">用户id：</label>
+								<div class="col-sm-8">
+									<input id="userId" name="userId" th:value="${financialOrder.userId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">理财产品id：</label>
+								<div class="col-sm-8">
+									<input id="productId" name="productId" th:value="${financialOrder.productId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">状态 1-未到期 2-已到期 3-提前赎回：</label>
+								<div class="col-sm-8">
+									<input id="orderStatus" name="orderStatus" th:value="${financialOrder.orderStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">本金：</label>
+								<div class="col-sm-8">
+									<input id="amount" name="amount" th:value="${financialOrder.amount}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">购买日期：</label>
+								<div class="col-sm-8">
+									<input id="buyDate" name="buyDate" th:value="${financialOrder.buyDate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">理财结束时间：</label>
+								<div class="col-sm-8">
+									<input id="lastDate" name="lastDate" th:value="${financialOrder.lastDate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">每日利息：</label>
+								<div class="col-sm-8">
+									<input id="dayInterest" name="dayInterest" th:value="${financialOrder.dayInterest}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">总利息：</label>
+								<div class="col-sm-8">
+									<input id="totalInterest" name="totalInterest" th:value="${financialOrder.totalInterest}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">提前退出手续费：</label>
+								<div class="col-sm-8">
+									<input id="calledAmount" name="calledAmount" th:value="${financialOrder.calledAmount}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">提前退出时间：</label>
+								<div class="col-sm-8">
+									<input id="calledTime" name="calledTime" th:value="${financialOrder.calledTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createTime" name="createTime" th:value="${financialOrder.createTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">更新时间：</label>
+								<div class="col-sm-8">
+									<input id="updateTime" name="updateTime" th:value="${financialOrder.updateTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">理财产品名称：</label>
+								<div class="col-sm-8">
+									<input id="productName" name="productName" th:value="${financialOrder.productName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">日利率：</label>
+								<div class="col-sm-8">
+									<input id="dayRate" name="dayRate" th:value="${financialOrder.dayRate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">年利率：</label>
+								<div class="col-sm-8">
+									<input id="yearRate" name="yearRate" th:value="${financialOrder.yearRate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">锁定天数：</label>
+								<div class="col-sm-8">
+									<input id="lockDays" name="lockDays" th:value="${financialOrder.lockDays}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">提前赎回手续费比例：</label>
+								<div class="col-sm-8">
+									<input id="calledRate" name="calledRate" th:value="${financialOrder.calledRate}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/system/financialOrder/edit.js">
+	</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<!--<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>支付开关</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>-->
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body>
+<div class="panel panel-default">
+    <div class="layui-colla-content layui-show">
+        <div
+                style="width: 270px; height: 200px; background-image: linear-gradient(90deg, darkcyan, cyan); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">系统提现总开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label><input type="radio" name="sysWithdrawalCheck" id="sysWithdrawalCheck" value="0"
+                                  class="form-control" th:value="0" th:checked="${sysWithdrawalCheck==0}">不允许提现</label>
+                    <label><input type="radio" name="sysWithdrawalCheck" id="sysWithdrawalCheck" value="1"
+                                  class="form-control" th:value="1" th:checked="${sysWithdrawalCheck==1}">允许提现</label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sysWithdrawalCheckClick()">切换</button>
+                </div>
+            </div>
+        </div>
+        <div
+                style="width: 270px; height: 200px; background-image: linear-gradient(90deg, darkcyan, cyan); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">系统充值总开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label><input type="radio" name="paySwitch" id="paySwitch" value="0"
+                                  class="form-control" th:value="0" th:checked="${paySwitch==0}">不允许充值</label>
+                    <label><input type="radio" name="paySwitch" id="paySwitch" value="1"
+                                  class="form-control" th:value="1" th:checked="${paySwitch==1}">允许充值</label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="paySwitchClick()">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, pink, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">提现审批开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label><input type="radio" name="applySwitch" id="applySwitch" value="0"
+                                  class="form-control" th:value="0" th:checked="${applySwitch==0}">关闭</label>
+                    <label><input type="radio" name="applySwitch" id="applySwitch" value="1"
+                                  class="form-control" th:value="1" th:checked="${applySwitch==1}">开启</label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="applySwitchClick()">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, yellow, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">邀请减半开关(注册天数)</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>
+                        <select id="inviteFlagHalf" name="inviteFlagHalf" class="form-group">
+                            <option value="0" th:selected="${inviteFlagHalf==0}">关闭</option>
+                            <option value="1" th:selected="${inviteFlagHalf==1}">1天</option>
+                            <option value="2" th:selected="${inviteFlagHalf==2}">2天</option>
+                            <option value="3" th:selected="${inviteFlagHalf==3}">3天</option>
+                            <option value="4" th:selected="${inviteFlagHalf==4}">4天</option>
+                            <option value="5" th:selected="${inviteFlagHalf==5}">5天</option>
+                            <option value="6" th:selected="${inviteFlagHalf==6}">6天</option>
+                            <option value="7" th:selected="${inviteFlagHalf==7}">7天</option>
+                            <option value="8" th:selected="${inviteFlagHalf==8}">8天</option>
+                            <option value="9" th:selected="${inviteFlagHalf==9}">9天</option>
+                            <option value="10" th:selected="${inviteFlagHalf==10}">10天</option>
+                            <option value="11" th:selected="${inviteFlagHalf==11}">11天</option>
+                            <option value="12" th:selected="${inviteFlagHalf==12}">12天</option>
+                            <option value="13" th:selected="${inviteFlagHalf==13}">13天</option>
+                            <option value="14" th:selected="${inviteFlagHalf==14}">14天</option>
+                            <option value="15" th:selected="${inviteFlagHalf==15}">15天</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="inviteFlagHalfClick()">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, burlywood, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">商品1价格随机区间</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>最小值<input id="priceMin1" name="priceMin1" th:value="${priceMin1}" class="form-control"
+                                  type="text"></label>
+                    <label>最大值<input id="priceMax1" name="priceMax1" th:value="${priceMax1}" class="form-control"
+                                  type="text"></label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sdPriceClick(1)">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, burlywood, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">商品2价格随机区间</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>最小值<input id="priceMin2" name="priceMin2" th:value="${priceMin2}" class="form-control"
+                                     type="text"></label>
+                    <label>最大值<input id="priceMax2" name="priceMax2" th:value="${priceMax2}" class="form-control"
+                                     type="text"></label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sdPriceClick(2)">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, burlywood, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">商品3价格随机区间</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>最小值<input id="priceMin3" name="priceMin3" th:value="${priceMin3}" class="form-control"
+                                     type="text"></label>
+                    <label>最大值<input id="priceMax3" name="priceMax3" th:value="${priceMax3}" class="form-control"
+                                     type="text"></label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sdPriceClick(3)">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, burlywood, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">商品4价格随机区间</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>最小值<input id="priceMin4" name="priceMin4" th:value="${priceMin4}" class="form-control"
+                                     type="text"></label>
+                    <label>最大值<input id="priceMax4" name="priceMax4" th:value="${priceMax4}" class="form-control"
+                                     type="text"></label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sdPriceClick(4)">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="width: 270px; height: 200px; background-image: linear-gradient(90deg, burlywood, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">商品5价格随机区间</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>最小值<input id="priceMin5" name="priceMin5" th:value="${priceMin5}" class="form-control"
+                                     type="text"></label>
+                    <label>最大值<input id="priceMax5" name="priceMax5" th:value="${priceMax5}" class="form-control"
+                                     type="text"></label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="sdPriceClick(5)">切换</button>
+                </div>
+            </div>
+        </div>
+
+        <!--<div
+                style="width: 270px; height: 200px; background-image: linear-gradient(90deg, pink, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">充值四方开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>
+                        <select id="payChannelBranch" name="payChannelBranch" class="form-group">
+                            <option value="0" th:selected="${payChannelBranch==0}">&#45;&#45; 未配置或超出配置 &#45;&#45;</option>
+                            <option value="1" th:selected="${payChannelBranch==1}">WeGame</option>
+                            <option value="2" th:selected="${payChannelBranch==2}">PayStax</option>
+                            <option value="3" th:selected="${payChannelBranch==3}">BillCenterPay</option>
+                            <option value="4" th:selected="${payChannelBranch==4}">RunningPay</option>
+                            <option value="5" th:selected="${payChannelBranch==5}">JPay</option>
+                            <option value="6" th:selected="${payChannelBranch==6}">Easebuzz</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="payChannelBranchClick()">切换</button>
+                </div>
+            </div>
+        </div>-->
+        <!--<div
+                style="width: 270px; height: 200px; background-image: linear-gradient(90deg, pink, #d6c0f1); margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">提现四方开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label>
+                        <select id="payoutChannelBranch" name="payoutChannelBranch" class="form-group">
+                            <option value="0" th:selected="${payoutChannelBranch==0}">&#45;&#45; 未配置或超出配置 &#45;&#45;</option>
+                            <option value="1" th:selected="${payoutChannelBranch==1}">WeGame</option>
+                            <option value="2" th:selected="${payoutChannelBranch==2}">PayStax</option>
+                            <option value="3" th:selected="${payoutChannelBranch==3}">BillCenterPay</option>
+                            <option value="4" th:selected="${payoutChannelBranch==4}">RunningPay</option>
+                            <option value="5" th:selected="${payoutChannelBranch==5}">JPay</option>
+                            <option value="6" th:selected="${payoutChannelBranch==6}">Easebuzz</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="payoutChannelBranchClick()">切换</button>
+                </div>
+            </div>
+        </div>-->
+
+        <!-- 系统升级调整开关 0-关 1-开 -->
+        <div style="width: 270px; height: 200px; background-image: linear-gradient(90deg, red, coral); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
+            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">系统升级调整开关</div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <label><input type="radio" name="goPaySwitch" id="goPaySwitch" value="0"
+                                  class="form-control" th:value="0" th:checked="${goPaySwitch==0}">关闭</label>
+                    <label><input type="radio" name="goPaySwitch" id="goPaySwitch" value="1"
+                                  class="form-control" th:value="1" th:checked="${goPaySwitch==1}">开启</label>
+                </div>
+            </div>
+            <div style="width: 270px; height: 30px; padding: 5px;">
+                <span style="font-size: medium"></span>&nbsp;&nbsp;
+                <span style="font-size: x-large"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <button type="submit" class="btn btn-primary" onclick="goPaySwitchClick()">切换</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--<script src="js/jquery.min.js"></script>
+<script src="js/openTab.js"></script>-->
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/system/pay/paySwitch.js"></script>
+</body>
+</html>

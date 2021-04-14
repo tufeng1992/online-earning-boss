@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.FinancialOrderDao">
+
+    <select id="get" resultType="com.powerboot.system.domain.FinancialOrderDO">
+		select `id`,`user_id`,`product_id`,`order_status`,`amount`,`buy_date`,`last_date`,`day_interest`,
+		`total_interest`,`called_amount`,`called_time`,`create_time`,`update_time`,`product_name`,
+		`day_rate`,`year_rate`,`lock_days`,`called_rate` from financial_order where id = #{value}
+	</select>
+
+    <select id="getInAmountSum" resultType="java.math.BigDecimal">
+        select sum(amount) from financial_order
+        <where>
+            user_id >1
+            <if test="buyDateStart != null "> and buy_date <![CDATA[ >= ]]> #{buyDateStart} </if>
+            <if test="buyDateEnd != null "> and buy_date <![CDATA[ <= ]]> #{buyDateEnd} </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getAmountByStatus" resultType="java.math.BigDecimal">
+        select sum(amount) from financial_order
+        <where>
+            <if test="status != null">
+                and order_status = #{status}
+            </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and user_id > 1
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getOutAmountSum" resultType="java.math.BigDecimal">
+      select sum(amount) from
+      (
+      (
+      select (sum(amount)+sum(total_interest)) as amount from financial_order
+        where order_status = 2 and user_id > 1
+        <if test="lastDate != null "> and last_date = #{lastDate} </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+         )
+        union all
+        (
+        select (sum(amount)-sum(called_amount)) as amount from financial_order
+        where order_status = 3 and user_id > 1
+        <if test="calledTimeStart != null and calledTimeEnd!=null">
+        and called_time  <![CDATA[ >= ]]> #{calledTimeStart}
+        and called_time <![CDATA[ <= ]]> #{calledTimeEnd}
+        </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+        )
+        )t
+    </select>
+
+    <select id="list" resultType="com.powerboot.system.domain.FinancialOrderDO">
+        select
+        `id`,`user_id`,`product_id`,`order_status`,`amount`,`buy_date`,`last_date`,`day_interest`,
+        `total_interest`,`called_amount`,`called_time`,`create_time`,`update_time`,`product_name`,
+        `day_rate`,`year_rate`,`lock_days`,`called_rate`
+        from financial_order
+        <where>
+            <if test="minUserId != null and minUserId != ''"> and user_id > #{minUserId} </if>
+            <if test="id != null and id != ''"> and id = #{id} </if>
+            <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+            <if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+            <if test="orderStatus != null and orderStatus != ''"> and order_status = #{orderStatus} </if>
+            <if test="orderStatusList != null and orderStatusList.size()>0">
+                and order_status in
+                <foreach collection="orderStatusList" separator="," open="(" close=")" item="orderStatus">
+                    #{orderStatus}
+                </foreach>
+            </if>
+            <if test="amount != null and amount != ''"> and amount = #{amount}  </if>
+            <if test="buyDate != null"> and buy_date = #{buyDate} </if>
+            <if test="buyDateStart != null"> and buy_date <![CDATA[ >= ]]> #{buyDateStart} </if>
+            <if test="buyDateEnd != null"> and buy_date <![CDATA[ <= ]]> #{buyDateEnd} </if>
+            <if test="lastDate != null and lastDate != ''"> and last_date = #{lastDate} </if>
+            <if test="lastDateStart != null"> and last_date <![CDATA[ >= ]]> #{lastDateStart} </if>
+            <if test="lastDateEnd != null"> and last_date <![CDATA[ <= ]]> #{lastDateEnd} </if>
+            <if test="dayInterest != null"> and day_interest = #{dayInterest} </if>
+            <if test="totalInterest != null"> and total_interest = #{totalInterest} </if>
+            <if test="calledAmount != null "> and called_amount = #{calledAmount} </if>
+            <if test="calledTime != null"> and called_time = #{calledTime} </if>
+            <if test="calledTimeStart != null"> and called_time <![CDATA[ >= ]]> #{calledTimeStart} </if>
+            <if test="calledTimeEnd != null"> and called_time <![CDATA[ <= ]]> #{calledTimeEnd} </if>
+            <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+            <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+            <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+            <if test="dayRate != null and dayRate != ''"> and day_rate = #{dayRate} </if>
+            <if test="yearRate != null and yearRate != ''"> and year_rate = #{yearRate} </if>
+            <if test="lockDays != null and lockDays != ''"> and lock_days = #{lockDays} </if>
+            <if test="calledRate != null and calledRate != ''"> and called_rate = #{calledRate} </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from financial_order
+        <where>
+            <if test="minUserId != null and minUserId != ''"> and user_id > #{minUserId} </if>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="userId != null and userId != ''">and user_id = #{userId}</if>
+            <if test="productId != null and productId != ''">and product_id = #{productId}</if>
+            <if test="orderStatus != null and orderStatus != ''">and order_status = #{orderStatus}</if>
+            <if test="amount != null and amount != ''">and amount = #{amount}</if>
+            <if test="buyDate != null and buyDate != ''">and buy_date = #{buyDate}</if>
+            <if test="lastDate != null and lastDate != ''">and last_date = #{lastDate}</if>
+            <if test="dayInterest != null and dayInterest != ''">and day_interest = #{dayInterest}</if>
+            <if test="totalInterest != null and totalInterest != ''">and total_interest = #{totalInterest}</if>
+            <if test="calledAmount != null and calledAmount != ''">and called_amount = #{calledAmount}</if>
+            <if test="calledTime != null and calledTime != ''">and called_time = #{calledTime}</if>
+            <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+            <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+            <if test="productName != null and productName != ''">and product_name = #{productName}</if>
+            <if test="dayRate != null and dayRate != ''">and day_rate = #{dayRate}</if>
+            <if test="yearRate != null and yearRate != ''">and year_rate = #{yearRate}</if>
+            <if test="lockDays != null and lockDays != ''">and lock_days = #{lockDays}</if>
+            <if test="calledRate != null and calledRate != ''">and called_rate = #{calledRate}</if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.powerboot.system.domain.FinancialOrderDO">
+		insert into financial_order
+		(
+			`id`, 
+			`user_id`, 
+			`product_id`, 
+			`order_status`, 
+			`amount`, 
+			`buy_date`, 
+			`last_date`, 
+			`day_interest`, 
+			`total_interest`, 
+			`called_amount`, 
+			`called_time`, 
+			`create_time`, 
+			`update_time`, 
+			`product_name`, 
+			`day_rate`, 
+			`year_rate`, 
+			`lock_days`, 
+			`called_rate`
+		)
+		values
+		(
+			#{id}, 
+			#{userId}, 
+			#{productId}, 
+			#{orderStatus}, 
+			#{amount}, 
+			#{buyDate}, 
+			#{lastDate}, 
+			#{dayInterest}, 
+			#{totalInterest}, 
+			#{calledAmount}, 
+			#{calledTime}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{productName}, 
+			#{dayRate}, 
+			#{yearRate}, 
+			#{lockDays}, 
+			#{calledRate}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.powerboot.system.domain.FinancialOrderDO">
+        update financial_order
+        <set>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="productId != null">`product_id` = #{productId},</if>
+            <if test="orderStatus != null">`order_status` = #{orderStatus},</if>
+            <if test="amount != null">`amount` = #{amount},</if>
+            <if test="buyDate != null">`buy_date` = #{buyDate},</if>
+            <if test="lastDate != null">`last_date` = #{lastDate},</if>
+            <if test="dayInterest != null">`day_interest` = #{dayInterest},</if>
+            <if test="totalInterest != null">`total_interest` = #{totalInterest},</if>
+            <if test="calledAmount != null">`called_amount` = #{calledAmount},</if>
+            <if test="calledTime != null">`called_time` = #{calledTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="productName != null">`product_name` = #{productName},</if>
+            <if test="dayRate != null">`day_rate` = #{dayRate},</if>
+            <if test="yearRate != null">`year_rate` = #{yearRate},</if>
+            <if test="lockDays != null">`lock_days` = #{lockDays},</if>
+            <if test="calledRate != null">`called_rate` = #{calledRate}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateSaleIdByUserId">
+        update financial_order set sale_id = #{saleId} where `user_id` in
+        <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <delete id="remove">
+		delete from financial_order where id = #{value}
+	</delete>
+
+    <delete id="batchRemove">
+        delete from financial_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
