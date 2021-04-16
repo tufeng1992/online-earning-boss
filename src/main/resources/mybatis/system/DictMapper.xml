@@ -13,9 +13,9 @@
 
 	<select id="list" resultType="com.powerboot.system.domain.DictDO">
 		select `id`,`key`,`value`,`weight`,`key_explain`,`create_time`,`update_time` from dict
-        <where>  
+        <where>
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="key != null and key != ''"> and `key` = #{key} </if>
+		  		  <if test="key != null and key != ''"> and `key` like concat('%', #{key},'%') </if>
 		  		  <if test="value != null and value != ''"> and `value` = #{value} </if>
 		  		  <if test="weight != null and weight != ''"> and weight = #{weight} </if>
 		  		  <if test="keyExplain != null and keyExplain != ''"> and key_explain like concat('%',#{keyExplain},'%') </if>
@@ -34,43 +34,43 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
+
  	<select id="count" resultType="int">
 		select count(*) from dict
-		 <where>  
+		 <where>
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="key != null and key != ''"> and key = #{key} </if>
-		  		  <if test="value != null and value != ''"> and value = #{value} </if>
-		  		  <if test="weight != null and weight != ''"> and weight = #{weight} </if>
+		  		  <if test="key != null and key != ''"> and `key` like concat('%', #{key},'%') </if>
+		  		  <if test="value != null and value != ''"> and `value` = #{value} </if>
+		  		  <if test="weight != null and weight != ''"> and `weight` = #{weight} </if>
 		  		  <if test="keyExplain != null and keyExplain != ''"> and key_explain = #{keyExplain} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		</where>
 	</select>
-	 
+
 	<insert id="save" parameterType="com.powerboot.system.domain.DictDO">
 		insert into dict
 		(
 			`key`,
-			`value`, 
-			`weight`, 
-			`key_explain`, 
-			`create_time`, 
+			`value`,
+			`weight`,
+			`key_explain`,
+			`create_time`,
 			`update_time`
 		)
 		values
 		(
 			#{key},
-			#{value}, 
-			#{weight}, 
-			#{keyExplain}, 
+			#{value},
+			#{weight},
+			#{keyExplain},
 			now(),
 			now()
 		)
 	</insert>
-	 
+
 	<update id="update" parameterType="com.powerboot.system.domain.DictDO">
-		update dict 
+		update dict
 		<set>
 			<if test="key != null">`key` = #{key}, </if>
 			<if test="value != null">`value` = #{value}, </if>
@@ -83,13 +83,13 @@
 	<update id="updateByKey">
 		update dict set `value` = #{value} where `key` = #{key}
 	</update>
-	
+
 	<delete id="remove">
 		delete from dict where id = #{value}
 	</delete>
-	
+
 	<delete id="batchRemove">
-		delete from dict where id in 
+		delete from dict where id in
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>
