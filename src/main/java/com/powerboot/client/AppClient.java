@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "appClient", url = "http://online-earning:8080")
+@FeignClient(name = "appClient", url = "http://online-earning:80")
 public interface AppClient {
 
     @PostMapping("/pay/order/{orderNo}")

@@ -42,7 +42,11 @@ public class OrderService {
         taskResponse.setLocalCount(orderDao.getCountGroupByUser(todayStart,todayEnd));
         taskResponse.setLocalCountRate(new BigDecimal(taskResponse.getLocalCount()).divide(new BigDecimal(userCount),2,BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toString());
         taskResponse.setYesterdayCount(orderDao.getCountGroupByUser(yesStart,yesEnd));
-        taskResponse.setYesterdayCountRate(new BigDecimal(taskResponse.getYesterdayCount()).divide(new BigDecimal(yesterdayUserCount),2,BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toString());
+        if (taskResponse.getYesterdayCount() == 0 || yesterdayUserCount == 0) {
+            taskResponse.setYesterdayCountRate("0");
+        } else {
+            taskResponse.setYesterdayCountRate(new BigDecimal(taskResponse.getYesterdayCount()).divide(new BigDecimal(yesterdayUserCount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toString());
+        }
         return taskResponse;
     }
 
