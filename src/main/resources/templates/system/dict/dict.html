@@ -16,6 +16,10 @@
 								onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
+							<button shiro:hasPermission="system:dict:dict" type="button" class="btn  btn-success"
+									onclick="refresh()">
+								<i class="fa" aria-hidden="true"></i>缓存刷新
+							</button>
 						</div>
 						<div class="columns pull-right">
 							<button class="btn btn-success" onclick="reLoad()">查询</button>

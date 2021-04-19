@@ -1,5 +1,6 @@
 package com.powerboot.system.service.impl;
 
+import com.google.common.collect.Maps;
 import com.powerboot.system.consts.DictConsts;
 import com.powerboot.system.dao.DictDao;
 import com.powerboot.system.domain.DictDO;
@@ -84,6 +85,13 @@ public class DictServiceImpl implements DictService {
             RedisUtils.remove(dict.getKey());
         }
         return count;
+    }
+
+    @Override
+    public int refresh() {
+        List<DictDO> list = list(Maps.newHashMap());
+        list.forEach(dictDO -> RedisUtils.setValue(dictDO.getKey(), dictDO.getValue(), DictConsts.DICT_CACHE_LIVE_TIME));
+        return 1;
     }
 
     @Override

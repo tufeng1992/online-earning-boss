@@ -23,19 +23,19 @@ import com.powerboot.system.service.DictService;
 /**
  * 数据配置表
  */
- 
+
 @Controller
 @RequestMapping("/system/dict")
 public class DictController {
 	@Autowired
 	private DictService dictService;
-	
+
 	@GetMapping()
 	@RequiresPermissions("system:dict:dict")
 	String Dict(){
 	    return "system/dict/dict";
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/list")
 	@RequiresPermissions("system:dict:dict")
@@ -47,7 +47,7 @@ public class DictController {
 		PageUtils pageUtils = new PageUtils(dictList, total);
 		return pageUtils;
 	}
-	
+
 	@GetMapping("/add")
 	@RequiresPermissions("system:dict:add")
 	String add(){
@@ -61,7 +61,7 @@ public class DictController {
 		model.addAttribute("dict", dict);
 	    return "system/dict/edit";
 	}
-	
+
 	/**
 	 * 保存
 	 */
@@ -84,7 +84,7 @@ public class DictController {
 		dictService.update(dict);
 		return R.ok();
 	}
-	
+
 	/**
 	 * 删除
 	 */
@@ -97,7 +97,20 @@ public class DictController {
 		}
 		return R.error();
 	}
-	
+
+	/**
+	 * 缓存刷新
+	 */
+	@PostMapping( "/refresh")
+	@ResponseBody
+	@RequiresPermissions("system:dict:dict")
+	public R refresh(){
+		if(dictService.refresh()>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+
 	/**
 	 * 删除
 	 */
@@ -108,5 +121,5 @@ public class DictController {
 		dictService.batchRemove(ids);
 		return R.ok();
 	}
-	
+
 }

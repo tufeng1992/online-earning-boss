@@ -46,32 +46,32 @@ function load() {
 						// 返回false将会终止请求
 						columns : [
 																{
-									field : 'id', 
-									title : '主键id' 
+									field : 'id',
+									title : '主键id'
 								},
 																{
-									field : 'key', 
-									title : '索引词' 
+									field : 'key',
+									title : '索引词'
 								},
 																{
-									field : 'value', 
-									title : '结果' 
+									field : 'value',
+									title : '结果'
 								},
 																{
-									field : 'weight', 
-									title : '权重' 
+									field : 'weight',
+									title : '权重'
 								},
 																{
-									field : 'keyExplain', 
-									title : 'key描述解释' 
+									field : 'keyExplain',
+									title : 'key描述解释'
 								},
 																{
-									field : 'createTime', 
-									title : '创建时间' 
+									field : 'createTime',
+									title : '创建时间'
 								},
 																{
-									field : 'updateTime', 
-									title : '更新时间' 
+									field : 'updateTime',
+									title : '更新时间'
 								},
 																{
 									title : '操作',
@@ -125,6 +125,25 @@ function remove(id) {
 			data : {
 				'id' : id
 			},
+			success : function(r) {
+				if (r.code==0) {
+					layer.msg(r.msg);
+					reLoad();
+				}else{
+					layer.msg(r.msg);
+				}
+			}
+		});
+	})
+}
+
+function refresh() {
+	layer.confirm('确定要执行缓存刷新？', {
+		btn : [ '确定', '取消' ]
+	}, function() {
+		$.ajax({
+			url : prefix+"/refresh",
+			type : "post",
 			success : function(r) {
 				if (r.code==0) {
 					layer.msg(r.msg);
