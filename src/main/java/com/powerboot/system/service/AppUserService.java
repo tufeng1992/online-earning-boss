@@ -89,6 +89,13 @@ public class AppUserService {
         return userDao.getIdByMobile(mobile);
     }
 
+    public List<Long> getIdByParentId(Long parentId) {
+        if (null == parentId) {
+            return null;
+        }
+        return userDao.getIdByParentId(parentId);
+    }
+
     public List<UserDTO> getByParentIdList(List<Long> idList) {
         return userDao.getByParentIdList(idList);
     }

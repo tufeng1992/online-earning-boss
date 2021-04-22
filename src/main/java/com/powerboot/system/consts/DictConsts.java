@@ -135,5 +135,9 @@ public class DictConsts {
     //提现警告金额
     public static final String WITHDRAW_WARNING_AMOUNT = "WITHDRAW_WARNING_AMOUNT";
 
+    /**
+     * 分销客服角色id
+     */
+    public static final String FXKF_ROLE_ID = "FXKF_ROLE_ID";
 
 }

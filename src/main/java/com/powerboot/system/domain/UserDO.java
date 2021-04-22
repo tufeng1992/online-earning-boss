@@ -1,11 +1,13 @@
 package com.powerboot.system.domain;
 
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class UserDO implements Serializable {
     private static final long serialVersionUID = 1L;
     //
@@ -27,6 +29,8 @@ public class UserDO implements Serializable {
     private Integer status;
     // 创建用户id
     private Long userIdCreate;
+    // 关联APP用户id
+    private Long appUserId;
     // 创建时间
     private Date gmtCreate;
     // 修改时间
@@ -270,32 +274,5 @@ public class UserDO implements Serializable {
 
     public void setDistrict(String district) {
         this.district = district;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDO{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", deptId=" + deptId +
-                ", deptName='" + deptName + '\'' +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", status=" + status +
-                ", userIdCreate=" + userIdCreate +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                ", roleIds=" + roleIds +
-                ", sex=" + sex +
-                ", birth=" + birth +
-                ", picId=" + picId +
-                ", liveAddress='" + liveAddress + '\'' +
-                ", hobby='" + hobby + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                '}';
     }
 }

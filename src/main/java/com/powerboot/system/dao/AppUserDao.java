@@ -61,6 +61,8 @@ public interface AppUserDao {
 
     Long getIdByMobile(@Param("mobile") String mobile);
 
+    List<Long> getIdByParentId(@Param("parentId") Long parentId);
+
     List<UserDTO> getUserIdByParentId(@Param("parentIdList") List<Long> parentIdList);
 
     List<UserDTO> getByParentIdList(@Param("list") List<Long> idList);
