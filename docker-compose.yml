@@ -11,6 +11,7 @@ services:
       dockerfile: Dockerfile
     environment:
       SPRING_PROFILE:
+      TZ: "Africa/Lagos"
     networks:
     - earning
     container_name: online-earning-boss
@@ -19,6 +20,8 @@ services:
     volumes:
       - /earning-boss/logs:/earning-boss/logs
       - /earning-boss/static:/earning-boss/static
+      - /usr/share/zoneinfo:/usr/share/zoneinfo
+      - "/etc/localtime:/etc/localtime:ro"
     external_links:
       - db07:mysql
       - redis:redis
