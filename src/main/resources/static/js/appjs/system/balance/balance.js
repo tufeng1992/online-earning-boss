@@ -36,7 +36,8 @@ function load() {
 								userId:$('#userId').val(),
 								orderNo:$('#orderNo').val(),
 								type:$('#type').val(),
-								status:$('#status').val()
+								status:$('#status').val(),
+                                saleId:$('#saleId').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -54,9 +55,13 @@ function load() {
 									field : 'orderNo', 
 									title : '外部关联订单号' 
 								},
-																{
-									field : 'userId', 
-									title : '用户id' 
+								{
+									field : 'userId',
+									title : '用户id'
+								},
+								{
+									field : 'saleMobile',
+									title : '运营编号'
 								},
 																{
 									field : 'amount', 

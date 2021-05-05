@@ -2,10 +2,12 @@ package com.powerboot.system.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Maps;
 import com.powerboot.client.ApplyRequest;
 import com.powerboot.common.annotation.Log;
 import com.powerboot.common.controller.BaseController;
@@ -16,9 +18,12 @@ import com.powerboot.common.utils.Query;
 import com.powerboot.common.utils.R;
 import com.powerboot.system.consts.PayApplyStatusEnum;
 import com.powerboot.system.domain.PayDO;
+import com.powerboot.system.domain.UserDO;
+import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.dto.UserDTO;
 import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.PayService;
+import com.powerboot.system.service.SysUserMappingService;
 import com.powerboot.system.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +50,9 @@ public class WithdrawalController extends BaseController {
     AppUserService appUserService;
     @Autowired
     UserService userService;
+    @Autowired
+    SysUserMappingService sysUserMappingService;
+
     @GetMapping()
     @RequiresPermissions("system:withdrawal:withdrawalList")
     String withdrawalList() {
@@ -59,6 +67,17 @@ public class WithdrawalController extends BaseController {
         if (!StringUtils.isBlank(saleNo)) {
             Long saleId = appUserService.getIdByMobile(saleNo);
             params.put("saleId", saleId);
+        }
+        Long sysUserId = this.getUserId();
+        UserDO sysUser = userService.get(sysUserId);
+        if (sysUser.getTeamFlag() == 1) {
+            List<SysUserMappingDTO> userMappingDTOS = sysUserMappingService.getBySysUserId(sysUserId);
+            List<Long> saleIds = userMappingDTOS.stream().map(SysUserMappingDTO::getUserId)
+                    .collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(saleIds)) {
+                return new PageUtils(Collections.emptyList(), 0);
+            }
+            params.put("saleIdList", saleIds);
         }
         params.put("type",99);
         Query query = new Query(params);
@@ -107,12 +126,41 @@ public class WithdrawalController extends BaseController {
             withdrawalDo.setWithdrawalAuditStatusDesc(PayApplyStatusEnum.getDescByCode(o.getApplyStatus()));
             withdrawalDo.setFailReason(o.getRemark());
             withdrawalDo.setWithdrawalAuditTime(DateUtils.format(o.getUpdateTime(),DateUtils.DATE_TIME_PATTERN));
+            withdrawalDo.setWithdrawalTotalAmount(selectUserWithdrawalTotalAmont(o.getUserId(), o));
             withdrawalList.add(withdrawalDo);
         });
 
         int total = payService.count(query);
         PageUtils pageUtils = new PageUtils(withdrawalList, total);
         return pageUtils;
+    }
+
+    /**
+     * 查询用户提现总金额
+     * @param userId
+     * @param o
+     * @return
+     */
+    private BigDecimal selectUserWithdrawalTotalAmont(Long userId, PayDO o) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("offset", 1);
+        params.put("limit", 9999999);
+        params.put("type", 99);
+        params.put("applyStatus", 2);
+        params.put("userId", userId);
+        Query query = new Query(params);
+        List<PayDO> withdrawalTotalList = payService.list(query);
+        BigDecimal total = BigDecimal.ZERO;
+        if (CollectionUtils.isEmpty(withdrawalTotalList)) {
+            return total;
+        }
+        for (PayDO payDO : withdrawalTotalList) {
+            if (o.getId().equals(payDO.getId())) {
+                continue;
+            }
+            total = total.add(payDO.getAmount());
+        }
+        return total;
     }
 
 

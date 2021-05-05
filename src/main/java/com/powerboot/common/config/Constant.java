@@ -1,6 +1,11 @@
 package com.powerboot.common.config;
 
 public class Constant {
+    /**
+     * 分销客服授权id缓存
+     */
+    public static final String FXKF_AUTH_IDS = "FXKF_AUTH_IDS:";
+
     public static String DEMO_ACCOUNT = "test";
     public static String AUTO_REOMVE_PRE = "true";
     public static String STATUS_RUNNING_STOP = "stop";

@@ -18,8 +18,10 @@ import org.apache.ibatis.annotations.Param;
 public interface BalanceDao {
 
 	BalanceDO get(Long id);
-	
+
 	List<BalanceDO> list(Map<String,Object> map);
+
+	List<BalanceDO> listTest(Map<String,Object> map);
 	
 	int count(Map<String,Object> map);
 
@@ -28,6 +30,8 @@ public interface BalanceDao {
 	int save(BalanceDO balance);
 	
 	int update(BalanceDO balance);
+
+	int updateBatch(List<BalanceDO> balance);
 
 	int updateSaleIdByUserId(@Param("saleId") Long saleId,
 							 @Param("userIdList") List<Long> userIdList);

@@ -2,6 +2,7 @@ package com.powerboot.system.controller;
 
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.system.consts.FinancialOrderStatusEnum;
+import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.dto.FutureOrderDto;
 import com.powerboot.system.dto.SysUserMappingDTO;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.SysUserMappingService;
 import com.powerboot.system.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
@@ -46,6 +48,8 @@ public class FinancialOrderController extends BaseController {
 	private UserService sysUserService;
 	@Autowired
 	SysUserMappingService sysUserMappingService;
+	@Autowired
+	private AppUserService appUserService;
 	
 	@GetMapping()
 	@RequiresPermissions("system:financialOrder:financialOrder")
@@ -98,6 +102,10 @@ public class FinancialOrderController extends BaseController {
 			if(!FinancialOrderStatusEnum.CALLED_AWAY.getCode().equals(response.getOrderStatus())){
 				response.setCalledAmount(null);
 				response.setCalledTime(null);
+			}
+			AppUserDO appUserDO = appUserService.getSaleInfo(o.getUserId().longValue());
+			if (null != appUserDO) {
+				response.setSaleMobile(appUserDO.getMobile());
 			}
 			responseList.add(response);
 		});

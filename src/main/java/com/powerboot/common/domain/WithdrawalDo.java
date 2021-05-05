@@ -1,7 +1,10 @@
 package com.powerboot.common.domain;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+@Data
 public class WithdrawalDo {
 
     //订单id
@@ -46,6 +49,11 @@ public class WithdrawalDo {
 
     //提现审核时间
     private String withdrawalAuditTime;
+
+    /**
+     * 提现总金额
+     */
+    private BigDecimal withdrawalTotalAmount;
 
     public String getOrderNo() {
         return orderNo;

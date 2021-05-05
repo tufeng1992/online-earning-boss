@@ -44,7 +44,10 @@ function load() {
                         sdSwitch: $("input[name='sdSwitch']:checked").val(),
                         lxSwitch: $("input[name='lxSwitch']:checked").val(),
                         firstRecharge: $('#firstRecharge').val(),
-                        blackFlag:$('#blackFlag').val()
+                        blackFlag:$('#blackFlag').val(),
+                        saleId:$('#saleId').val(),
+                        email:$('#email').val(),
+                        accountNumber:$('#accountNumber').val()
                     };
                 },
                 columns: [
@@ -59,6 +62,10 @@ function load() {
                     {
                         field: 'id',
                         title: '用户id'
+                    },
+                    {
+                        field : 'saleMobile',
+                        title : '运营编号'
                     },
                     {
                         field: 'mobile',

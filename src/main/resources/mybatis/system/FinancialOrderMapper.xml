@@ -131,6 +131,12 @@
         </if>
     </select>
 
+    <select id="listTest" resultType="com.powerboot.system.domain.FinancialOrderDO">
+        select
+            *
+        from financial_order p where sale_id = 1
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from financial_order
         <where>

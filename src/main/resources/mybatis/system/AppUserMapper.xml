@@ -84,6 +84,44 @@
         where mobile = #{mobile}
     </select>
 
+    <select id="getByMobiles" resultType="com.powerboot.system.domain.AppUserDO">
+        select `id`,
+               `device_number`,
+               `nike_name`,
+               `app_id`,
+               `role`,
+               `mobile`,
+               `password`,
+               `fund_password`,
+               `member_level`,
+               `balance`,
+               `parent_id`,
+               `ident_id`,
+               `account_number`,
+               `account_phone`,
+               `account_ifsc`,
+               `name`,
+               `bind_status`,
+               `bind_time`,
+               `sale_id`,
+               `referral_code`,
+               `create_time`,
+               `update_time`,
+               `version`,
+               `contacts_id`,
+               `fundAccount_id`,
+               `first_recharge`,
+               `withdraw_check`,
+               `sd_switch`,
+               `lx_switch`,
+               `team_flag`
+        from user
+        where mobile in
+        <foreach collection="mobiles" separator="," open="(" close=")" item="mobile">
+            #{mobile}
+        </foreach>
+    </select>
+
     <select id="getByMobileAndRole" resultType="com.powerboot.system.domain.AppUserDO">
         select `id`,
         `device_number`,
@@ -148,7 +186,8 @@
             <if test="balance != null and balance != ''">and balance = #{balance}</if>
             <if test="parentId != null and parentId != ''">and parent_id = #{parentId}</if>
             <if test="identId != null and identId != ''">and ident_id = #{identId}</if>
-            <if test="accountNumber != null  and accountNumber != ''">and account_number = #{accountNumber}</if>
+            <if test="accountNumber != null  and accountNumber != ''">and account_number like concat('%', #{accountNumber},'%') </if>
+            <if test="email != null  and email != ''">and email like concat('%', #{email},'%')</if>
             <if test="accountPhone != null and accountPhone != ''">and account_phone = #{accountPhone}</if>
             <if test="accountIfsc != null and accountIfsc != ''">and account_ifsc = #{accountIfsc}</if>
             <if test="name != null and name != ''">and name = #{name}</if>
@@ -187,6 +226,10 @@
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
+    </select>
+
+    <select id="listTest" resultType="com.powerboot.system.domain.AppUserDO">
+    select * from user
     </select>
 
     <select id="count" resultType="int">
@@ -322,11 +365,25 @@
             <if test="version != null">`version` = #{version},</if>
             <if test="contactsId != null">`contacts_id` = #{contactsId},</if>
             <if test="fundaccountId != null">`fundAccount_id` = #{fundaccountId},</if>
-            <if test="firstRecharge != null">`first_recharge` = #{firstRecharge}</if>
-            <if test="lxSwitch != null">`lx_switch` = #{lxSwitch}</if>
+            <if test="firstRecharge != null">`first_recharge` = #{firstRecharge},</if>
+            <if test="lxSwitch != null">`lx_switch` = #{lxSwitch},</if>
             <if test="sdSwitch != null">`sd_switch` = #{sdSwitch}</if>
         </set>
         where id = #{id}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        update user
+        set sale_id =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.saleId}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
     </update>
 
     <update id="updateSaleIdByUserId">

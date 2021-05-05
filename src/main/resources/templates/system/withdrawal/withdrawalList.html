@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
@@ -38,6 +39,22 @@
 			</div>
 		</div>
 	</div>
+	</div>
+	<div>
+		<script type="text/javascript">
+            var audit_success_b = 'hidden';
+            var audit_fail_b = 'hidden';
+		</script>
+	</div>
+	<div shiro:hasPermission="system:withdrawal:auditFail">
+		<script type="text/javascript">
+            audit_fail_b = '';
+		</script>
+	</div>
+	<div shiro:hasPermission="system:withdrawal:auditSuccess">
+		<script type="text/javascript">
+            audit_success_b = '';
+		</script>
 	</div>
 	<div th:include="include :: footer"></div>
 	<script type="text/javascript" src="/js/appjs/system/withdrawal/withdrawalList.js"></script>

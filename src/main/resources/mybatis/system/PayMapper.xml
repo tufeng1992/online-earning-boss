@@ -89,6 +89,12 @@
             <if test="saleId != null and saleId !=''">
                 and u.sale_id = #{saleId}
             </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and p.sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
             <if test="userMobile != null and userMobile !=''">
                 and u.mobile = #{userMobile}
             </if>
@@ -120,6 +126,12 @@
         </if>
     </select>
 
+    <select id="listTest" resultType="com.powerboot.system.domain.PayDO">
+        select
+        *
+        from pay p where sale_id = 1
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from pay p
         join user u on u.id = p.user_id
@@ -132,6 +144,12 @@
             </if>
             <if test="saleId != null and saleId !=''">
                 and u.sale_id = #{saleId}
+            </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and p.sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
             </if>
             <if test="userMobile != null and userMobile !=''">
                 and u.mobile = #{userMobile}
@@ -193,9 +211,24 @@
             <if test="thirdCallbackTime != null">`third_callback_time` = #{thirdCallbackTime},</if>
             <if test="orderNo != null">`order_no` = #{orderNo},</if>
             <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="saleId != null">`sale_id` = #{saleId},</if>
             <if test="updateTime != null">`update_time` = #{updateTime}</if>
         </set>
         where id = #{id}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        update pay
+        set sale_id =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.saleId}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
     </update>
 
     <update id="updateSaleIdByUserId">

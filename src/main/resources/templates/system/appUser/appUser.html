@@ -58,6 +58,12 @@
 							</select>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
+							<select id="saleId" class="form-control">
+								<option value="">运营人员</option>
+								<option th:each="appUser:${appUserDOList}" th:value="${appUser.id}" th:text="${appUser.mobile}"></option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
 							<input id="referralCode" type="text" class="form-control" placeholder="邀请码">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
@@ -68,6 +74,12 @@
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
 							<input id="name" type="text" class="form-control" placeholder="银行卡申请人名字">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="accountNumber" type="text" class="form-control" placeholder="银行卡号">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="email" type="text" class="form-control" placeholder="邮箱">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
 							<input id="parentId" type="text" class="form-control" placeholder="上级用户id">
@@ -85,9 +97,10 @@
 	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
 		<div>
 			<script type="text/javascript">
-				var s_edit_h = 'hidden';
+				var s_edit_h = 'show';
 				var s_remove_h = 'hidden';
 				var s_resetPwd_h = 'hidden';
+                var guest_book_a = 'hidden';
 			</script>
 		</div>
 		<div shiro:hasPermission="system:appUser:edit">
@@ -103,6 +116,11 @@
 		<div shiro:hasPermission="system:appUser:resetPwd">
 			<script type="text/javascript">
 				var s_resetPwd_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="system:guestbook:add">
+			<script type="text/javascript">
+                guest_book_a = '';
 			</script>
 		</div>
 	</div>

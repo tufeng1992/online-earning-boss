@@ -22,8 +22,10 @@ public interface FinancialOrderDao {
 	BigDecimal getOutAmountSum(Map<String, Object> map);
 
 	FinancialOrderDO get(Integer id);
-	
+
 	List<FinancialOrderDO> list(Map<String, Object> map);
+
+	List<FinancialOrderDO> listTest(Map<String, Object> map);
 	
 	int count(Map<String, Object> map);
 	

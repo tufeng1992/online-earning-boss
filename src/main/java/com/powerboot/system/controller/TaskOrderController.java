@@ -3,8 +3,12 @@ package com.powerboot.system.controller;
 import com.powerboot.common.utils.PageUtils;
 import com.powerboot.common.utils.Query;
 import com.powerboot.common.utils.R;
+import com.powerboot.common.utils.ShiroUtils;
+import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.OrderDO;
+import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.response.TaskOrderResponse;
+import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.OrderService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,10 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 刷单订单表
@@ -29,6 +30,9 @@ import java.util.Map;
 public class TaskOrderController {
 	@Autowired
 	private OrderService taskOrderService;
+
+	@Autowired
+	private AppUserService appUserService;
 	
 	@GetMapping()
 	@RequiresPermissions("system:taskOrder:taskOrder")
@@ -42,6 +46,12 @@ public class TaskOrderController {
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
+		UserDO userDO = ShiroUtils.getUser();
+		Set<Long> ids = appUserService.getAuthByParentId(userDO);
+		if (CollectionUtils.isNotEmpty(ids)) {
+			query.put("userIds", ids);
+		}
+
 		List<OrderDO> taskOrderList = taskOrderService.list(query);
 		List<TaskOrderResponse> resultList = getResponseList(taskOrderList);
 		int total = taskOrderService.count(query);
@@ -57,6 +67,10 @@ public class TaskOrderController {
 		taskOrderList.forEach(o->{
 			TaskOrderResponse response = new TaskOrderResponse();
 			BeanUtils.copyProperties(o,response);
+			AppUserDO appUserDO = appUserService.getSaleInfo(o.getUserId());
+			if (null != appUserDO) {
+				response.setSaleMobile(appUserDO.getMobile());
+			}
 			responseList.add(response);
 		});
 		return responseList;

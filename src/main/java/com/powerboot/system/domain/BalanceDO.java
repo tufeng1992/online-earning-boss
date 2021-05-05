@@ -31,6 +31,16 @@ public class BalanceDO implements Serializable {
 	//更新时间
 	private Date updateTime;
 
+	private Long saleId;
+
+	public Long getSaleId() {
+		return saleId;
+	}
+
+	public void setSaleId(Long saleId) {
+		this.saleId = saleId;
+	}
+
 	/**
 	 * 设置：主键id，同时为流水订单id
 	 */

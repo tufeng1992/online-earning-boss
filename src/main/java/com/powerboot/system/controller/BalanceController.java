@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.system.consts.BalanceTypeEnum;
 import com.powerboot.system.consts.StatusTypeEnum;
+import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.response.BalanceResponse;
+import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.BalanceService;
 import com.powerboot.system.service.SysUserMappingService;
 import com.powerboot.system.service.UserService;
@@ -45,11 +49,20 @@ public class BalanceController extends BaseController {
 	@Autowired
 	private UserService sysUserService;
 	@Autowired
+	private AppUserService appUserService;
+	@Autowired
 	SysUserMappingService sysUserMappingService;
 	
 	@GetMapping()
 	@RequiresPermissions("system:balance:balance")
-	String Balance(){
+	String Balance(Model model){
+		List<UserDO> userDOList = sysUserService.list(Maps.newHashMap());
+		List<String> mobiles = Lists.newArrayList();
+		if (CollectionUtils.isNotEmpty(userDOList)) {
+			userDOList.forEach(userDO -> mobiles.add(userDO.getUserId().toString()));
+		}
+		List<AppUserDO> appUserDOList = appUserService.getByMobiles(mobiles);
+		model.addAttribute("appUserDOList", appUserDOList);
 	    return "system/balance/balance";
 	}
 	
@@ -79,6 +92,10 @@ public class BalanceController extends BaseController {
 			BeanUtils.copyProperties(o,balanceResponse);
 			balanceResponse.setTypeStr(BalanceTypeEnum.getMsgByCode(balanceResponse.getType()));
 			balanceResponse.setStatusStr(StatusTypeEnum.getMsgByCode(balanceResponse.getStatus()));
+			AppUserDO appUserDO = appUserService.get(balanceResponse.getSaleId());
+			if (null != appUserDO && appUserDO.getRole() == 1) {
+				balanceResponse.setSaleMobile(appUserDO.getMobile());
+			}
 			resultList.add(balanceResponse);
 		});
 		PageUtils pageUtils = new PageUtils(resultList, total);

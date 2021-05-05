@@ -1,17 +1,23 @@
 package com.powerboot.system.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.powerboot.common.config.Constant;
 import com.powerboot.common.utils.StringUtils;
+import com.powerboot.system.consts.DictConsts;
 import com.powerboot.system.dao.AppUserDao;
 import com.powerboot.system.domain.AppUserDO;
+import com.powerboot.system.domain.DictDO;
+import com.powerboot.system.domain.RoleDO;
+import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.dto.UserDTO;
 import com.powerboot.system.response.TaskResponse;
 import com.powerboot.system.response.UserCountResp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import com.powerboot.utils.RedisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +27,12 @@ public class AppUserService {
 
     @Autowired
     private AppUserDao userDao;
+
+    @Autowired
+    private DictService dictService;
+
+    @Autowired
+    private RoleService roleService;
 
     public TaskResponse getUserLoginRes(Integer userCount, List<Long> saleIdList) {
         Integer allNoLogin = userDao.selectJustRegNoLoginCount();
@@ -124,6 +136,10 @@ public class AppUserService {
         return userDao.getByMobile(mobile);
     }
 
+    public List<AppUserDO> getByMobiles(List<String> mobiles) {
+        return userDao.getByMobiles(mobiles);
+    }
+
     public AppUserDO getByMobileAndRole(String mobile, Integer role) {
         return userDao.getByMobileAndRole(mobile, role);
     }
@@ -172,5 +188,74 @@ public class AppUserService {
         return userDao.updateUserVIP(userId, memberLevel);
     }
 
+    /**
+     * 获取根据用户parentId授权关联id
+     * @param userDO
+     * @return
+     */
+    public Set<Long> getAuthByParentId(UserDO userDO) {
+        DictDO dictDO = dictService.getByKey(DictConsts.FXKF_ROLE_ID);
+        String s = dictDO.getValue();
+        String[] roleIds = s.split("\\|");
+        Set<Long> ids = Sets.newHashSet();
+        for (String roleId : roleIds) {
+            List<RoleDO> roleDOList = roleService.list(userDO.getUserId());
+            if (CollectionUtils.isNotEmpty(roleDOList)) {
+                for (RoleDO roleDO : roleDOList) {
+                    if (roleDO.getRoleId().equals(Long.valueOf(roleId)) && roleDO.getRoleSign().equalsIgnoreCase("true")) {
+                        ids.addAll(queryParentLinkIds(userDO.getAppUserId()));
+                        if (CollectionUtils.isEmpty(ids)) {
+                            ids.add(-1L);
+                        }
+                        return ids;
+                    }
+                }
+            }
+        }
+        return ids;
+    }
 
+
+    /**
+     * 查询关联的用户id
+     * @param appUserId
+     * @return
+     */
+    private List<Long> queryParentLinkIds(Long appUserId) {
+        List<Long> ids = Lists.newArrayList();
+        doQueryParentId(appUserId, ids);
+        return ids;
+    }
+
+    /**
+     * 查询关联的用户id
+     * @param appUserId
+     * @param ids
+     */
+    private void doQueryParentId(Long appUserId, List<Long> ids) {
+        List<Long> id = getIdByParentId(appUserId);
+        if (CollectionUtils.isNotEmpty(id)) {
+            id.forEach(i -> {
+                ids.add(i);
+                doQueryParentId(i, ids);
+            });
+        }
+    }
+
+    /**
+     * 查询用户关联营销人员信息
+     * @param userId
+     * @return
+     */
+    public AppUserDO getSaleInfo(Long userId) {
+        AppUserDO appUserDO = get(userId);
+        if (null == appUserDO || 1L == appUserDO.getSaleId()) {
+            return null;
+        }
+        AppUserDO saleUserDO = get(appUserDO.getSaleId());
+        if (null == saleUserDO || 2 == saleUserDO.getRole()) {
+            return null;
+        }
+        return saleUserDO;
+    }
 }

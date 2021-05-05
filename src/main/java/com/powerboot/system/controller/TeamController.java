@@ -1,16 +1,19 @@
 package com.powerboot.system.controller;
 
+import com.google.common.collect.Lists;
 import com.powerboot.common.annotation.Log;
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.common.utils.PageUtils;
 import com.powerboot.common.utils.Query;
 import com.powerboot.common.utils.R;
 import com.powerboot.system.dao.UserRoleDao;
+import com.powerboot.system.domain.RoleDO;
 import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.domain.UserRoleDO;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.request.TeamLeaderUpdateRequest;
 import com.powerboot.system.service.AppUserService;
+import com.powerboot.system.service.RoleService;
 import com.powerboot.system.service.SysUserMappingService;
 import com.powerboot.system.service.UserService;
 import java.util.ArrayList;
@@ -42,6 +45,8 @@ public class TeamController extends BaseController{
     AppUserService appUserService;
     @Autowired
     UserRoleDao userRoleMapper;
+    @Autowired
+    private RoleService roleService;
 
     @GetMapping()
     @RequiresPermissions("system:team:list")
@@ -112,8 +117,19 @@ public class TeamController extends BaseController{
         UserDO param2 = new UserDO();
         param2.setLeaderSysId(request.getUserId().intValue());
         userService.updateByParam(entity2,param2);
+        List<RoleDO> roleDOList = roleService.list(request.getUserId());
         //删除老的角色
         userRoleMapper.removeByUserId(request.getUserId());
+
+        List<UserRoleDO> addUserRole = Lists.newArrayList();
+        roleDOList.forEach(roleDO -> {
+            if (!roleDO.getRoleId().equals(62L) && !roleDO.getRoleId().equals(63L) && roleDO.getRoleSign().equalsIgnoreCase("true")) {
+                UserRoleDO userRole = new UserRoleDO();
+                userRole.setRoleId(roleDO.getRoleId());
+                userRole.setUserId(request.getUserId());
+                addUserRole.add(userRole);
+            }
+        });
         //如果设置了团队长
         if(request.getTeamLeader()==1){
             if(CollectionUtils.isNotEmpty(request.getTeamUserIds())){
@@ -131,14 +147,15 @@ public class TeamController extends BaseController{
             UserRoleDO userRole = new UserRoleDO();
             userRole.setRoleId(63L);
             userRole.setUserId(request.getUserId());
-            userRoleMapper.save(userRole);
+            addUserRole.add(userRole);
         }else{
             //添加普通队员角色
             UserRoleDO userRole = new UserRoleDO();
             userRole.setRoleId(62L);
             userRole.setUserId(request.getUserId());
-            userRoleMapper.save(userRole);
+            addUserRole.add(userRole);
         }
+        addUserRole.forEach(userRoleDO -> userRoleMapper.save(userRoleDO));
         List<Long> appUserIds = appUserService.selectIdByMobile(mobileList);
         appUserIds.forEach(appUserId->{
             SysUserMappingDTO dto = new SysUserMappingDTO();

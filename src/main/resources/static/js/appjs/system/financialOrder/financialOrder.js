@@ -55,6 +55,10 @@ function load() {
 									field : 'userId', 
 									title : '用户id' 
 								},
+                            {
+                                field : 'saleMobile',
+                                title : '运营编号'
+                            },
 																{
 									field : 'orderStatusStr',
 									title : '订单状态'

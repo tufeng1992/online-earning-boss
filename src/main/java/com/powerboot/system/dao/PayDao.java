@@ -27,13 +27,17 @@ public interface PayDao {
 	
 	List<PayDO> list(Map<String,Object> map);
 
+	List<PayDO> listTest(Map<String,Object> map);
+
 	PayDO getByOrderNo(String orderNo);
 
 	int count(Map<String,Object> map);
 	
 	int save(PayDO pay);
-	
+
 	int update(PayDO pay);
+
+	int updateBatch(List<PayDO> pay);
 
 	int updateSaleIdByUserId(@Param("saleId") Long saleId,
 							 @Param("userIdList") List<Long> userIdList);

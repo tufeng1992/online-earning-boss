@@ -1,5 +1,7 @@
 package com.powerboot.system.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.powerboot.common.annotation.Log;
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.common.utils.PageUtils;
@@ -69,7 +71,14 @@ public class UserEditController extends BaseController {
 
     @GetMapping()
     @RequiresPermissions("system:userEdit:userEdit")
-    String User() {
+    String User(Model model) {
+        List<UserDO> userDOList = sysUserService.list(Maps.newHashMap());
+        List<String> mobiles = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(userDOList)) {
+            userDOList.forEach(userDO -> mobiles.add(userDO.getUserId().toString()));
+        }
+        List<AppUserDO> appUserDOList = userService.getByMobiles(mobiles);
+        model.addAttribute("appUserDOList", appUserDOList);
         return "system/userEdit/userEdit";
     }
 
@@ -99,6 +108,10 @@ public class UserEditController extends BaseController {
             appUserResponse.setBindStatusStr(appUserResponse.getBindStatus().equals(0) ? "未绑定" : "已绑定");
             appUserResponse.setBlackFlagStr(appUserResponse.getBlackFlag().equals(0) ? "否" : "是");
             appUserResponse.setFirstRechargeStr(appUserResponse.getFirstRecharge().equals(0) ? "未完成" : "已完成");
+            AppUserDO appUserDO = userService.getSaleInfo(user.getId());
+            if (null != appUserDO) {
+                appUserResponse.setSaleMobile(appUserDO.getMobile());
+            }
             resultList.add(appUserResponse);
         });
         PageUtils pageUtils = new PageUtils(resultList, total);

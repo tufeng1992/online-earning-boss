@@ -37,6 +37,12 @@
 							<input id="parentId" type="text" class="form-control" placeholder="上级用户id">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
+							<select id="saleId" class="form-control">
+								<option value="">运营人员</option>
+								<option th:each="appUser:${appUserDOList}" th:value="${appUser.id}" th:text="${appUser.mobile}"></option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
 							<input id="id" type="text" class="form-control" placeholder="用户id">
 						</div>
 					</div>

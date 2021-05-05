@@ -1,4 +1,4 @@
-var prefix = "/system/taskOrder"
+var prefix = "/system/guestbook"
 $(function () {
     load();
 });
@@ -31,10 +31,9 @@ function load() {
                     return {
                         //说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
                         limit: params.limit,
-                        offset: params.offset,
-                        id: $('#id').val(),
-                        userId: $('#userId').val(),
-                        orderNumber: $('#orderNumber').val()
+                        offset: params.offset
+                        // name:$('#searchName').val(),
+                        // username:$('#searchName').val()
                     };
                 },
                 // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -43,102 +42,55 @@ function load() {
                 // pageSize, pageNumber, searchText, sortName,
                 // sortOrder.
                 // 返回false将会终止请求
-
                 columns: [
                     {
+                        checkbox: true
+                    },
+                    {
                         field: 'id',
-                        title: '订单id'
+                        title: '主键'
                     },
                     {
-                        field: 'userId',
-                        title: '用户id'
+                        field: 'guestbookContent',
+                        title: '留言内容'
                     },
                     {
-                        field: 'saleMobile',
-                        title: '运营编号'
+                        field: 'guestbookUserId',
+                        title: '留言人id'
                     },
                     {
-                        field: 'orderNumber',
-                        title: '订单号'
+                        field: 'guestbookTargetId',
+                        title: '留言对象id'
                     },
                     {
-                        field: 'amount',
-                        title: '商品金额'
+                        field: 'guestbookTargetMobile',
+                        title: '留言对象手机号'
                     },
                     {
-                        field: 'productId',
-                        title: '商品id'
-                    },
-                    {
-                        field: 'productRation',
-                        title: '商品利率'
-                    },
-                    {
-                        field: 'productCommission',
-                        title: '刷单佣金'
-                    },
-                    {
-                        field: 'oneRatId',
-                        title: '顶级会员id'
-                    },
-                    {
-                        field: 'oneRatio',
-                        title: '顶级会员分润比例'
-                    },
-                    {
-                        field: 'oneAmount',
-                        title: '顶级会员分润金额'
-                    },
-                    {
-                        field: 'twoId',
-                        title: '次顶级会员id'
-                    },
-                    {
-                        field: 'twoRatio',
-                        title: '次顶级会员分润比例'
-                    },
-                    {
-                        field: 'twoAmount',
-                        title: '次顶级会员分润金额'
-                    },
-                    {
-                        field: 'threeId',
-                        title: '上级会员id'
-                    },
-                    {
-                        field: 'threeRatio',
-                        title: '上级会员分润比例'
-                    },
-                    {
-                        field: 'threeAmount',
-                        title: '上级会员分润金额'
-                    }, {
                         field: 'createTime',
                         title: '创建时间'
-                    }, {
+                    },
+                    {
                         field: 'updateTime',
                         title: '更新时间'
-                    }
-
-
-                    /*,
-                                                        {
-                            title : '操作',
-                            field : 'id',
-                            align : 'center',
-                            formatter : function(value, row, index) {
-                                var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
-                                        + row.id
-                                        + '\')"><i class="fa fa-edit"></i></a> ';
-                                var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
-                                        + row.id
-                                        + '\')"><i class="fa fa-remove"></i></a> ';
-                                var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
-                                        + row.id
-                                        + '\')"><i class="fa fa-key"></i></a> ';
-                                return e + d ;
-                            }
-                        } */]
+                    },
+                    {
+                        title: '操作',
+                        field: 'id',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var e = '<a class="btn btn-primary btn-sm ' + s_edit_h + '" href="#" mce_href="#" title="编辑" onclick="edit(\''
+                                + row.id
+                                + '\')"><i class="fa fa-edit"></i></a> ';
+                            var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
+                                + row.id
+                                + '\')"><i class="fa fa-remove"></i></a> ';
+                            var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
+                                + row.id
+                                + '\')"><i class="fa fa-key"></i></a> ';
+                            return e + d;
+                        }
+                    }]
             });
 }
 

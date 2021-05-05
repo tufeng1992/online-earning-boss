@@ -2,6 +2,7 @@ package com.powerboot.system.dao;
 
 import com.powerboot.system.domain.AppUserDO;
 
+import com.powerboot.system.domain.BalanceDO;
 import com.powerboot.system.dto.UserDTO;
 
 import java.math.BigDecimal;
@@ -31,15 +32,21 @@ public interface AppUserDao {
 
     AppUserDO getByMobile(String mobile);
 
+    List<AppUserDO> getByMobiles(@Param("mobiles") List<String> mobiles);
+
     AppUserDO getByMobileAndRole(@Param("mobile")String mobile,@Param("role")Integer role);
 
     List<AppUserDO> list(Map<String, Object> map);
+
+    List<AppUserDO> listTest(Map<String, Object> map);
 
     int count(Map<String, Object> map);
 
     int save(AppUserDO user);
 
     int update(AppUserDO user);
+
+    int updateBatch(List<AppUserDO> user);
 
     int updateSaleIdByUserId(@Param("saleId") Long saleId,
         @Param("teamFlag") String teamFlag,

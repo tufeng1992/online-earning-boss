@@ -1,5 +1,7 @@
 package com.powerboot.system.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.powerboot.common.annotation.Log;
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.common.utils.PageUtils;
@@ -8,10 +10,12 @@ import com.powerboot.common.utils.R;
 import com.powerboot.system.consts.DictConsts;
 import com.powerboot.system.consts.UserRoleEnum;
 import com.powerboot.system.domain.AppUserDO;
+import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.response.AppUserResponse;
 import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.SysUserMappingService;
+import com.powerboot.system.service.UserService;
 import com.powerboot.utils.RedisUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +39,17 @@ public class TeamUserEditController extends BaseController {
 
     @Autowired
     SysUserMappingService sysUserMappingService;
+
     @Autowired
     private AppUserService userService;
 
+    @Autowired
+    private UserService sysUserService;
+
     @GetMapping()
     @RequiresPermissions("system:teamUserEdit:teamUserEdit")
-    String User() {
+    String User(Model model) {
+
         return "system/team/teamUserEditList";
     }
 

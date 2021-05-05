@@ -43,7 +43,10 @@ function load() {
                                 bindStatus:$('#bindStatus').val(),
                                 firstRecharge:$('#firstRecharge').val(),
 								blackFlag:$('#blackFlag').val(),
-                                referralCode:$('#referralCode').val()
+                                referralCode:$('#referralCode').val(),
+                                saleId:$('#saleId').val(),
+                                email:$('#email').val(),
+                                accountNumber:$('#accountNumber').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -61,6 +64,10 @@ function load() {
 									field : 'id', 
 									title : '用户id'
 							},
+                            {
+                                field : 'saleMobile',
+                                title : '运营编号'
+                            },
                             {
                                 field : 'mobile',
                                 title : '手机号'
@@ -165,7 +172,7 @@ function load() {
 									field : 'firstRechargeStr',
 									title : '是否已完成首冲'
 								},
-																/*{
+																{
 									title : '操作',
 									field : 'id',
 									align : 'center',
@@ -179,14 +186,30 @@ function load() {
 										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
 												+ row.id
 												+ '\')"><i class="fa fa-key"></i></a> ';
-										return e + d ;
+                                        var guestbook_a = '<a class="btn btn-primary btn-sm '+guest_book_a+'" href="#" mce_href="#" title="留言" onclick="addGuest(\''
+                                            + row.id
+                                            + '\')"><i class="fa fa-edit"></i></a> ';
+										return e + d + guestbook_a ;
 									}
-								}*/ ]
+								}]
 					});
 }
 function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
+
+function addGuest(userId) {
+    layer.open({
+        type : 2,
+        title : '增加',
+        maxmin : true,
+        shadeClose : false, // 点击遮罩关闭层
+        area : [ '800px', '520px' ],
+        content : '/system/guestbook/add?guestbookTargetId=' + userId // iframe的url
+    });
+}
+
+
 function add() {
 	layer.open({
 		type : 2,

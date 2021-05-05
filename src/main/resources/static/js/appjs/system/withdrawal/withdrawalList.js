@@ -87,6 +87,10 @@ function load() {
                         title: '提现金额'
                     },
                     {
+                        field: 'withdrawalTotalAmount',
+                        title: '提现总金额'
+                    },
+                    {
                         field: 'withdrawalApplyTime',
                         title: '提现申请时间'
                     },
@@ -108,7 +112,7 @@ function load() {
                         align : 'center',
                         formatter : function(value, row, index) {
                             if(row.withdrawalAuditStatus == 1){
-                                var e = '<a class="btn btn-primary btn-sm" href="#" mce_href="#" title="审核成功" onclick="auditSuccess(\''
+                                var e = '<a  class="btn btn-primary btn-sm '+audit_success_b+'" href="#" mce_href="#" title="审核成功" onclick="auditSuccess(\''
                                     + row.orderNo
                                     + '\')"><i class="fa fa-edit"></i></a> ';
                                 return e;
@@ -122,7 +126,7 @@ function load() {
                         align : 'center',
                         formatter : function(value, row, index) {
                             if(row.withdrawalAuditStatus == 1){
-                                var e = '<a class="btn btn-primary btn-sm" href="#" mce_href="#" title="审核失败" onclick="auditFail(\''
+                                var e = '<a class="btn btn-primary btn-sm '+audit_fail_b+'" href="#" mce_href="#" title="审核失败" onclick="auditFail(\''
                                     + row.orderNo
                                     + '\')"><i class="fa fa-edit"></i></a> ';
                                 return e;

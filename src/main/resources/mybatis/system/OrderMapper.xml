@@ -41,6 +41,12 @@
 		  		  <if test="threeAmount != null and threeAmount != ''"> and three_amount = #{threeAmount} </if>
 		  		  <if test="createTime != null"> and create_time >= #{createTime} </if>
 		  		  <if test="updateTime != null "> and update_time = #{updateTime} </if>
+					<if test="userIds != null and userIds.size()>0">
+						and user_id in
+						<foreach collection="userIds" separator="," open="(" close=")" item="uid">
+							#{uid}
+						</foreach>
+					</if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -105,6 +111,12 @@
 		  		  <if test="threeAmount != null and threeAmount != ''"> and three_amount = #{threeAmount} </if>
 		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+				 <if test="userIds != null and userIds.size()>0">
+					 and user_id in
+					 <foreach collection="userIds" separator="," open="(" close=")" item="uid">
+						 #{uid}
+					 </foreach>
+				 </if>
 		  		</where>
 	</select>
 	 
