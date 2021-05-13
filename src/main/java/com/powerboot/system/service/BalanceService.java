@@ -46,6 +46,10 @@ public class BalanceService  {
 		return balanceDao.update(balance);
 	}
 
+	public int updateStatusByOrderNo(String orderNo, Integer status) {
+		return balanceDao.updateStatusByOrderNo(orderNo, status);
+	}
+
 	public int updateSaleIdByUserId(Long saleId,List<Long> userIdList){
 		return balanceDao.updateSaleIdByUserId(saleId, userIdList);
 	}

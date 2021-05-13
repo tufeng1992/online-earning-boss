@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PayServiceImpl implements PayService {
@@ -105,10 +106,10 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean successPay(String orderNo) {
         PayDO payDO = payDao.getByOrderNo(orderNo);
-        if (payDO == null || PayTypeEnum.WITHDRAW.getCode().equals(payDO.getType())
-            || PayEnum.PAID.getCode().equals(payDO.getStatus())) {
+        if (payDO == null || PayEnum.PAID.getCode().equals(payDO.getStatus())) {
             return false;
         }
         PayDO update = new PayDO();
@@ -152,6 +153,10 @@ public class PayServiceImpl implements PayService {
             || PayTypeEnum.PAY_VIP4.getCode().equals(payDO.getType())
             || PayTypeEnum.PAY_VIP5.getCode().equals(payDO.getType())) {
             appUserService.updateUserVIP(payDO.getUserId(), payDO.getType());
+        } else if (PayTypeEnum.WITHDRAW.getCode().equals(payDO.getType())){
+            balanceService.updateStatusByOrderNo(payDO.getOrderNo(), StatusTypeEnum.SUCCESS.getCode());
+            logger.info(
+                    "**** 提现成功通知 ****" + "用户id:" + payDO.getUserId() + "订单号:" + payDO.getOrderNo() + ",支付金额: " + payDO.getAmount());
         } else {
             return false;
         }

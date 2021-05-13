@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,8 +38,8 @@ public class SummaryTableService {
         return summaryTableDao.getById(id);
     }
 
-    public List<DataBossVo> list() {
-        return summaryTableDao.list();
+    public List<DataBossVo> list(Map<String, Object> params) {
+        return summaryTableDao.list(params);
     }
 
     public List<DataBossVo> listAndLimit(Integer limit) {

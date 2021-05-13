@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class AmountConstants {
 
-    public static final BigDecimal RECHARGE_RATE = new BigDecimal("1.6");
+    public static final BigDecimal RECHARGE_RATE = new BigDecimal("0.984");
 
     public static final BigDecimal WITHDRAW_RATE = new BigDecimal("0.01");
 

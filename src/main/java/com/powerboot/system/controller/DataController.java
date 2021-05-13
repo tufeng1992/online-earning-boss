@@ -1,9 +1,12 @@
 package com.powerboot.system.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.powerboot.common.controller.BaseController;
 import com.powerboot.common.utils.JsonUtils;
 import com.powerboot.common.utils.PageUtils;
 import com.powerboot.common.utils.R;
+import com.powerboot.common.utils.ShiroUtils;
 import com.powerboot.system.consts.AmountConstants;
 import com.powerboot.system.consts.SaleDataExcelModel;
 import com.powerboot.system.domain.*;
@@ -68,13 +71,87 @@ public class DataController extends BaseController {
     @GetMapping("/dataBossList")
     @RequiresPermissions("system:data:dataBoss")
     PageUtils dataBossList(@RequestParam Map<String, Object> params) {
-        List<DataBossVo> list = summaryTableService.list();
+        boolean isAdmin = ShiroUtils.getUserId() == 1L;
+        if (!isAdmin) {
+            AppUserDO appUserDO = appUserService.getByMobile(ShiroUtils.getUserId().toString());
+            params.put("saleId", appUserDO.getId());
+        }
+        List<DataBossVo> list = summaryTableService.list(params);
+        List<DataBossVo> res = Lists.newArrayList();
+        Map<String, DataBossVo> adminMergeMap = Maps.newHashMap();
         list.forEach(o -> {
             o.setNetProfit(o.getRechargeAmount().add(o.getVipPayAmount()).subtract(o.getWithdrawAmount()));
             o.setShowRed(o.getNetProfit().compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
+            if (!isAdmin) {
+                res.add(o);
+            } else {
+                String dateStr = DateUtils.format(o.getGeneratedDate(), DateUtils.SIMPLE_DATEFORMAT_YMD);
+                DataBossVo dataBossVo = adminMergeMap.computeIfAbsent(dateStr, k -> new DataBossVo());
+                dataBossVo.setGeneratedDate(o.getGeneratedDate());
+                dataBossVo.setDate(o.getDate());
+                mergeDataBossVo(o, dataBossVo);
+            }
         });
-        PageUtils pageUtils = new PageUtils(list, list.size());
+        if (isAdmin) {
+            adminMergeMap.forEach((k, v) -> {
+                res.add(v);
+            });
+        }
+        PageUtils pageUtils = new PageUtils(res, res.size());
         return pageUtils;
+    }
+
+    /**
+     * dataBossVo数据合并
+     * @param source
+     * @param target
+     */
+    private void mergeDataBossVo(DataBossVo source, DataBossVo target) {
+        target.setVipCount(mergeInteger(target.getVipCount(), source.getVipCount()));
+        target.setVip1Count(mergeInteger(target.getVip1Count(), source.getVip1Count()));
+        target.setVip2Count(mergeInteger(target.getVip2Count(), source.getVip2Count()));
+        target.setVip3Count(mergeInteger(target.getVip3Count(), source.getVip3Count()));
+        target.setVip4Count(mergeInteger(target.getVip4Count(), source.getVip4Count()));
+        target.setVip5Count(mergeInteger(target.getVip5Count(), source.getVip5Count()));
+        target.setVipValidCount(mergeInteger(target.getVipValidCount(), source.getVipValidCount()));
+        target.setRechargeAmount(mergeBigDecimal(target.getRechargeAmount(), source.getRechargeAmount()));
+        target.setVipBalanceCount(mergeBigDecimal(target.getVipBalanceCount(), source.getVipBalanceCount()));
+        target.setCommissionsAmount(mergeBigDecimal(target.getCommissionsAmount(), source.getCommissionsAmount()));
+        target.setFinancialProfitAmount(mergeBigDecimal(target.getFinancialProfitAmount(), source.getFinancialProfitAmount()));
+        target.setLocalUserCount(mergeInteger(target.getLocalUserCount(), source.getLocalUserCount()));
+        target.setRechargeCount(mergeInteger(target.getRechargeCount(), source.getRechargeCount()));
+        target.setWithdrawCount(mergeInteger(target.getWithdrawCount(), source.getWithdrawCount()));
+        target.setWithdrawAmount(mergeBigDecimal(target.getWithdrawAmount(), source.getWithdrawAmount()));
+        target.setVipPayCount(mergeInteger(target.getVipPayCount(), source.getVipPayCount()));
+        target.setVipPayAmount(mergeBigDecimal(target.getVipPayAmount(), source.getVipPayAmount()));
+        target.setFirstRechargeAmount(mergeBigDecimal(target.getFirstRechargeAmount(), source.getFirstRechargeAmount()));
+        target.setFinancialProfitInAmount(mergeBigDecimal(target.getFinancialProfitInAmount(), source.getFinancialProfitInAmount()));
+        target.setFinancialProfitOutAmount(mergeBigDecimal(target.getFinancialProfitOutAmount(), source.getFinancialProfitOutAmount()));
+        target.setFinancialProfitCountAmount(mergeBigDecimal(target.getFinancialProfitCountAmount(), source.getFinancialProfitCountAmount()));
+        target.setNetProfit(mergeBigDecimal(target.getNetProfit(), source.getNetProfit()));
+        target.setShowRed(mergeInteger(target.getShowRed(), source.getShowRed()));
+        target.setUserReferral(mergeInteger(target.getUserReferral(), source.getUserReferral()));
+        target.setSaleReferral(mergeInteger(target.getSaleReferral(), source.getSaleReferral()));
+    }
+
+    private Integer mergeInteger(Integer target, Integer source) {
+        if (source == null) {
+            return target;
+        }
+        if (target == null) {
+            return source;
+        }
+        return target + source;
+    }
+
+    private BigDecimal mergeBigDecimal(BigDecimal target, BigDecimal source) {
+        if (source == null) {
+            return target;
+        }
+        if (target == null) {
+            return source;
+        }
+        return target.add(source);
     }
 
     @GetMapping("/dataEdit/{id}")

@@ -1,11 +1,13 @@
 package com.powerboot.system.domain;
 
 import com.powerboot.utils.DateUtils;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 public class DataBossVo implements Serializable {
 
     private Integer id;
@@ -65,6 +67,8 @@ public class DataBossVo implements Serializable {
     private Integer userReferral;
     //客服推广
     private Integer saleReferral;
+
+    private Long saleId;
 
     public Integer getId() {
         return id;

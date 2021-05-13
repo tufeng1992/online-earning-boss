@@ -143,7 +143,7 @@ public class WithdrawalController extends BaseController {
      */
     private BigDecimal selectUserWithdrawalTotalAmont(Long userId, PayDO o) {
         Map<String, Object> params = Maps.newHashMap();
-        params.put("offset", 1);
+        params.put("offset", 0);
         params.put("limit", 9999999);
         params.put("type", 99);
         params.put("applyStatus", 2);

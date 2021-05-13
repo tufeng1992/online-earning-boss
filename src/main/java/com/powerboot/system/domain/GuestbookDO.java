@@ -32,6 +32,10 @@ public class GuestbookDO implements Serializable {
 	private Date createTime;
 	//更新时间
 	private Date updateTime;
+	/**
+	 * 是否已读
+	 */
+	private Boolean readed;
 
 	/**
 	 * 设置：主键

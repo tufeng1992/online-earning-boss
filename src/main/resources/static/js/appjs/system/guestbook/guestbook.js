@@ -63,6 +63,10 @@ function load() {
                         title: '留言对象id'
                     },
                     {
+                        field: 'readed',
+                        title: '是否已读'
+                    },
+                    {
                         field: 'guestbookTargetMobile',
                         title: '留言对象手机号'
                     },

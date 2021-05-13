@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SummaryTableDao {
@@ -15,7 +16,7 @@ public interface SummaryTableDao {
 
     DataBossVo getById(@Param("id") Integer id);
 
-    public List<DataBossVo> list();
+    public List<DataBossVo> list(Map<String, Object> params);
 
     public List<DataBossVo> listAndLimit(@Param("limit") Integer limit);
 

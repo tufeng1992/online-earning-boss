@@ -31,6 +31,8 @@ public interface BalanceDao {
 	
 	int update(BalanceDO balance);
 
+	int updateStatusByOrderNo(@Param("orderNo") String orderNo,@Param("status") Integer status);
+
 	int updateBatch(List<BalanceDO> balance);
 
 	int updateSaleIdByUserId(@Param("saleId") Long saleId,

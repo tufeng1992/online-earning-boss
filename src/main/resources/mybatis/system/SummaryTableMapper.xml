@@ -28,7 +28,8 @@
 		`financial_profit_out_amount`,
 		`financial_profit_count_amount`,
 		`user_referral`,
-		`sale_referral`
+		`sale_referral`,
+		`sale_id`
 	</sql>
 
     <select id="getById" resultType="com.powerboot.system.domain.DataBossVo">
@@ -37,10 +38,17 @@
         from summary_table where id = #{id}
     </select>
 
-    <select id="list" resultType="com.powerboot.system.domain.DataBossVo">
+    <select id="list" resultType="com.powerboot.system.domain.DataBossVo" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from summary_table order by id desc
+        from summary_table
+        <where>
+            1=1
+            <if test="saleId != null">
+                and sale_id = #{saleId}
+            </if>
+        </where>
+        order by id desc
     </select>
 
     <select id="listAndLimit" resultType="com.powerboot.system.domain.DataBossVo">
