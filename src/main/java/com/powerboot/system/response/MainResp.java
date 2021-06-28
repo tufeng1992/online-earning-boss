@@ -1,8 +1,11 @@
 package com.powerboot.system.response;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Data
 public class MainResp implements Serializable {
     //用户余额
     private PayResp userAmount;
@@ -44,6 +47,11 @@ public class MainResp implements Serializable {
     private TaskResponse userLoginRes;
     //未归属客服
     private TaskResponse noSaleUser;
+
+    /**
+     * 注册奖励信息
+     */
+    private RegisterCountResp registerCountResp;
 
     public TaskResponse getNoSaleUser() {
         return noSaleUser;

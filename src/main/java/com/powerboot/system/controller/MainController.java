@@ -63,6 +63,11 @@ public class MainController extends BaseController {
     public String getMain(Model model) {
         MainResp resp = new MainResp();
         resp.setUserCountResp(appUserService.getUserCount(null));
+        appUserService.getUserActivateCount(resp.getUserCountResp(), null);
+        appUserService.getUserContactCount(resp.getUserCountResp(), null);
+        appUserService.getUserTaskCount(resp.getUserCountResp(), null);
+        appUserService.getUserRechargeCount(resp.getUserCountResp(), null);
+
         resp.setUserReferral(appUserService.getUserReferral(null));
         resp.setSaleReferral(appUserService.getSaleReferral(null));
         resp.setVIPPay(payService.getCountByTypeStatusAndDate(Arrays.asList(2, 3, 4, 5), 2, null));
@@ -73,6 +78,8 @@ public class MainController extends BaseController {
         resp.setFirstRechargeAmount(balanceService.getCountByTypeStatusAndDate(Arrays.asList(3), 2, null));
         resp.setFinOrderResp(financialOrderService.getFinOrderResp(null));
         resp.setSysPayOut(new BigDecimal(dictService.getByKey("SYS_PAY_OUT").getValue()));
+        resp.setRegisterCountResp(balanceService.selectRegisterResp());
+
         PayResp relCharge = resp.getRelCharge();
 
         PayResp relChargeTaxDeduction = new PayResp();

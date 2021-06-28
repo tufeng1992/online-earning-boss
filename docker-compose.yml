@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile
     environment:
       SPRING_PROFILE:
-      TZ: "Africa/Lagos"
+      TZ: "Asia/Bangkok"
     networks:
     - earning
     container_name: online-earning-boss

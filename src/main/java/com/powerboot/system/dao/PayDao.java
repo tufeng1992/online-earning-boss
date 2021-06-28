@@ -19,7 +19,12 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface PayDao {
 
-	Integer getRechangeCount();
+	/**
+	 * 查询充值人数
+	 * @param params
+	 * @return
+	 */
+	Integer getRechangeCount(Map<String, Object> params);
 
 	Integer getAgainRechangeCount();
 
@@ -56,4 +61,11 @@ public interface PayDao {
 									  @Param("createTimeEnd") Date createTimeEnd,@Param("limit") Integer limit);
 
 	PayDO getNewOrderByUserId(@Param("userId")Long userId);
+
+	/**
+	 * 查询当日以充值过的老用户发生再次充值人数
+	 * @param params
+	 * @return
+	 */
+	int getRegularUserCount(Map<String, Object> params);
 }

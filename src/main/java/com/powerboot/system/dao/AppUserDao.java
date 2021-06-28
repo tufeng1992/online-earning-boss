@@ -77,4 +77,11 @@ public interface AppUserDao {
     List<UserDTO> getByIdList(@Param("list") List<Long> idList);
 
     BigDecimal getAllAmount(@Param("saleIdList") List<Long> saleIdList);
+
+    /**
+     * 查询用户数量
+     * @param params
+     * @return
+     */
+    Integer getCount(Map<String, Object> params);
 }

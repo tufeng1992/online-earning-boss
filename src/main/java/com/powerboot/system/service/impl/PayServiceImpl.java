@@ -1,16 +1,15 @@
 package com.powerboot.system.service.impl;
 
+import com.google.common.collect.Maps;
 import com.powerboot.client.AppClient;
 import com.powerboot.client.ApplyRequest;
 import com.powerboot.client.BaseResponse;
-import com.powerboot.system.consts.BalanceTypeEnum;
-import com.powerboot.system.consts.PayEnum;
-import com.powerboot.system.consts.PayTypeEnum;
-import com.powerboot.system.consts.StatusTypeEnum;
+import com.powerboot.system.consts.*;
 import com.powerboot.system.dao.PayDao;
 import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.BalanceDO;
 import com.powerboot.system.domain.PayDO;
+import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.response.PayResp;
 import com.powerboot.system.response.RechangeResponse;
 import com.powerboot.system.service.AppUserService;
@@ -22,6 +21,8 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.powerboot.utils.RedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,17 +136,18 @@ public class PayServiceImpl implements PayService {
             AppUserDO userDO = appUserService.get(payDO.getUserId());
             if (userDO != null && userDO.getFirstRecharge() == 0 && relPayAmount.compareTo(new BigDecimal("300")) >= 0
                 && userDO.getParentId() != null) {
-                BalanceDO parent = new BalanceDO();
-                parent.setAmount(new BigDecimal("50"));
-                parent.setType(BalanceTypeEnum.C.getCode());
-                parent.setUserId(userDO.getParentId());
-                parent.setWithdrawAmount(BigDecimal.ZERO);
-                parent.setServiceFee(BigDecimal.ZERO);
-                parent.setStatus(StatusTypeEnum.SUCCESS.getCode());
-                parent.setCreateTime(new Date());
-                parent.setUpdateTime(new Date());
-                parent.setOrderNo(payDO.getOrderNo());
-                balanceService.addBalanceDetail(parent);
+//                BalanceDO parent = new BalanceDO();
+//                parent.setAmount(new BigDecimal("50"));
+//                parent.setType(BalanceTypeEnum.C.getCode());
+//                parent.setUserId(userDO.getParentId());
+//                parent.setWithdrawAmount(BigDecimal.ZERO);
+//                parent.setServiceFee(BigDecimal.ZERO);
+//                parent.setStatus(StatusTypeEnum.SUCCESS.getCode());
+//                parent.setCreateTime(new Date());
+//                parent.setUpdateTime(new Date());
+//                parent.setOrderNo(payDO.getOrderNo());
+//                balanceService.addBalanceDetail(parent);
+                addParentBalance(1, userDO, new Date(), payDO.getOrderNo());
             }
             appUserService.updateFirstRechargeById(userDO.getId());
         } else if (PayTypeEnum.PAY_VIP2.getCode().equals(payDO.getType())
@@ -163,6 +165,53 @@ public class PayServiceImpl implements PayService {
         return true;
     }
 
+    /**
+     * 添加上级返现
+     * @param parentLevel
+     * @param userDO
+     * @param now
+     * @param orderNo
+     */
+    public void addParentBalance(Integer parentLevel, AppUserDO userDO, Date now, String orderNo) {
+        logger.info("添加上级返现:parentLevel:{}, parentId:{}, orderNo:{}", parentLevel, userDO.getParentId(), orderNo);
+        AppUserDO parentUser = appUserService.get(userDO.getParentId());
+        if (null == parentUser || parentLevel == 4) {
+            return;
+        }
+        BalanceDO parent = new BalanceDO();
+        //获取首冲返现级别金额
+        BigDecimal parentAmount = getParentAmount(parentLevel);
+        parent.setAmount(parentAmount);
+        parent.setType(BalanceTypeEnum.C.getCode());
+        parent.setUserId(parentUser.getId());
+        parent.setWithdrawAmount(BigDecimal.ZERO);
+        parent.setServiceFee(BigDecimal.ZERO);
+        parent.setStatus(StatusTypeEnum.SUCCESS.getCode());
+        parent.setCreateTime(now);
+        parent.setUpdateTime(now);
+        parent.setOrderNo(orderNo);
+        balanceService.addBalanceDetail(parent);
+        parentLevel++;
+        addParentBalance(parentLevel, parentUser, now, orderNo);
+    }
+
+    /**
+     * 获取首冲返现级别金额
+     * @param parentLevel
+     * @return
+     */
+    private BigDecimal getParentAmount(Integer parentLevel) {
+        BigDecimal parentAmount = null;
+        if (1 == parentLevel) {
+            parentAmount = new BigDecimal(RedisUtils.getString(DictConsts.FIRST_RECHARGE_PARENT_AMOUNT));
+        } else if (2 == parentLevel) {
+            parentAmount = new BigDecimal(RedisUtils.getString(DictConsts.FIRST_RECHARGE_PARENT_AMOUNT_LEVEL2));
+        } else if (3 == parentLevel) {
+            parentAmount = new BigDecimal(RedisUtils.getString(DictConsts.FIRST_RECHARGE_PARENT_AMOUNT_LEVEL3));
+        }
+        return parentAmount;
+    }
+
     @Override
     public boolean refreshPay(String orderNo) {
         BaseResponse<com.powerboot.client.PayDO> response = appClient.getPay(orderNo);
@@ -175,7 +224,7 @@ public class PayServiceImpl implements PayService {
     @Override
     public RechangeResponse getRechangeResponse(Integer userCount) {
         RechangeResponse rechangeResponse = new RechangeResponse();
-        Integer rechangCount = payDao.getRechangeCount();
+        Integer rechangCount = payDao.getRechangeCount(Maps.newHashMap());
         Integer againRechangeCount = payDao.getAgainRechangeCount();
         rechangeResponse.setRechangeCount(rechangCount.toString());
         if (userCount != 0) {

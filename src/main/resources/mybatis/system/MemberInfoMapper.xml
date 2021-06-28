@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.MemberInfoDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.MemberInfoDO">
+		select `id`,`limit_amount`,`order_times`,`fee_str`,`withdraw_times`,`amount`,`type`,`vip`,`pic_url`,`vip_desc`,`buy_vip_condition`,`up_limit`,`create_time`,`update_time` from member_info where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.MemberInfoDO">
+		select `id`,`limit_amount`,`order_times`,`fee_str`,`withdraw_times`,`amount`,`type`,`vip`,`pic_url`,`vip_desc`,`buy_vip_condition`,`up_limit`,`create_time`,`update_time` from member_info
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="limitAmount != null and limitAmount != ''"> and limit_amount = #{limitAmount} </if>
+		  		  <if test="orderTimes != null and orderTimes != ''"> and order_times = #{orderTimes} </if>
+		  		  <if test="feeStr != null and feeStr != ''"> and fee_str = #{feeStr} </if>
+		  		  <if test="withdrawTimes != null and withdrawTimes != ''"> and withdraw_times = #{withdrawTimes} </if>
+		  		  <if test="amount != null and amount != ''"> and amount = #{amount} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="vip != null and vip != ''"> and vip = #{vip} </if>
+		  		  <if test="picUrl != null and picUrl != ''"> and pic_url = #{picUrl} </if>
+		  		  <if test="vipDesc != null and vipDesc != ''"> and vip_desc = #{vipDesc} </if>
+		  		  <if test="buyVipCondition != null and buyVipCondition != ''"> and buy_vip_condition = #{buyVipCondition} </if>
+		  		  <if test="upLimit != null and upLimit != ''"> and up_limit = #{upLimit} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from member_info
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="limitAmount != null and limitAmount != ''"> and limit_amount = #{limitAmount} </if>
+		  		  <if test="orderTimes != null and orderTimes != ''"> and order_times = #{orderTimes} </if>
+		  		  <if test="feeStr != null and feeStr != ''"> and fee_str = #{feeStr} </if>
+		  		  <if test="withdrawTimes != null and withdrawTimes != ''"> and withdraw_times = #{withdrawTimes} </if>
+		  		  <if test="amount != null and amount != ''"> and amount = #{amount} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="vip != null and vip != ''"> and vip = #{vip} </if>
+		  		  <if test="picUrl != null and picUrl != ''"> and pic_url = #{picUrl} </if>
+		  		  <if test="vipDesc != null and vipDesc != ''"> and vip_desc = #{vipDesc} </if>
+		  		  <if test="buyVipCondition != null and buyVipCondition != ''"> and buy_vip_condition = #{buyVipCondition} </if>
+		  		  <if test="upLimit != null and upLimit != ''"> and up_limit = #{upLimit} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.powerboot.system.domain.MemberInfoDO" useGeneratedKeys="true" keyProperty="id">
+		insert into member_info
+		(
+			`limit_amount`, 
+			`order_times`, 
+			`fee_str`, 
+			`withdraw_times`, 
+			`amount`, 
+			`type`, 
+			`vip`, 
+			`pic_url`, 
+			`vip_desc`, 
+			`buy_vip_condition`, 
+			`up_limit`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{limitAmount}, 
+			#{orderTimes}, 
+			#{feeStr}, 
+			#{withdrawTimes}, 
+			#{amount}, 
+			#{type}, 
+			#{vip}, 
+			#{picUrl}, 
+			#{vipDesc}, 
+			#{buyVipCondition}, 
+			#{upLimit}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.powerboot.system.domain.MemberInfoDO">
+		update member_info 
+		<set>
+			<if test="limitAmount != null">`limit_amount` = #{limitAmount}, </if>
+			<if test="orderTimes != null">`order_times` = #{orderTimes}, </if>
+			<if test="feeStr != null">`fee_str` = #{feeStr}, </if>
+			<if test="withdrawTimes != null">`withdraw_times` = #{withdrawTimes}, </if>
+			<if test="amount != null">`amount` = #{amount}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="vip != null">`vip` = #{vip}, </if>
+			<if test="picUrl != null">`pic_url` = #{picUrl}, </if>
+			<if test="vipDesc != null">`vip_desc` = #{vipDesc}, </if>
+			<if test="buyVipCondition != null">`buy_vip_condition` = #{buyVipCondition}, </if>
+			<if test="upLimit != null">`up_limit` = #{upLimit}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from member_info where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from member_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

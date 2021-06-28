@@ -10,7 +10,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/online_earning?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://mysql:3306/online_earning?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Bangkok
     username: root
     password: adminvxadmin
     initialSize: 1
@@ -28,7 +28,7 @@ spring:
     filters: stat,wall,slf4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   jackson:
-    time-zone: GMT+3
+    time-zone: GMT+7
   redis:
     host: redis
     port: 6379

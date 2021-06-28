@@ -44,7 +44,9 @@
                `black_flag`,
                `share_flag`,
                `login_flag`,
-               `team_flag`
+               `team_flag`,
+               `first_task`,
+                `sdk_type`
         from user
         where id = #{value}
     </select>
@@ -152,7 +154,9 @@
         `withdraw_check`,
         `sd_switch`,
         `lx_switch`,
-        `team_flag`
+        `team_flag`,
+        `first_task`,
+         `sdk_type`
         from user
         where mobile = #{mobile}
         and role = #{role}
@@ -171,7 +175,8 @@
         `member_level`,`balance`,`parent_id`,`ident_id`,`account_number`,`account_phone`,
         `account_ifsc`,`name`,`bind_status`,`bind_time`,`sale_id`,`referral_code`,`create_time`,
         `update_time`,`version`,`contacts_id`,`fundAccount_id`,`first_recharge`,
-        `withdraw_check`,`sd_switch`,`lx_switch`,`email`,`address`,`black_flag`
+        `withdraw_check`,`sd_switch`,`lx_switch`,`email`,`address`,`black_flag`, `contact_sale_id`,
+        `first_task`, `sdk_type`
         from user
         <where>
             <if test="id != null and id != ''">and id = #{id}</if>
@@ -196,8 +201,8 @@
             <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
             <if test="saleIdList != null and saleIdList.size()>0">
                 and sale_id in
-                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                    #{saleId}
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
                 </foreach>
             </if>
             <if test="ids != null and ids.size()>0">
@@ -214,6 +219,14 @@
             <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
             <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
             <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
+            <if test="contactSaleId != null and contactSaleId != ''">and `contact_sale_id` = #{contactSaleId}</if>
+            <if test="sdkType != null and sdkType != ''">and `sdk_type` = #{sdkType}</if>
+            <if test="startDate != null">
+                and create_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and create_time &lt;= #{endDate}
+            </if>
         </where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -256,8 +269,8 @@
             <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
             <if test="saleIdList != null and saleIdList.size()>0">
                 and sale_id in
-                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                    #{saleId}
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
                 </foreach>
             </if>
             <if test="ids != null and ids.size()>0">
@@ -274,6 +287,14 @@
             <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
             <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
             <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
+            <if test="contactSaleId != null and contactSaleId != ''">and `contact_sale_id` = #{contactSaleId}</if>
+            <if test="sdkType != null and sdkType != ''">and `sdk_type` = #{sdkType}</if>
+            <if test="startDate != null">
+                and create_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and create_time &lt;= #{endDate}
+            </if>
         </where>
     </select>
 
@@ -368,6 +389,9 @@
             <if test="firstRecharge != null">`first_recharge` = #{firstRecharge},</if>
             <if test="lxSwitch != null">`lx_switch` = #{lxSwitch},</if>
             <if test="sdSwitch != null">`sd_switch` = #{sdSwitch}</if>
+            <if test="contactSaleId != null">`contact_sale_id` = #{contactSaleId},</if>
+            <if test="firstTask != null">`first_task` = #{firstTask},</if>
+            <if test="sdkType != null">`sdk_type` = #{sdkType},</if>
         </set>
         where id = #{id}
     </update>
@@ -475,6 +499,44 @@
         </if>
         <if test="saleReferral != null">
             and parent_id is null
+        </if>
+    </select>
+
+
+    <select id="getCount" resultType="java.lang.Integer" parameterType="map">
+        select count(*)
+        from `user`
+        where
+        id > 1
+        <if test="role != null">
+            and role = #{role}
+        </if>
+        <if test="startDate != null">
+            and create_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and create_time &lt;= #{endDate}
+        </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                #{saleId}
+            </foreach>
+        </if>
+        <if test="userReferral != null">
+            and parent_id is not null
+        </if>
+        <if test="saleReferral != null">
+            and parent_id is null
+        </if>
+        <if test="firstRecharge != null">
+            and first_recharge = #{firstRecharge}
+        </if>
+        <if test="firstTask != null">
+            and first_task = #{firstTask}
+        </if>
+        <if test="contactSaleId != null">
+            and contact_sale_id = #{contactSaleId}
         </if>
     </select>
 

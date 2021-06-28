@@ -97,7 +97,8 @@ public class DataController extends BaseController {
                 res.add(v);
             });
         }
-        PageUtils pageUtils = new PageUtils(res, res.size());
+        PageUtils pageUtils = new PageUtils(res.stream().
+                sorted(Comparator.comparing(DataBossVo::getGeneratedDate).reversed()).collect(Collectors.toList()), res.size());
         return pageUtils;
     }
 

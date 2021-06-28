@@ -7,13 +7,13 @@ import com.powerboot.common.controller.BaseController;
 import com.powerboot.common.utils.PageUtils;
 import com.powerboot.common.utils.Query;
 import com.powerboot.common.utils.R;
-import com.powerboot.system.consts.BalanceTypeEnum;
-import com.powerboot.system.consts.DictConsts;
-import com.powerboot.system.consts.StatusTypeEnum;
-import com.powerboot.system.consts.UserRoleEnum;
+import com.powerboot.common.utils.ShiroUtils;
+import com.powerboot.system.consts.*;
 import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.BalanceDO;
+import com.powerboot.system.domain.PayImportDo;
 import com.powerboot.system.domain.UserDO;
+import com.powerboot.system.dto.PayExportDto;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.dto.UserDTO;
 import com.powerboot.system.response.AppUserResponse;
@@ -23,15 +23,17 @@ import com.powerboot.system.service.FinancialOrderService;
 import com.powerboot.system.service.PayService;
 import com.powerboot.system.service.SysUserMappingService;
 import com.powerboot.system.service.UserService;
+import com.powerboot.utils.DateUtils;
+import com.powerboot.utils.ExcelExports;
 import com.powerboot.utils.RedisUtils;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+
+import com.powerboot.utils.poi.ExcelUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -45,6 +47,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户表
@@ -256,5 +260,56 @@ public class UserEditController extends BaseController {
         userService.batchRemove(ids);
         return R.ok();
     }
+
+    /**
+     * 批量修改运营人员所属
+     */
+    @PostMapping("/batchMove")
+    @ResponseBody
+    public R batchMove(@RequestParam("ids[]") Long[] ids, @RequestParam("saleId")Long saleId) {
+        AppUserDO newSaleUser = userService.getByMobileAndRole(saleId.toString(), 1);
+        if (newSaleUser == null) {
+            return R.error(saleId.toString() + "客服不存在，请确认重新提交");
+        }
+        userService.batchMove(ids, newSaleUser.getId());
+        return R.ok();
+    }
+
+    /**
+     * 批量修改联系销售人员id
+     */
+    @PostMapping("/batchContact")
+    @ResponseBody
+    public R batchContact(@RequestParam("ids[]") Long[] ids) {
+        userService.batchContact(ids, ShiroUtils.getUserId());
+        return R.ok();
+    }
+
+    @ResponseBody
+    @GetMapping("/userExport")
+    @RequiresPermissions("system:pay:payExport")
+    public void userExport(@RequestParam(value = "startTime") String startTimeStr,
+                          @RequestParam(value = "endTime") String endTimeStr,
+                          HttpServletResponse resp) {
+        Date startTime = null;
+        if (StringUtils.isNotBlank(startTimeStr)) {
+            startTime = DateUtils.parseDateYMDHMS(startTimeStr);
+        }
+        Date endTime = null;
+        if (StringUtils.isNotBlank(endTimeStr)) {
+            endTime = DateUtils.parseDateYMDHMS(endTimeStr);
+        }
+        Map<String, Object> params = Maps.newHashMap();
+        boolean isAdmin = ShiroUtils.getUserId() == 1L;
+        if (!isAdmin) {
+            params.put("saleId", ShiroUtils.getUserId());
+        }
+        params.put("startDate", startTime);
+        params.put("endDate", endTime);
+        List<AppUserDO> list = userService.list(params);
+        ExcelUtil<AppUserDO> util = new ExcelUtil<>(AppUserDO.class);
+        util.exportExcel(list, "用户信息详情-" + DateUtils.formatDateYMDChinese(new Date()));
+    }
+
 
 }

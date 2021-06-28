@@ -36,6 +36,12 @@
             <if test="status != null and status != ''">and status = #{status}</if>
             <if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
             <if test="updateTime != null and updateTime != ''">and update_time = #{updateTime}</if>
+            <if test="startDate != null">
+                and create_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and create_time &lt;= #{endDate}
+            </if>
             <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
             <if test="saleIdList != null and saleIdList.size()>0">
                 and sale_id in

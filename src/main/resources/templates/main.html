@@ -7,295 +7,416 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
+<style type="text/css">
+    .parent-plan {
+        width: 300px;
+        height: 220px;
+        color: white;
+        margin: 10px;
+        padding: 10px;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .parent-plan-child {
+        width: 300px;
+        height: 70px;
+        padding: 5px;
+    }
+
+    .parent-plan-child2 {
+        width: 300px;
+        height: 40px;
+        padding: 5px;
+    }
+
+    .parent-plan-child-title {
+        width: 300px;
+        height: 30px;
+        padding: 5px;
+        font-size: medium;
+    }
+
+    .parent-plan-child-value {
+        width: 300px;
+        height: 50px;
+        padding: 5px;
+        font-size: xx-large;
+        word-wrap: break-word;
+    }
+</style>
 <body>
 <div class="panel panel-default">
     <div class="panel-heading">数据概览</div>
     <div class="layui-colla-content layui-show">
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, red, coral); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户总量</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="players">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, red, coral);">
+            <div class="parent-plan-child-title">用户总量</div>
+            <div class="parent-plan-child-value" id="players">
                 [[${resp.userCountResp.userCount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增用户</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayPlayers">[[${resp.userCountResp.localCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayPlayers">[[${resp.userCountResp.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增用户</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayPlayers">[[${resp.userCountResp.yesterdayCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayPlayers">[[${resp.userCountResp.yesterdayCount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, pink, grey); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户裂变人数</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="userReferral">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, pink, grey);">
+            <div class="parent-plan-child-title">用户裂变人数</div>
+            <div class="parent-plan-child-value" id="userReferral">
                 [[${resp.userReferral.userCount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日裂变人数</span>&nbsp;&nbsp;
                 <span style="font-size: x-large" id="todayuserReferral">[[${resp.userReferral.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日裂变人数</span>&nbsp;&nbsp;
-                <span style="font-size: medium"
+                <span style="font-size: medium; word-wrap: break-word;"
                       id="yesterdayuserReferral">[[${resp.userReferral.yesterdayCount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkkhaki, #e4b9b9); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">客服推广人数</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="saleReferral">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkkhaki, #e4b9b9);">
+            <div class="parent-plan-child-title">客服推广人数</div>
+            <div class="parent-plan-child-value" id="saleReferral">
                 [[${resp.saleReferral.userCount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日推广人数</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todaysaleReferral">[[${resp.saleReferral.localCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todaysaleReferral">[[${resp.saleReferral.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日推广人数</span>&nbsp;&nbsp;
-                <span style="font-size: medium"
+                <span style="font-size: medium; word-wrap: break-word;"
                       id="yesterdaysaleReferral">[[${resp.saleReferral.yesterdayCount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkorange, lightcoral); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户充值笔数</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="recharges">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkorange, lightcoral);">
+            <div class="parent-plan-child-title">用户充值笔数</div>
+            <div class="parent-plan-child-value" id="recharges">
                 [[${resp.relCharge.count}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增充值笔数</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayRecharges">[[${resp.relCharge.localCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayRecharges">[[${resp.relCharge.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增充值笔数</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayRecharges">[[${resp.relCharge.yesterdayCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayRecharges">[[${resp.relCharge.yesterdayCount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, orange, yellow); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户提现笔数</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="withdraws">
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, orange, yellow);">
+            <div class="parent-plan-child-title">用户提现笔数</div>
+            <div class="parent-plan-child-value" id="withdraws">
                 [[${resp.relWithdraw.count}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增提现笔数</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayWithdraws">[[${resp.relWithdraw.localCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayWithdraws">[[${resp.relWithdraw.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增提现笔数</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayWithdraws">[[${resp.relWithdraw.yesterdayCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayWithdraws">[[${resp.relWithdraw.yesterdayCount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, cyan); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户充值</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualRechargeAmount">
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkcyan, cyan); ">
+            <div class="parent-plan-child-title">用户充值</div>
+            <div class="parent-plan-child-value" id="actualRechargeAmount">
                 [[${resp.relCharge.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日充值</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayActualRechargeAmount">[[${resp.relCharge.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayActualRechargeAmount">[[${resp.relCharge.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日充值</span>&nbsp;&nbsp;
-                <span style="font-size: medium"
+                <span style="font-size: medium; word-wrap: break-word;"
                       id="yesterdayActualRechargeAmount">[[${resp.relCharge.yesterdayAmount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, orangered); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">实际充值</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large"
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkcyan, orangered);">
+            <div class="parent-plan-child-title">实际充值</div>
+            <div class="parent-plan-child-value"
                  id="actualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日充值</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日充值</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayActualRechargeAmountTaxDeduction">[[${resp.relChargeTaxDeduction.yesterdayAmount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, dodgerblue, #00F7DE); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户提现</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="withdrawAmount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, dodgerblue, #00F7DE);">
+            <div class="parent-plan-child-title">用户提现</div>
+            <div class="parent-plan-child-value" id="withdrawAmount">
                 [[${resp.withdraw.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增提现</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayWithdrawAmount">[[${resp.withdraw.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayWithdrawAmount">[[${resp.withdraw.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增提现</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayWithdrawAmount">[[${resp.withdraw.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayWithdrawAmount">[[${resp.withdraw.yesterdayAmount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, orangered); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">实际提现</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualWithdrawAmount">
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, rebeccapurple, orangered);">
+            <div class="parent-plan-child-title">实际提现</div>
+            <div class="parent-plan-child-value" id="actualWithdrawAmount">
                 [[${resp.relWithdraw.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日实际提现</span>&nbsp;&nbsp;
-                <span style="font-size: x-large"
+                <span style="font-size: x-large; word-wrap: break-word;"
                       id="todayActualWithdrawAmount">[[${resp.relWithdraw.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日实际提现</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayActualWithdrawAmount">[[${resp.relWithdraw.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayActualWithdrawAmount">[[${resp.relWithdraw.yesterdayAmount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, hotpink, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">理财转入</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="inCount">
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, hotpink, pink); ">
+            <div class="parent-plan-child-title">理财转入</div>
+            <div class="parent-plan-child-value" id="inCount">
                 [[${resp.finOrderResp.inCount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日理财转入</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayInCount">[[${resp.finOrderResp.todayInCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayInCount">[[${resp.finOrderResp.todayInCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日理财转入</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayInCount">[[${resp.finOrderResp.yesterdayInCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayInCount">[[${resp.finOrderResp.yesterdayInCount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, pink, #d6c0f1); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">理财转出</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="outCount">
+
+        <div class="parent-plan" style=" background-image: linear-gradient(90deg, pink, #d6c0f1); ">
+            <div class="parent-plan-child-title">理财转出</div>
+            <div class="parent-plan-child-value" id="outCount">
                 [[${resp.finOrderResp.outCount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日理财转出</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayOutCount">[[${resp.finOrderResp.todayOutCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayOutCount">[[${resp.finOrderResp.todayOutCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日理财转出</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayOutCount">[[${resp.finOrderResp.yesterdayOutCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayOutCount">[[${resp.finOrderResp.yesterdayOutCount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, red); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户总余额</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="userAmount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkcyan, red);">
+            <div class="parent-plan-child-title">用户总余额</div>
+            <div class="parent-plan-child-value" id="userAmount">
                 [[${resp.userAmount.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayUserAmount">[[${resp.userAmount.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayUserAmount">[[${resp.userAmount.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayUserAmount">[[${resp.userAmount.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayUserAmount">[[${resp.userAmount.yesterdayAmount}]]</span>
             </div>
         </div>
 
-
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, red, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">任务奖励</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="totalFirstRechargeAmount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, red, pink); ">
+            <div class="parent-plan-child-title">任务奖励</div>
+            <div class="parent-plan-child-value" id="totalFirstRechargeAmount">
                 [[${resp.firstRechargeAmount.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日首冲奖励金额</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayFirstRechargeAmount">[[${resp.firstRechargeAmount.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayFirstRechargeAmount">[[${resp.firstRechargeAmount.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日首冲奖励金额</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayFirstRechargeAmount">[[${resp.firstRechargeAmount.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayFirstRechargeAmount">[[${resp.firstRechargeAmount.yesterdayAmount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, indianred); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">购买VIP单数</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualVIPPayCount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkcyan, indianred);">
+            <div class="parent-plan-child-title">购买VIP单数</div>
+            <div class="parent-plan-child-value" id="actualVIPPayCount">
                 [[${resp.VIPPay.count}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayVIPPayCount">[[${resp.VIPPay.localCount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayVIPPayCount">[[${resp.VIPPay.localCount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayVIPPayCount">[[${resp.VIPPay.yesterdayCount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayVIPPayCount">[[${resp.VIPPay.yesterdayCount}]]</span>
             </div>
         </div>
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, darkcyan, mediumvioletred); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">购买VIP金额</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="actualVIPPay">
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, darkcyan, mediumvioletred);">
+            <div class="parent-plan-child-title">购买VIP金额</div>
+            <div class="parent-plan-child-value" id="actualVIPPay">
                 [[${resp.VIPPay.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日新增</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayVIPPay">[[${resp.VIPPay.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayVIPPay">[[${resp.VIPPay.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日新增</span>&nbsp;&nbsp;
-                <span style="font-size: medium" id="yesterdayVIPPay">[[${resp.VIPPay.yesterdayAmount}]]</span>
+                <span style="font-size: medium; word-wrap: break-word;" id="yesterdayVIPPay">[[${resp.VIPPay.yesterdayAmount}]]</span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">用户加钱</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="addAmount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, rebeccapurple, pink); ">
+            <div class="parent-plan-child-title">用户加钱</div>
+            <div class="parent-plan-child-value" id="addAmount">
                 [[${resp.addAmount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium"></span>&nbsp;&nbsp;
                 <span style="font-size: x-large"></span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium"></span>&nbsp;&nbsp;
                 <span style="font-size: medium"></span>
             </div>
         </div>
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, rebeccapurple, pink); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">系统累计提现金额</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="sysPayOut">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, rebeccapurple, pink); ">
+            <div class="parent-plan-child-title">系统累计提现金额</div>
+            <div class="parent-plan-child-value" id="sysPayOut">
                 [[${resp.sysPayOut}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium"></span>&nbsp;&nbsp;
                 <span style="font-size: x-large"></span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium"></span>&nbsp;&nbsp;
                 <span style="font-size: medium"></span>
             </div>
         </div>
 
 
-        <div
-            style="width: 270px; height: 150px; background-image: linear-gradient(90deg, blue, red); color: white; margin: 10px; padding: 10px; display: inline-block; font-weight: bold;">
-            <div style="width: 270px; height: 30px; padding: 5px; font-size: medium">净利</div>
-            <div style="width: 270px; height: 35px; padding: 5px; font-size: xx-large" id="totalNetProfitAmount">
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, blue, red); ">
+            <div class="parent-plan-child-title">净利</div>
+            <div class="parent-plan-child-value" id="totalNetProfitAmount">
                 [[${resp.netProfit.amount}]]
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">今日净利</span>&nbsp;&nbsp;
-                <span style="font-size: x-large" id="todayNetProfitAmount">[[${resp.netProfit.localAmount}]]</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayNetProfitAmount">[[${resp.netProfit.localAmount}]]</span>
             </div>
-            <div style="width: 270px; height: 30px; padding: 5px;">
+            <div class="parent-plan-child">
                 <span style="font-size: medium">昨日净利</span>&nbsp;&nbsp;
-                <span style="font-size: medium"
+                <span style="font-size: medium; word-wrap: break-word;"
                       id="yesterdayNetProfitAmount">[[${resp.netProfit.yesterdayAmount}]]</span>
+            </div>
+        </div>
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, blue, red); ">
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日注册登录奖励</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="todayRegsiterAmount">[[${resp.registerCountResp.todayAmount}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日注册登录奖励</span>
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayRegsiterAmount">[[${resp.registerCountResp.yesterdayAmount}]]</span>
+            </div>
+        </div>
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, #b65bff, red); ">
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日未激活用户数</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="noActivateTotal">[[${resp.userCountResp.noActivateTotal}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日未激活用户比例</span>
+                <span style="font-size: x-large; word-wrap: break-word;" id="activateCountRate">[[${resp.userCountResp.activateCountRate}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日未激活用户数</span>
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayNoActivateTotal">[[${resp.userCountResp.yesterdayNoActivateTotal}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日未激活用户比例</span>
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayActivateCountRate">[[${resp.userCountResp.yesterdayActivateCountRate}]]</span>
+            </div>
+        </div>
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, blue, #ff6eb8); ">
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日无客服归属用户数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="noContactTotal">[[${resp.userCountResp.noContactTotal}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日无客服归属用户比例</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="noContactCountRate">[[${resp.userCountResp.noContactCountRate}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日无客服归属用户数</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayNoContactTotal">[[${resp.userCountResp.yesterdayNoContactTotal}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日无客服归属用户比例</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayNoContactCountRate">[[${resp.userCountResp.yesterdayNoContactCountRate}]]</span>
+            </div>
+        </div>
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, blue, #ffae59); ">
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日刷单用户数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="taskUserCount">[[${resp.userCountResp.taskUserCount}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日刷单用户比例</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="taskUserCountRate">[[${resp.userCountResp.taskUserCountRate}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日刷单用户数</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayTaskUserCount">[[${resp.userCountResp.yesterdayTaskUserCount}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">昨日刷单用户比例</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="yesterdayTaskUserCountRate">[[${resp.userCountResp.yesterdayTaskUserCountRate}]]</span>
+            </div>
+        </div>
+
+        <div class="parent-plan" style="background-image: linear-gradient(90deg, #ffbdc7, red); ">
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日充值人数</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="rechargeCount">[[${resp.userCountResp.rechargeCount}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">今日充值人数比例</span>&nbsp;&nbsp;
+                <span style="font-size: x-large; word-wrap: break-word;" id="rechargeRate">[[${resp.userCountResp.rechargeRate}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">历史充值人数</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="totalRechargeCount">[[${resp.userCountResp.totalRechargeCount}]]</span>
+            </div>
+            <div class="parent-plan-child2">
+                <span style="font-size: medium">历史充值人数比例</span>&nbsp;&nbsp;
+                <span style="font-size: medium; word-wrap: break-word;"
+                      id="totalRechargeRate">[[${resp.userCountResp.totalRechargeRate}]]</span>
             </div>
         </div>
 

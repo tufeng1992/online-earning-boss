@@ -1,5 +1,8 @@
 package com.powerboot.system.domain;
 
+import com.powerboot.common.annotation.Excel;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,51 +11,67 @@ import java.util.Date;
 /**
  * 用户表
  */
+@Data
 public class AppUserDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     //主键id
+    @Excel(name = "用户id")
     private Long id;
     //设备号
+    @Excel(name = "设备号")
     private String deviceNumber;
     //昵称
+    @Excel(name = "昵称")
     private String nikeName;
     //注册渠道: 网页端 或 android端
     private String appId;
     //角色:1-销售,2-普通用户
     private Integer role;
     //手机号
+    @Excel(name = "手机号")
     private String mobile;
     //登陆密码
     private String password;
     //交易密码
     private String fundPassword;
     //会员vip等级 1:lv1、 2:lv2、 3:lv3
+    @Excel(name = "会员vip等级 1:lv1、 2:lv2、 3:lv3")
     private Integer memberLevel;
     //余额
+    @Excel(name = "余额")
     private BigDecimal balance;
     //上级代理人id
+    @Excel(name = "上级代理人id")
     private Long parentId;
     //身份证
     private String identId;
     //银行卡账号
+    @Excel(name = "银行卡账号")
     private String accountNumber;
     //银行卡关联手机
+    @Excel(name = "银行卡关联手机")
     private String accountPhone;
     //银行卡IFSC账号
     private String accountIfsc;
     //银行卡申请人名字
+    @Excel(name = "银行卡申请人名字")
     private String name;
     //绑卡状态：0：未绑定  1：绑定
+    @Excel(name = "绑卡状态：0：未绑定  1：绑定")
     private Integer bindStatus;
     //绑卡时间
+    @Excel(name = "绑卡时间")
     private Date bindTime;
     //销售人员id
+    @Excel(name = "销售人员id")
     private Long saleId;
     //邀请码
+    @Excel(name = "邀请码")
     private String referralCode;
     //创建时间
+    @Excel(name = "创建时间")
     private Date createTime;
     //更新时间
     private Date updateTime;
@@ -63,6 +82,7 @@ public class AppUserDO implements Serializable {
     //razorpay联系人虚拟资金账户id
     private String fundaccountId;
     //是否已完成首冲 0-未完成 1-已完成
+    @Excel(name = "是否已完成首冲 0-未完成 1-已完成")
     private Integer firstRecharge;
     //提现开关0-关 1-开
     private Integer withdrawCheck;
@@ -79,18 +99,37 @@ public class AppUserDO implements Serializable {
     private Integer rechargeCheck;
 
     //是否黑名单 0-否 1-是
+    @Excel(name = "是否黑名单 0-否 1-是")
     private Integer blackFlag;
 
     //分享开关 0-关 1-开
     private Integer shareFlag;
 
     //是否允许登录 0-不允许 1-允许
+    @Excel(name = "是否允许登录 0-不允许 1-允许")
     private Integer loginFlag;
 
     //客服
     private String saleMobile;
 
     private String teamFlag;
+
+    /**
+     * 用户联系销售人员id
+     */
+    @Excel(name = "用户联系销售人员id")
+    private Long contactSaleId;
+
+    /**
+     * 注册sdk类型
+     */
+    @Excel(name = "注册sdk类型")
+    private String sdkType;
+
+    /**
+     * 是否已完成刷单 0-未完成 1-已完成
+     */
+    private Integer firstTask;
 
     public String getTeamFlag() {
         return teamFlag;

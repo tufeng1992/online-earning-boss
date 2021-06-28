@@ -1,6 +1,32 @@
 var prefix = "/system/userEdit"
 $(function () {
     load();
+    $('#startTime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        minView:0,
+        forceParse: 1,
+        showMeridian: 0
+    });
+
+    $('#endTime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        minView:0,
+        forceParse: 1,
+        showMeridian: 0
+    });
+    function getLocalTime(nS) {
+        return new Date((parseInt(nS) + 60 * 60 * 4) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/[\u4e00-\u9fa5]/g, "");
+    };
+    $("#startTime").on("changeDate", function(e) {$('#endTime').datetimepicker('setStartDate', getLocalTime(e.date.valueOf() / 1000));});
+    $("#endTime").on("changeDate", function(e) {$('#startTime').datetimepicker('setEndDate', getLocalTime(e.date.valueOf() / 1000));});
 });
 
 function load() {
@@ -46,11 +72,16 @@ function load() {
                         firstRecharge: $('#firstRecharge').val(),
                         blackFlag:$('#blackFlag').val(),
                         saleId:$('#saleId').val(),
+                        contactSaleId:$('#contactSaleId').val(),
                         email:$('#email').val(),
-                        accountNumber:$('#accountNumber').val()
+                        accountNumber:$('#accountNumber').val(),
+                        sdkType:$('#sdkType').val()
                     };
                 },
                 columns: [
+                    {
+                        checkbox: true
+                    },
                     {
                         field: 'blackFlagStr',
                         title: '是否黑名单'
@@ -66,6 +97,10 @@ function load() {
                     {
                         field : 'saleMobile',
                         title : '运营编号'
+                    },
+                    {
+                        field : 'contactSaleId',
+                        title : '联系销售人员id'
                     },
                     {
                         field: 'mobile',
@@ -111,8 +146,10 @@ function load() {
                         field: 'name',
                         title: '银行卡申请人名字'
                     },
-
-
+                    {
+                        field : 'sdkType',
+                        title : '注册sdk类型'
+                    },
                     {
                         field: 'createTime',
                         title: '创建时间'
@@ -189,6 +226,76 @@ function remove(id) {
 function resetPwd(id) {
 }
 
+function batchMove() {
+    var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+    if (rows.length == 0) {
+        layer.msg("请选择要修改的数据");
+        return;
+    }
+    layer.prompt({
+        title: '请输入运营编号',
+    }, function(value, index, elem){
+
+        var ids = new Array();
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.each(rows, function (i, row) {
+            ids[i] = row['id'];
+        });
+        $.ajax({
+            type: 'POST',
+            data: {
+                "ids": ids,
+                "saleId": value
+            },
+            url: prefix + '/batchMove',
+            success: function (r) {
+                if (r.code == 0) {
+                    layer.msg(r.msg);
+                    reLoad();
+                } else {
+                    layer.msg(r.msg);
+                }
+            }
+        });
+        layer.close(index);
+    });
+}
+
+function batchContact() {
+    var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+    if (rows.length == 0) {
+        layer.msg("请选择要修改的数据");
+        return;
+    }
+    layer.confirm("确认要标记为已联系吗?", {
+        btn: ['确定', '取消']
+        // 按钮
+    }, function () {
+        var ids = new Array();
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.each(rows, function (i, row) {
+            ids[i] = row['id'];
+        });
+        $.ajax({
+            type: 'POST',
+            data: {
+                "ids": ids
+            },
+            url: prefix + '/batchContact',
+            success: function (r) {
+                if (r.code == 0) {
+                    layer.msg(r.msg);
+                    reLoad();
+                } else {
+                    layer.msg(r.msg);
+                }
+            }
+        });
+    }, function () {
+
+    });
+}
+
 function batchRemove() {
     var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
     if (rows.length == 0) {
@@ -222,4 +329,11 @@ function batchRemove() {
     }, function () {
 
     });
+}
+
+function exportExcel() {
+    alert("确认导出当前数据，点击确定后稍等，excel生成需要时间，请不要重复点击");
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
+    location.href = prefix + "/userExport?startTime="+startTime+ "&endTime="+endTime;
 }

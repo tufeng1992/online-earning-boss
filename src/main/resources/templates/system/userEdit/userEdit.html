@@ -16,6 +16,14 @@
 								onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
+							<button type="button" class="btn  btn-primary"
+									onclick="batchMove()">
+								<i class="fa" aria-hidden="true"></i>批量运营修改
+							</button>
+							<button type="button" class="btn  btn-primary"
+									onclick="batchContact()">
+								<i class="fa" aria-hidden="true"></i>批量联系确认
+							</button>
 						</div>
 						<div class="columns pull-right">
 							<button class="btn btn-success" onclick="reLoad()">查询</button>
@@ -44,6 +52,20 @@
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
 							<input id="id" type="text" class="form-control" placeholder="用户id">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="contactSaleId" type="text" class="form-control" placeholder="销售人员id">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="sdkType" type="text" class="form-control" placeholder="注册sdk类型">
+						</div>
+						<div class="columns pull-right col-md-6 nopadding">
+							<input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="导出开始时间" id="startTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+							<span class="columns pull-left col-md-1" style="width: 20px;"> ~ </span>
+							<input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="导出结束时间" id="endTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+							<div class="columns pull-left">
+								<button class="btn btn-primary" shiro:hasPermission="system:pay:payExport" onclick="exportExcel()">导出Excel</button>
+							</div>
 						</div>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">

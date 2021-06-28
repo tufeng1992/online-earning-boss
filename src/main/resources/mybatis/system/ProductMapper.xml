@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.ProductDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.ProductDO">
+		select `id`,`name`,`picture`,`price`,`describtion`,`comment`,`return_price`,`level`,`sort`,`type`,`status`,`introduction`,`desc_amount`,`user_level_limit`,`balance_info`,`price_section`,`user_balance_limit`,`create_time`,`update_time` from product where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.ProductDO">
+		select `id`,`name`,`picture`,`price`,`describtion`,`comment`,`return_price`,`level`,`sort`,`type`,`status`,`introduction`,`desc_amount`,`user_level_limit`,`balance_info`,`price_section`,`user_balance_limit`,`create_time`,`update_time` from product
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picture != null and picture != ''"> and picture = #{picture} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="describtion != null and describtion != ''"> and describtion = #{describtion} </if>
+		  		  <if test="comment != null and comment != ''"> and comment = #{comment} </if>
+		  		  <if test="returnPrice != null and returnPrice != ''"> and return_price = #{returnPrice} </if>
+		  		  <if test="level != null and level != ''"> and level = #{level} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="introduction != null and introduction != ''"> and introduction = #{introduction} </if>
+		  		  <if test="descAmount != null and descAmount != ''"> and desc_amount = #{descAmount} </if>
+		  		  <if test="userLevelLimit != null and userLevelLimit != ''"> and user_level_limit = #{userLevelLimit} </if>
+		  		  <if test="balanceInfo != null and balanceInfo != ''"> and balance_info = #{balanceInfo} </if>
+		  		  <if test="priceSection != null and priceSection != ''"> and price_section = #{priceSection} </if>
+		  		  <if test="userBalanceLimit != null and userBalanceLimit != ''"> and user_balance_limit = #{userBalanceLimit} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picture != null and picture != ''"> and picture = #{picture} </if>
+		  		  <if test="price != null and price != ''"> and price = #{price} </if>
+		  		  <if test="describtion != null and describtion != ''"> and describtion = #{describtion} </if>
+		  		  <if test="comment != null and comment != ''"> and comment = #{comment} </if>
+		  		  <if test="returnPrice != null and returnPrice != ''"> and return_price = #{returnPrice} </if>
+		  		  <if test="level != null and level != ''"> and level = #{level} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="introduction != null and introduction != ''"> and introduction = #{introduction} </if>
+		  		  <if test="descAmount != null and descAmount != ''"> and desc_amount = #{descAmount} </if>
+		  		  <if test="userLevelLimit != null and userLevelLimit != ''"> and user_level_limit = #{userLevelLimit} </if>
+		  		  <if test="balanceInfo != null and balanceInfo != ''"> and balance_info = #{balanceInfo} </if>
+		  		  <if test="priceSection != null and priceSection != ''"> and price_section = #{priceSection} </if>
+		  		  <if test="userBalanceLimit != null and userBalanceLimit != ''"> and user_balance_limit = #{userBalanceLimit} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.powerboot.system.domain.ProductDO" useGeneratedKeys="true" keyProperty="id">
+		insert into product
+		(
+			`name`, 
+			`picture`, 
+			`price`, 
+			`describtion`, 
+			`comment`, 
+			`return_price`, 
+			`level`, 
+			`sort`, 
+			`type`, 
+			`status`, 
+			`introduction`, 
+			`desc_amount`, 
+			`user_level_limit`, 
+			`balance_info`, 
+			`price_section`, 
+			`user_balance_limit`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{name}, 
+			#{picture}, 
+			#{price}, 
+			#{describtion}, 
+			#{comment}, 
+			#{returnPrice}, 
+			#{level}, 
+			#{sort}, 
+			#{type}, 
+			#{status}, 
+			#{introduction}, 
+			#{descAmount}, 
+			#{userLevelLimit}, 
+			#{balanceInfo}, 
+			#{priceSection}, 
+			#{userBalanceLimit}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.powerboot.system.domain.ProductDO">
+		update product 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="picture != null">`picture` = #{picture}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="describtion != null">`describtion` = #{describtion}, </if>
+			<if test="comment != null">`comment` = #{comment}, </if>
+			<if test="returnPrice != null">`return_price` = #{returnPrice}, </if>
+			<if test="level != null">`level` = #{level}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="introduction != null">`introduction` = #{introduction}, </if>
+			<if test="descAmount != null">`desc_amount` = #{descAmount}, </if>
+			<if test="userLevelLimit != null">`user_level_limit` = #{userLevelLimit}, </if>
+			<if test="balanceInfo != null">`balance_info` = #{balanceInfo}, </if>
+			<if test="priceSection != null">`price_section` = #{priceSection}, </if>
+			<if test="userBalanceLimit != null">`user_balance_limit` = #{userBalanceLimit}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from product where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from product where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

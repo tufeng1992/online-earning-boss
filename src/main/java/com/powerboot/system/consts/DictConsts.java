@@ -140,4 +140,16 @@ public class DictConsts {
      */
     public static final String FXKF_ROLE_ID = "FXKF_ROLE_ID";
 
+    /**
+     * 支付配置
+     */
+    //首冲上级返现金额
+    public static final String FIRST_RECHARGE_PARENT_AMOUNT = "FIRST_RECHARGE_PARENT_AMOUNT";
+
+    //首冲上级返现金额
+    public static final String FIRST_RECHARGE_PARENT_AMOUNT_LEVEL2 = "FIRST_RECHARGE_PARENT_AMOUNT_LEVEL2";
+
+    //首冲上级返现金额
+    public static final String FIRST_RECHARGE_PARENT_AMOUNT_LEVEL3 = "FIRST_RECHARGE_PARENT_AMOUNT_LEVEL3";
+
 }

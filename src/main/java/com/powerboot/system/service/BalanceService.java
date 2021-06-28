@@ -1,10 +1,14 @@
 package com.powerboot.system.service;
 
 
+import com.google.common.collect.Maps;
+import com.powerboot.system.consts.BalanceTypeEnum;
+import com.powerboot.system.consts.StatusTypeEnum;
 import com.powerboot.system.dao.AppUserDao;
 import com.powerboot.system.dao.BalanceDao;
 import com.powerboot.system.domain.BalanceDO;
 import com.powerboot.system.response.PayResp;
+import com.powerboot.system.response.RegisterCountResp;
 import com.powerboot.system.vo.PayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,6 +106,36 @@ public class BalanceService  {
 		resp.setYesterdayCount(yesterday.getCount());
 		resp.setYesterdayAmount(yesterday.getAmount() == null ? BigDecimal.ZERO : yesterday.getAmount().abs());
 		return resp;
+	}
+
+	/**
+	 * 查询注册奖励
+	 * @return
+	 */
+	public RegisterCountResp selectRegisterResp() {
+		RegisterCountResp registerCountResp = new RegisterCountResp();
+		LocalDate nowDate = LocalDate.now();
+		LocalDate yesterdayDate = LocalDate.now().plusDays(-1);
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("startDate", yesterdayDate);
+		params.put("endDate", nowDate);
+		params.put("status", StatusTypeEnum.SUCCESS.getCode());
+		params.put("type", BalanceTypeEnum.N.getCode());
+		List<BalanceDO> yesterdayList = balanceDao.list(params);
+		BigDecimal yesterday = BigDecimal.ZERO;
+		for (BalanceDO balanceDO : yesterdayList) {
+			yesterday = yesterday.add(balanceDO.getAmount());
+		}
+		registerCountResp.setYesterdayAmount(yesterday);
+		params.put("startDate", nowDate);
+		params.put("endDate", nowDate.plusDays(1));
+		List<BalanceDO> todayList = balanceDao.list(params);
+		BigDecimal today = BigDecimal.ZERO;
+		for (BalanceDO balanceDO : todayList) {
+			today = today.add(balanceDO.getAmount());
+		}
+		registerCountResp.setTodayAmount(today);
+		return registerCountResp;
 	}
 	
 }

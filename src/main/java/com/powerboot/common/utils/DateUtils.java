@@ -54,6 +54,11 @@ public class DateUtils {
     public static final String SIMPLE_DATEFORMAT_YMD4 = "MM/dd/yyyy";
     public static final String SIMPLE_DATEFORMAT_Y = "yyyy";
 
+    private static String[] parsePatterns = {
+            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
+            "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
+            "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
+
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
     }
@@ -143,6 +148,17 @@ public class DateUtils {
         }
 
         return d;
+    }
+    /**
+     * 日期型字符串转化为日期 格式
+     */
+    public static Date parseDate(Object str)
+    {
+        if (str == null)
+        {
+            return null;
+        }
+        return parseDate(str.toString(), DATE_TIME_PATTERN);
     }
 
     public static Date localDateToUdate(LocalDate currDate) {

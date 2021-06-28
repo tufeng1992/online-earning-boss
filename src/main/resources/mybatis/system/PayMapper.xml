@@ -26,17 +26,24 @@
         ORDER BY p.id asc limit #{limit}
     </select>
 
-    <select id="getRechangeCount" resultType="java.lang.Integer">
+    <select id="getRechangeCount" resultType="java.lang.Integer" parameterType="map">
         select count(1) from
         (SELECT
             user_id,
             count( 1 ) AS cc
         FROM
             pay
-        WHERE
+        <where>
             `status` = 2
             AND type = 1
             AND user_id > 1
+            <if test="startDate != null">
+                and create_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and create_time &lt;= #{endDate}
+            </if>
+        </where>
         GROUP BY
             user_id) t
     </select>
@@ -299,5 +306,29 @@
           and type = 1 and `status` = 2
         order by id desc
             limit 1
+    </select>
+
+    <select id="getRegularUserCount" resultType="java.lang.Integer" parameterType="map">
+        select count(DISTINCT pp.user_id) c from pay pp
+        join (
+        select DISTINCT user_id from pay p
+        <where>
+            p.create_time &lt;= #{endDate}
+        </where>
+        ) p
+        on
+        pp.user_id = p.user_id
+        <where>
+            pp.user_id > 1
+            and pp.type = 1
+            and pp.status = 2
+            and pp.create_time &gt;= #{startDate}
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and pp.sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
+                    #{saleId}
+                </foreach>
+            </if>
+        </where>
     </select>
 </mapper>
