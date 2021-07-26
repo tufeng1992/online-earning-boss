@@ -1,5 +1,7 @@
 package com.powerboot.system.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  * 支付结果
  * 
  */
+@Data
 public class PayDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +34,8 @@ public class PayDO implements Serializable {
 	private String thirdNo;
 	//第三方支付返回状态
 	private String thirdStatus;
+	//第三方支付流水号
+	private String thirdUrl;
 	//三方返回描述
 	private String thirdResponse;
 	//第三方支付回调时间

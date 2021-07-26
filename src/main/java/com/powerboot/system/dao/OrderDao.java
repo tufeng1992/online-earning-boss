@@ -17,6 +17,8 @@ import java.util.Map;
 public interface OrderDao {
 
 	Integer getCountGroupByUser(@Param("createTimeStart") Date createTimeStart,@Param("createTimeEnd") Date createTimeEnd);
+
+	Integer getCountGroupByNewUser(Map<String, Object> params);
 	OrderDO get(Long id);
 	BigDecimal sumAmount();
 

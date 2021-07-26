@@ -126,6 +126,10 @@ function load() {
                         title: '第三方支付回调时间'
                     },
                     {
+                        field: 'thirdUrl',
+                        title: '支付URL'
+                    },
+                    {
                         field: 'orderNo',
                         title: '订单号'
                     },

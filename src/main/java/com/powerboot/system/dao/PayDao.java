@@ -26,7 +26,7 @@ public interface PayDao {
 	 */
 	Integer getRechangeCount(Map<String, Object> params);
 
-	Integer getAgainRechangeCount();
+	Integer getAgainRechangeCount(Map<String, Object> params);
 
 	PayDO get(Long id);
 	

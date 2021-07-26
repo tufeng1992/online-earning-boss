@@ -42,8 +42,8 @@ public class SummaryTableService {
         return summaryTableDao.list(params);
     }
 
-    public List<DataBossVo> listAndLimit(Integer limit) {
-        return summaryTableDao.listAndLimit(limit);
+    public List<DataBossVo> listAndLimit(Integer limit, List<Long> saleIdList) {
+        return summaryTableDao.listAndLimit(limit, saleIdList);
     }
 
     public int listSonCount(DataCountVO param) {

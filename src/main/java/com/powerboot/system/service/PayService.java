@@ -5,6 +5,8 @@ import com.powerboot.system.domain.PayDO;
 import com.powerboot.system.response.PayResp;
 
 import com.powerboot.system.response.RechangeResponse;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,21 @@ public interface PayService {
 	PayDO get(Long id);
 	
 	List<PayDO> list(Map<String, Object> map);
+
+	/**
+	 * 查询用户提现总金额
+	 * @param userId
+	 * @param o
+	 * @return
+	 */
+	BigDecimal selectUserWithdrawalTotalAmont(Long userId, PayDO o);
+
+	/**
+	 * 查询用户充值总金额
+	 * @param userId
+	 * @return
+	 */
+	BigDecimal selectUserRechargeTotal(Long userId);
 	
 	int count(Map<String, Object> map);
 	
@@ -43,7 +60,7 @@ public interface PayService {
 
 	boolean refreshPay(String orderNo);
 
-	RechangeResponse getRechangeResponse(Integer userCount);
+	RechangeResponse getRechangeResponse(Integer userCount, List<Long> saleIdList);
 
 	boolean apply(ApplyRequest applyRequest, Boolean apply);
 

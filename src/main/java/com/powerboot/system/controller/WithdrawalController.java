@@ -103,13 +103,11 @@ public class WithdrawalController extends BaseController {
             }
 
             if (CollectionUtils.isNotEmpty(userDOList)) {
-
-                withdrawalDo.setParentId(userDOList.stream().filter(i -> o.getUserId().equals(i.getId())).findFirst().orElse(new UserDTO())
-                        .getParentId());
-                withdrawalDo.setMobile(userDOList.stream().filter(i -> o.getUserId().equals(i.getId())).findFirst().orElse(new UserDTO())
-                        .getMobile());
-                withdrawalDo.setRegDate(DateUtils.format(userDOList.stream().filter(i -> o.getUserId().equals(i.getId())).findFirst().orElse(new UserDTO())
-                        .getCreateTime(),DateUtils.DATE_TIME_PATTERN));
+                UserDTO userDTO = userDOList.stream().filter(i -> o.getUserId().equals(i.getId())).findFirst().orElse(new UserDTO());
+                withdrawalDo.setParentId(userDTO.getParentId());
+                withdrawalDo.setMobile(userDTO.getMobile());
+                withdrawalDo.setRegDate(DateUtils.format(userDTO.getCreateTime(),DateUtils.DATE_TIME_PATTERN));
+                withdrawalDo.setTopParentId(appUserService.queryTopParentId(userDTO.getId()));
             } else {
                 withdrawalDo.setParentId(null);
                 withdrawalDo.setMobile(null);
@@ -126,41 +124,13 @@ public class WithdrawalController extends BaseController {
             withdrawalDo.setWithdrawalAuditStatusDesc(PayApplyStatusEnum.getDescByCode(o.getApplyStatus()));
             withdrawalDo.setFailReason(o.getRemark());
             withdrawalDo.setWithdrawalAuditTime(DateUtils.format(o.getUpdateTime(),DateUtils.DATE_TIME_PATTERN));
-            withdrawalDo.setWithdrawalTotalAmount(selectUserWithdrawalTotalAmont(o.getUserId(), o));
+            withdrawalDo.setWithdrawalTotalAmount(payService.selectUserWithdrawalTotalAmont(o.getUserId(), o));
             withdrawalList.add(withdrawalDo);
         });
 
         int total = payService.count(query);
         PageUtils pageUtils = new PageUtils(withdrawalList, total);
         return pageUtils;
-    }
-
-    /**
-     * 查询用户提现总金额
-     * @param userId
-     * @param o
-     * @return
-     */
-    private BigDecimal selectUserWithdrawalTotalAmont(Long userId, PayDO o) {
-        Map<String, Object> params = Maps.newHashMap();
-        params.put("offset", 0);
-        params.put("limit", 9999999);
-        params.put("type", 99);
-        params.put("applyStatus", 2);
-        params.put("userId", userId);
-        Query query = new Query(params);
-        List<PayDO> withdrawalTotalList = payService.list(query);
-        BigDecimal total = BigDecimal.ZERO;
-        if (CollectionUtils.isEmpty(withdrawalTotalList)) {
-            return total;
-        }
-        for (PayDO payDO : withdrawalTotalList) {
-            if (o.getId().equals(payDO.getId())) {
-                continue;
-            }
-            total = total.add(payDO.getAmount());
-        }
-        return total;
     }
 
 

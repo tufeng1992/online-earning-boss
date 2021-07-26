@@ -61,10 +61,14 @@ function load(deptId) {
 						field : 'username',
 						title : '用户名'
 					},
-					{
-						field : 'email',
-						title : '邮箱'
-					},
+                    {
+                        field : 'email',
+                        title : '邮箱'
+                    },
+                    {
+                        field : 'whatsapp',
+                        title : 'whatsapp'
+                    },
 					{
 						field : 'status',
 						title : '状态',

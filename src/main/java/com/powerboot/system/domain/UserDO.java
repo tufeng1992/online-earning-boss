@@ -68,6 +68,11 @@ public class UserDO implements Serializable {
 
     private List<Long> userIdList;
 
+    /**
+     * whatsapp通讯code
+     */
+    private String whatsapp;
+
     public List<Long> getUserIdList() {
         return userIdList;
     }

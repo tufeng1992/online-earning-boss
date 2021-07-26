@@ -52,10 +52,44 @@
     </select>
 
     <select id="listAndLimit" resultType="com.powerboot.system.domain.DataBossVo">
-        select
-        <include refid="Base_Column_List"/>
-        from summary_table
-        order by id desc
+        SELECT
+        `generated_date`,
+        sum(`vip_count`) as vip_count,
+        sum(`vip1_count`) as vip1_count,
+        sum(`vip2_count`) as vip2_count,
+        sum(`vip3_count`) as vip3_count,
+        sum(`vip4_count`) as vip4_count,
+        sum(`vip5_count`) as vip5_count,
+        sum(`vip_valid_count`) as vip_valid_count,
+        sum(`recharge_amount`) as recharge_amount,
+        sum(`vip_balance_count`) as vip_balance_count,
+        sum(`commissions_amount`) as commissions_amount,
+        sum(`financial_profit_amount`) as financial_profit_amount,
+        sum(`local_user_count`) as local_user_count,
+        sum(`recharge_count`) as recharge_count,
+        sum(`withdraw_count`) as withdraw_count,
+        sum(`withdraw_amount`) as withdraw_amount,
+        sum(`vip_pay_count`) as vip_pay_count,
+        sum(`vip_pay_amount`) as vip_pay_amount,
+        sum(`first_recharge_amount`) as first_recharge_amount,
+        sum(`financial_profit_in_amount`) as financial_profit_in_amount,
+        sum(`financial_profit_out_amount`) as financial_profit_out_amount,
+        sum(`financial_profit_count_amount`) as financial_profit_count_amount,
+        sum(`user_referral`) as user_referral,
+        sum(`sale_referral`) as sale_referral
+        FROM
+        summary_table
+        <where>
+            <if test="saleIdList != null and saleIdList.size() > 0">
+                and sale_id in
+                <foreach collection="saleIdList" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY
+        generated_date
+        order by generated_date desc
         limit #{limit}
     </select>
 

@@ -65,10 +65,18 @@ public class LogAspect {
         // 请求的参数
         Object[] args = joinPoint.getArgs();
         try {
-            String params = JsonUtils.toJSONString(args[0]).substring(0, 4999);
-            sysLog.setParams(params);
-        } catch (Exception e) {
+            StringBuilder sb = new StringBuilder();
+            for (Object arg : args) {
+                sb.append(JsonUtils.toJSONString(arg) + "|");
+            }
 
+            if (sb.length() > 4999) {
+                sysLog.setParams(sb.toString().substring(0, 4999));
+            } else {
+                sysLog.setParams(sb.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();

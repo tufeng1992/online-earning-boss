@@ -18,6 +18,44 @@
 		GROUP BY user_id)t;
 	</select>
 
+	<select id="getCountGroupByNewUser" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM
+		(
+		SELECT
+		count(1)
+		FROM
+		task_order t
+		INNER JOIN
+		user u
+		ON t.user_id = u.id
+		<where>
+			t.user_id > 1
+			<if test="createTimeStart != null">
+				and t.create_time <![CDATA[ >= ]]> #{createTimeStart}
+				<if test="validUserDate">
+					and u.create_time <![CDATA[ >= ]]> #{createTimeStart}
+				</if>
+			</if>
+			<if test="createTimeEnd != null">
+				and t.create_time <![CDATA[ <= ]]> #{createTimeEnd}
+				<if test="validUserDate">
+					and u.create_time <![CDATA[ <= ]]> #{createTimeEnd}
+				</if>
+			</if>
+			<if test="saleIdList != null and saleIdList.size()>0">
+				and u.sale_id in
+				<foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+					#{sid}
+				</foreach>
+			</if>
+		</where>
+		GROUP BY
+		t.user_id
+		) t
+	</select>
+
 	<select id="sumAmount" resultType="java.math.BigDecimal">
 		select sum(`product_commission`) from task_order where user_id > 1
 	</select>

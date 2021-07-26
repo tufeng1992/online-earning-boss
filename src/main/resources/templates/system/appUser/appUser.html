@@ -58,6 +58,13 @@
 							</select>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
+							<select id="haveDeviceNumber" class="form-control">
+								<option value="">是否有设备号</option>
+								<option value="0">有</option>
+								<option value="1">无</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
 							<select id="saleId" class="form-control">
 								<option value="">运营人员</option>
 								<option th:each="appUser:${appUserDOList}" th:value="${appUser.id}" th:text="${appUser.mobile}"></option>
@@ -76,6 +83,9 @@
 							<input id="name" type="text" class="form-control" placeholder="银行卡申请人名字">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
+							<input id="bankCode" type="text" class="form-control" placeholder="银行代码">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
 							<input id="accountNumber" type="text" class="form-control" placeholder="银行卡号">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
@@ -90,6 +100,9 @@
 						<div class="columns pull-right col-md-2 nopadding">
 							<input id="sdkType" type="text" class="form-control" placeholder="注册sdk类型">
 						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="deviceNumber" type="text" class="form-control" placeholder="设备号">
+						</div>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
 					</table>
@@ -100,7 +113,7 @@
 	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
 		<div>
 			<script type="text/javascript">
-				var s_edit_h = 'show';
+				var s_edit_h = 'hidden';
 				var s_remove_h = 'hidden';
 				var s_resetPwd_h = 'hidden';
                 var guest_book_a = 'hidden';
@@ -108,7 +121,7 @@
 		</div>
 		<div shiro:hasPermission="system:appUser:edit">
 			<script type="text/javascript">
-				s_edit_h = '';
+				s_edit_h = 'show';
 			</script>
 		</div>
 		<div shiro:hasPermission="system:appUser:remove">

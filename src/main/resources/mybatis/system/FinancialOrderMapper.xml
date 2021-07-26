@@ -17,8 +17,8 @@
             <if test="buyDateEnd != null "> and buy_date <![CDATA[ <= ]]> #{buyDateEnd} </if>
             <if test="saleIdList != null and saleIdList.size()>0">
                 and sale_id in
-                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                    #{saleId}
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
                 </foreach>
             </if>
         </where>

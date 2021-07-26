@@ -46,7 +46,10 @@ function load() {
                         referralCode:$('#referralCode').val(),
                         saleId:$('#saleId').val(),
                         email:$('#email').val(),
+                        deviceNumber:$('#deviceNumber').val(),
+                        haveDeviceNumber:$('#haveDeviceNumber').val(),
                         accountNumber:$('#accountNumber').val(),
+                        bankCode:$('#bankCode').val(),
                         sdkType:$('#sdkType').val()
                     };
                 },
@@ -85,6 +88,12 @@ function load() {
                         field : 'balance',
                         title : '余额'
                     },
+                    {    field: 'withdrawalTotalAmount',
+                        title: '提现总金额'
+                    },
+                    {    field: 'rechargeTotalAmount',
+                        title: '充值总金额'
+                    },
                     {
                         field : 'referralCode',
                         title : '邀请码'
@@ -92,6 +101,10 @@ function load() {
                     {
                         field : 'parentId',
                         title : '上级代理人id'
+                    },
+                    {
+                        field: 'topParentId',
+                        title: '源头id'
                     },
                     {
                         field : 'roleName',
@@ -106,10 +119,6 @@ function load() {
                         title : '交易密码'
                     },
                     {
-                        field : 'identId',
-                        title : '身份证'
-                    },
-                    {
                         field : 'accountNumber',
                         title : '银行卡账号'
                     },
@@ -118,8 +127,12 @@ function load() {
                         title : '银行卡关联手机'
                     },
                     {
-                        field : 'accountIfsc',
-                        title : '银行卡IFSC账号'
+                        field : 'bankName',
+                        title : '银行名称'
+                    },
+                    {
+                        field : 'bankCode',
+                        title : '银行代码'
                     },
                     {
                         field : 'name',
@@ -164,14 +177,6 @@ function load() {
                     {
                         field : 'deviceNumber',
                         title : '设备号'
-                    },
-                    {
-                        field : 'contactsId',
-                        title : 'razorpay联系人id'
-                    },
-                    {
-                        field : 'fundaccountId',
-                        title : 'razorpay联系人虚拟资金账户id'
                     },
                     {
                         field : 'firstRechargeStr',

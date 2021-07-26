@@ -25,6 +25,11 @@ public class UserCountResp implements Serializable {
     private String noActivateTotal;
 
     /**
+     * 未激活用户总数
+     */
+    private String allActivateTotal;
+
+    /**
      * 昨日激活用户数比例
      */
     private String yesterdayActivateCountRate;
@@ -45,6 +50,11 @@ public class UserCountResp implements Serializable {
     private String noContactTotal;
 
     /**
+     * 无客服归属总数
+     */
+    private String allNoContactTotal;
+
+    /**
      * 昨日无客服归属用户数比例
      */
     private String yesterdayNoContactCountRate;
@@ -63,6 +73,11 @@ public class UserCountResp implements Serializable {
      * 今日刷单用户数
      */
     private String taskUserCount;
+
+    /**
+     * 总共刷单用户数
+     */
+    private String allTaskTotal;
 
     /**
      * 昨天刷单用户数比例

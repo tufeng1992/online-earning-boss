@@ -12,7 +12,9 @@ import java.util.Map;
 public interface LoginLogService {
 	
 	LoginLogDO get(Long id);
-	
+
+	int countByUserId(Long userId);
+
 	List<LoginLogDO> list(Map<String, Object> map);
 	
 	int count(Map<String, Object> map);

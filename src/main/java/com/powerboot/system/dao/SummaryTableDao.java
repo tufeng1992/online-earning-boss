@@ -18,7 +18,7 @@ public interface SummaryTableDao {
 
     public List<DataBossVo> list(Map<String, Object> params);
 
-    public List<DataBossVo> listAndLimit(@Param("limit") Integer limit);
+    public List<DataBossVo> listAndLimit(@Param("limit") Integer limit, @Param("saleIdList") List<Long> saleIdList);
 
     public int listSonCount(@Param("param") DataCountVO param);
 

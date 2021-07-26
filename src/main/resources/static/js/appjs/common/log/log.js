@@ -38,11 +38,12 @@ function load() {
                     return {
                         limit: params.limit,
                         offset: params.offset,
-                        name: $('#searchName').val(),
+                        // name: $('#searchName').val(),
                         sort: 'gmt_create',
                         order: 'desc',
-                        operation: $("#searchOperation").val(),
-                        username: $("#searchUsername").val()
+                        method: $("#method").val(),
+                        userId: $("#userId").val(),
+                        params: $("#params").val()
                     };
                 },
                 // //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果

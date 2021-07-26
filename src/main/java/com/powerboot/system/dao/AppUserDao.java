@@ -20,7 +20,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AppUserDao {
 
-    Integer selectJustRegNoLoginCount();
+    Integer selectJustRegNoLoginCount(@Param("saleIdList") List<Long> saleIdList);
 
     List<Long> selectIdByMobile(@Param("mobileList") List<String> mobileList);
 
@@ -84,4 +84,11 @@ public interface AppUserDao {
      * @return
      */
     Integer getCount(Map<String, Object> params);
+
+    /**
+     * 查询激活用户数量
+     * @param params
+     * @return
+     */
+    Integer selectActivateCount(Map<String, Object> params);
 }

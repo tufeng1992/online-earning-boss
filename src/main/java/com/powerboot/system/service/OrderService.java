@@ -1,6 +1,7 @@
 package com.powerboot.system.service;
 
 
+import com.google.common.collect.Maps;
 import com.powerboot.common.utils.EhCacheUtil;
 import com.powerboot.system.dao.OrderDao;
 import com.powerboot.system.domain.DataBossVo;
@@ -29,7 +30,7 @@ public class OrderService {
     SummaryTableService summaryTableService;
 
     //获取刷单日活
-    public TaskResponse getTaskResponse(Integer userCount,Integer yesterdayUserCount){
+    public TaskResponse getTaskResponse(Integer userCount, Integer yesterdayUserCount, List<Long> saleIdList){
         TaskResponse taskResponse = new TaskResponse();
         Date now = new Date();
         Date yes = DateUtils.addDays(now,-1);
@@ -37,11 +38,18 @@ public class OrderService {
         Date todayEnd = DateUtils.setDateHMS(now,23,59,59);
         Date yesStart = DateUtils.setDateHMS(yes,0,0,0);
         Date yesEnd = DateUtils.setDateHMS(yes,23,59,59);
-        taskResponse.setCount(orderDao.getCountGroupByUser(null,null));
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("saleIdList", saleIdList);
+        params.put("validUserDate", false);
+        taskResponse.setCount(orderDao.getCountGroupByNewUser(params));
         taskResponse.setCountRate(new BigDecimal(taskResponse.getCount()).divide(new BigDecimal(userCount),2,BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toString());
-        taskResponse.setLocalCount(orderDao.getCountGroupByUser(todayStart,todayEnd));
+        params.put("createTimeStart", todayStart);
+        params.put("createTimeEnd", todayEnd);
+        taskResponse.setLocalCount(orderDao.getCountGroupByNewUser(params));
         taskResponse.setLocalCountRate(new BigDecimal(taskResponse.getLocalCount()).divide(new BigDecimal(userCount),2,BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toString());
-        taskResponse.setYesterdayCount(orderDao.getCountGroupByUser(yesStart,yesEnd));
+        params.put("createTimeStart", yesStart);
+        params.put("createTimeEnd", yesEnd);
+        taskResponse.setYesterdayCount(orderDao.getCountGroupByNewUser(params));
         if (taskResponse.getYesterdayCount() == 0 || yesterdayUserCount == 0) {
             taskResponse.setYesterdayCountRate("0");
         } else {
@@ -51,7 +59,7 @@ public class OrderService {
     }
 
     //获取首页刷单数据
-    public OrderResp getOrderResp() {
+    public OrderResp getOrderResp(List<Long> saleIdList) {
         OrderResp orderResp = new OrderResp();
         BigDecimal amount = Optional.ofNullable(orderDao.sumAmount()).orElse(BigDecimal.ZERO);
         orderResp.setAmount(amount.setScale(2, BigDecimal.ROUND_DOWN));
@@ -64,7 +72,7 @@ public class OrderService {
         } else {
             orderResp.setTodayAmount(todayOrderAmount);
         }
-        List<DataBossVo> dataBossVos = summaryTableService.listAndLimit(2);
+        List<DataBossVo> dataBossVos = summaryTableService.listAndLimit(2, saleIdList);
         orderResp.setYesterdayAmount(BigDecimal.ZERO);
         if (CollectionUtils.isNotEmpty(dataBossVos)){
             if (dataBossVos.size() > 0){

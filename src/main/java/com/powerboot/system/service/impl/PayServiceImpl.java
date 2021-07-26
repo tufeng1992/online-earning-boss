@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.powerboot.client.AppClient;
 import com.powerboot.client.ApplyRequest;
 import com.powerboot.client.BaseResponse;
+import com.powerboot.common.utils.Query;
 import com.powerboot.system.consts.*;
 import com.powerboot.system.dao.PayDao;
 import com.powerboot.system.domain.AppUserDO;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.powerboot.utils.RedisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,58 @@ public class PayServiceImpl implements PayService {
     @Override
     public List<PayDO> list(Map<String, Object> map) {
         return payDao.list(map);
+    }
+
+
+    /**
+     * 查询用户提现总金额
+     * @param userId
+     * @param o
+     * @return
+     */
+    @Override
+    public BigDecimal selectUserWithdrawalTotalAmont(Long userId, PayDO o) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("offset", 0);
+        params.put("limit", 9999999);
+        params.put("type", 99);
+        params.put("status", 2);
+        params.put("applyStatus", 2);
+        params.put("userId", userId);
+        Query query = new Query(params);
+        List<PayDO> withdrawalTotalList = list(query);
+        BigDecimal total = BigDecimal.ZERO;
+        if (CollectionUtils.isEmpty(withdrawalTotalList)) {
+            return total;
+        }
+        for (PayDO payDO : withdrawalTotalList) {
+            if (null != o && o.getId().equals(payDO.getId())) {
+                continue;
+            }
+            total = total.add(payDO.getAmount());
+        }
+        return total;
+    }
+
+    @Override
+    public BigDecimal selectUserRechargeTotal(Long userId) {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("offset", 0);
+        params.put("limit", 9999999);
+        params.put("type", 1);
+        params.put("status", 2);
+        params.put("applyStatus", 2);
+        params.put("userId", userId);
+        Query query = new Query(params);
+        List<PayDO> rechargeTotalList = list(query);
+        BigDecimal total = BigDecimal.ZERO;
+        if (CollectionUtils.isEmpty(rechargeTotalList)) {
+            return total;
+        }
+        for (PayDO payDO : rechargeTotalList) {
+            total = total.add(payDO.getAmount());
+        }
+        return total;
     }
 
     @Override
@@ -222,10 +276,12 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public RechangeResponse getRechangeResponse(Integer userCount) {
+    public RechangeResponse getRechangeResponse(Integer userCount, List<Long> saleIdList) {
         RechangeResponse rechangeResponse = new RechangeResponse();
-        Integer rechangCount = payDao.getRechangeCount(Maps.newHashMap());
-        Integer againRechangeCount = payDao.getAgainRechangeCount();
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("saleIdList", saleIdList);
+        Integer rechangCount = payDao.getRechangeCount(params);
+        Integer againRechangeCount = payDao.getAgainRechangeCount(params);
         rechangeResponse.setRechangeCount(rechangCount.toString());
         if (userCount != 0) {
             rechangeResponse.setRechangeRate(BigDecimal.valueOf(rechangCount).multiply(new BigDecimal("100")).

@@ -1,5 +1,6 @@
 package com.powerboot.system.service.impl;
 
+import com.google.common.collect.Maps;
 import com.powerboot.system.dao.LoginLogDao;
 import com.powerboot.system.domain.LoginLogDO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ public class LoginLogServiceImpl implements LoginLogService {
 	@Override
 	public LoginLogDO get(Long id){
 		return logDao.get(id);
+	}
+
+	@Override
+	public int countByUserId(Long userId) {
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("userId", userId);
+		return logDao.count(params);
 	}
 	
 	@Override

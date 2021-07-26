@@ -45,8 +45,11 @@ public class AppUserService {
     @Autowired
     private PayDao payDao;
 
+    @Autowired
+    private BlackUserLogService blackUserLogService;
+
     public TaskResponse getUserLoginRes(Integer userCount, List<Long> saleIdList) {
-        Integer allNoLogin = userDao.selectJustRegNoLoginCount();
+        Integer allNoLogin = userDao.selectJustRegNoLoginCount(saleIdList);
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setCount(allNoLogin);
         if (userCount == null || userCount == 0) {
@@ -62,7 +65,7 @@ public class AppUserService {
     public TaskResponse getNoSaleUser(Integer userCount, List<Long> saleIdList) {
         Map<String, Object> map = new HashMap<>();
         TaskResponse taskResponse = new TaskResponse();
-        map.put("saleId",1);
+        map.put("saleId", 1);
         Integer noSaleCount = userDao.count(map);
         taskResponse.setCount(noSaleCount);
         if (userCount == null || userCount == 0) {
@@ -94,14 +97,19 @@ public class AppUserService {
         LocalDate nowDate = LocalDate.now();
         LocalDate yesterdayDate = LocalDate.now().plusDays(-1);
         params.put("role", 2);
+        params.put("saleIdList", saleIdList);
+        //总数
+        int allTotal = userDao.getCount(params);
+        int allActivateTotal = userDao.selectActivateCount(params);
+        resp.setAllActivateTotal(allTotal - allActivateTotal + "");
         params.put("startDate", nowDate);
         params.put("endDate", nowDate.plusDays(1));
-        params.put("saleIdList", saleIdList);
         //今日新增用户总数
         int total = userDao.getCount(params);
-        params.put("firstTask", 0);
+        //今日新增激活用户总数
+        int activateTotal = userDao.selectActivateCount(params);
         //今日新增未激活用户总数
-        int noActivateTotal = userDao.getCount(params);
+        int noActivateTotal = total - activateTotal;
         resp.setNoActivateTotal(noActivateTotal + "");
         if (0 == total || 0 == noActivateTotal) {
             resp.setActivateCountRate("0%");
@@ -116,9 +124,10 @@ public class AppUserService {
         params2.put("saleIdList", saleIdList);
         //昨日新增用户总数
         int yesterdayTotal = userDao.getCount(params2);
-        params2.put("firstTask", 0);
+        //昨日新增激活用户数
+        int yesterdayActivateTotal = userDao.selectActivateCount(params2);
         //今日新增未激活用户总数
-        int yesterdayNoActivateTotal = userDao.getCount(params2);
+        int yesterdayNoActivateTotal = yesterdayTotal - yesterdayActivateTotal;
         resp.setYesterdayNoActivateTotal(yesterdayNoActivateTotal + "");
         if (0 == yesterdayNoActivateTotal || 0 == yesterdayTotal) {
             resp.setYesterdayActivateCountRate("0%");
@@ -132,16 +141,30 @@ public class AppUserService {
      * @param resp
      */
     public void getUserContactCount(UserCountResp resp, List<Long> saleIdList) {
+        //客服查询不到这个指标
+        if (CollectionUtils.isNotEmpty(saleIdList)) {
+            resp.setYesterdayNoContactCountRate("0%");
+            resp.setNoContactCountRate("0%");
+            resp.setAllNoContactTotal("0");
+            return;
+        }
+
         Map<String, Object> params = Maps.newHashMap();
         LocalDate nowDate = LocalDate.now();
         LocalDate yesterdayDate = LocalDate.now().plusDays(-1);
         params.put("role", 2);
+        params.put("saleId", 1);
+        //总数
+        int allNoContactTotal = userDao.getCount(params);
+        resp.setAllNoContactTotal(allNoContactTotal + "");
+
+        params.put("saleId", null);
         params.put("startDate", nowDate);
         params.put("endDate", nowDate.plusDays(1));
         params.put("saleIdList", saleIdList);
         //今日新增用户总数
         int total = userDao.getCount(params);
-        params.put("contactSaleId", 1);
+        params.put("saleId", 1);
         //今日新增无归属用户总数
         int noContactTotal = userDao.getCount(params);
         resp.setNoContactTotal(noContactTotal + "");
@@ -158,7 +181,7 @@ public class AppUserService {
         params2.put("saleIdList", saleIdList);
         //昨日新增用户总数
         int yesterdayTotal = userDao.getCount(params2);
-        params2.put("contactSaleId", 1);
+        params2.put("saleId", 1);
         //今日新增无归属用户总数
         int yesterdayNoContactTotal = userDao.getCount(params2);
         resp.setYesterdayNoContactTotal(yesterdayNoContactTotal + "");
@@ -178,17 +201,19 @@ public class AppUserService {
         LocalDate nowDate = LocalDate.now();
         LocalDate yesterdayDate = LocalDate.now().plusDays(-1);
         params.put("role", 2);
+        params.put("saleIdList", saleIdList);
+        params.put("validUserDate", true);
+        //总共刷单用户数
+        int allTaskTotal = orderDao.getCountGroupByNewUser(params);
         params.put("startDate", nowDate);
         params.put("endDate", nowDate.plusDays(1));
-        params.put("saleIdList", saleIdList);
+        params.put("createTimeStart", nowDate);
+        params.put("createTimeEnd", nowDate.plusDays(1));
+        resp.setAllTaskTotal(allTaskTotal + "");
         //今日新增用户总数
         int total = userDao.getCount(params);
-        params.put("contactSaleId", 1);
         //今日新增刷单用户总数
-        Date now = new Date();
-        Date todayStart = DateUtils.setDateHMS(now,0,0,0);
-        Date todayEnd = DateUtils.setDateHMS(now,23,59,59);
-        int taskTotal = orderDao.getCountGroupByUser(todayStart, todayEnd);
+        int taskTotal = orderDao.getCountGroupByNewUser(params);
         resp.setTaskUserCount(taskTotal + "");
         if (0 == total || 0 == taskTotal) {
             resp.setTaskUserCountRate("0%");
@@ -200,15 +225,14 @@ public class AppUserService {
         params2.put("role", 2);
         params2.put("startDate", yesterdayDate);
         params2.put("endDate", nowDate);
+        params2.put("createTimeStart", yesterdayDate);
+        params2.put("createTimeEnd", nowDate);
         params2.put("saleIdList", saleIdList);
+        params2.put("validUserDate", true);
         //昨日新增用户总数
         int yesterdayTotal = userDao.getCount(params2);
-        params2.put("contactSaleId", 1);
         //今日新增刷单用户总数
-        Date yes = DateUtils.addDays(now,-1);
-        Date yesStart = DateUtils.setDateHMS(yes,0,0,0);
-        Date yesEnd = DateUtils.setDateHMS(yes,23,59,59);
-        int yesterdayTaskTotal = orderDao.getCountGroupByUser(yesStart, yesEnd);
+        int yesterdayTaskTotal = orderDao.getCountGroupByNewUser(params2);
         resp.setYesterdayTaskUserCount(yesterdayTaskTotal + "");
         if (0 == yesterdayTaskTotal || 0 == yesterdayTotal) {
             resp.setYesterdayTaskUserCountRate("0%");
@@ -242,6 +266,7 @@ public class AppUserService {
 
         Map<String, Object> params2 = Maps.newHashMap();
 
+        params2.put("saleIdList", saleIdList);
         params2.put("endDate", nowDate);
         //查询当日之前历史用户有过充值行为的人数
         int yesterdayTotal = payDao.getRechangeCount(params2);
@@ -330,8 +355,14 @@ public class AppUserService {
         return userDao.get(id);
     }
 
+
     public int updateSwitch(AppUserDO user) {
-        return userDao.updateWithdrawSwitch(user);
+        int res = userDao.updateWithdrawSwitch(user);
+        if (res > 0) {
+            AppUserDO tempUser = userDao.get(user.getId());
+            blackUserLogService.save(tempUser.getId(), "后台操作", tempUser.getSaleId());
+        }
+        return res;
     }
 
     public List<AppUserDO> list(Map<String, Object> map) {
@@ -425,6 +456,25 @@ public class AppUserService {
         List<Long> ids = Lists.newArrayList();
         doQueryParentId(appUserId, ids);
         return ids;
+    }
+
+    /**
+     * 查询顶级parentId
+     * @param appUserId
+     * @return
+     */
+    public Long queryTopParentId(Long appUserId) {
+        if (null == appUserId) {
+            return appUserId;
+        }
+        AppUserDO appUserDO = userDao.get(appUserId);
+        if (null == appUserDO || null == appUserDO.getParentId()) {
+            return appUserId;
+        }
+        if (appUserId.equals(appUserDO.getParentId())) {
+            return appUserId;
+        }
+        return queryTopParentId(appUserDO.getParentId());
     }
 
     /**

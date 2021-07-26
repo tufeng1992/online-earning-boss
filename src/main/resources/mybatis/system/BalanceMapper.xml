@@ -45,8 +45,8 @@
             <if test="saleId != null and saleId != ''">and sale_id = #{saleId}</if>
             <if test="saleIdList != null and saleIdList.size()>0">
                 and sale_id in
-                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                    #{saleId}
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
                 </foreach>
             </if>
         </where>
@@ -100,8 +100,11 @@
 			`type`, 
 			`withdraw_amount`, 
 			`service_fee`, 
-			`status`, 
-			`create_time`, 
+			`status`,
+            <if test="saleId != null">
+                `sale_id`,
+            </if>
+			`create_time`,
 			`update_time`
 		)
 		values
@@ -112,7 +115,10 @@
 			#{type}, 
 			#{withdrawAmount}, 
 			#{serviceFee}, 
-			#{status}, 
+			#{status},
+            <if test="saleId != null">
+                #{saleId},
+            </if>
 			now(),
 			now()
 		)
@@ -201,8 +207,8 @@
         </if>
         <if test="saleIdList != null and saleIdList.size()>0">
             and sale_id in
-            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                #{saleId}
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
             </foreach>
         </if>
     </select>

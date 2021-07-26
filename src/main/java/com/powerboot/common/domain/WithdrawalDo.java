@@ -55,6 +55,11 @@ public class WithdrawalDo {
      */
     private BigDecimal withdrawalTotalAmount;
 
+    /**
+     * 顶级parentId
+     */
+    private Long topParentId;
+
     public String getOrderNo() {
         return orderNo;
     }

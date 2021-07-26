@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.BlackUserLogDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.BlackUserLogDO">
+		select `id`,`black_user_id`,`black_reason`,`oper_user`,`create_time`,`update_time`, `sale_id` from black_user_log where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.BlackUserLogDO">
+		select `id`,`black_user_id`,`black_reason`,`oper_user`,`create_time`,`update_time`, `sale_id` from black_user_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="blackUserId != null and blackUserId != ''"> and black_user_id = #{blackUserId} </if>
+			<if test="blackReason != null and blackReason != ''"> and black_reason like concat('%', #{blackReason},'%')  </if>
+			<if test="operUser != null and operUser != ''"> and oper_user = #{operUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="saleIdList != null and saleIdList.size()>0">
+				and `sale_id` in
+				<foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+					#{sid}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from black_user_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="blackUserId != null and blackUserId != ''"> and black_user_id = #{blackUserId} </if>
+			<if test="blackReason != null and blackReason != ''"> and black_reason like concat('%', #{blackReason},'%')  </if>
+			<if test="operUser != null and operUser != ''"> and oper_user = #{operUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="saleIdList != null and saleIdList.size()>0">
+				and `sale_id` in
+				<foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+					#{sid}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.powerboot.system.domain.BlackUserLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into black_user_log
+		(
+			`black_user_id`, 
+			`black_reason`, 
+			`oper_user`, 
+			`create_time`, 
+			`update_time`,
+			`sale_id`
+		)
+		values
+		(
+			#{blackUserId}, 
+			#{blackReason}, 
+			#{operUser}, 
+			#{createTime}, 
+			#{updateTime},
+			#{saleId}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.powerboot.system.domain.BlackUserLogDO">
+		update black_user_log
+		<set>
+			<if test="blackUserId != null">`black_user_id` = #{blackUserId}, </if>
+			<if test="blackReason != null">`black_reason` = #{blackReason}, </if>
+			<if test="operUser != null">`oper_user` = #{operUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from black_user_log where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from black_user_log where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -36,6 +36,34 @@
 							</select>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
+							<select id="bindStatus" class="form-control">
+								<option value="">全部绑卡状态</option>
+								<option value="0">未绑定</option>
+								<option value="1">已绑定</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="firstRecharge" class="form-control">
+								<option value="">是否完成首充</option>
+								<option value="0">未完成</option>
+								<option value="1">已完成</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="firstTask" class="form-control">
+								<option value="">是否刷单</option>
+								<option value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="haveDeviceNumber" class="form-control">
+								<option value="">是否有设备号</option>
+								<option value="0">有</option>
+								<option value="1">无</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
 							<input id="nikeName" type="text" class="form-control" placeholder="用户昵称">
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
@@ -77,14 +105,14 @@
 	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
 		<div>
 			<script type="text/javascript">
-				var s_edit_h = 'show';
+				var s_edit_h = 'hidden';
 				var s_remove_h = 'hidden';
 				var s_resetPwd_h = 'hidden';
 			</script>
 		</div>
 		<div shiro:hasPermission="system:userEdit:edit">
 			<script type="text/javascript">
-				s_edit_h = '';
+				s_edit_h = 'show';
 			</script>
 		</div>
 		<div shiro:hasPermission="system:userEdit:remove">

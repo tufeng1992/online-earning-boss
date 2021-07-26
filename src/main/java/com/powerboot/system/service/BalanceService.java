@@ -110,9 +110,10 @@ public class BalanceService  {
 
 	/**
 	 * 查询注册奖励
+	 * @param saleIdList
 	 * @return
 	 */
-	public RegisterCountResp selectRegisterResp() {
+	public RegisterCountResp selectRegisterResp(List<Long> saleIdList) {
 		RegisterCountResp registerCountResp = new RegisterCountResp();
 		LocalDate nowDate = LocalDate.now();
 		LocalDate yesterdayDate = LocalDate.now().plusDays(-1);
@@ -121,6 +122,7 @@ public class BalanceService  {
 		params.put("endDate", nowDate);
 		params.put("status", StatusTypeEnum.SUCCESS.getCode());
 		params.put("type", BalanceTypeEnum.N.getCode());
+		params.put("saleIdList", saleIdList);
 		List<BalanceDO> yesterdayList = balanceDao.list(params);
 		BigDecimal yesterday = BigDecimal.ZERO;
 		for (BalanceDO balanceDO : yesterdayList) {

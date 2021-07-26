@@ -43,12 +43,18 @@
             <if test="endDate != null">
                 and create_time &lt;= #{endDate}
             </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
+                </foreach>
+            </if>
         </where>
         GROUP BY
             user_id) t
     </select>
 
-    <select id="getAgainRechangeCount" resultType="java.lang.Integer">
+    <select id="getAgainRechangeCount" resultType="java.lang.Integer" parameterType="map">
         select count(1) from
         (SELECT
             user_id,
@@ -59,6 +65,12 @@
             `status` = 2
             AND type = 1
             AND user_id > 1
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
+                </foreach>
+            </if>
         GROUP BY
             user_id) t where t.cc > 1
     </select>
@@ -83,7 +95,7 @@
         select
         p.`id`,p.`user_id`,p.`amount`,p.`type`,p.`status`,p.`third_no`,p.`third_status`,
         p.`third_callback_time`,p.`order_no`,p.`create_time`,p.`update_time`,u.sale_id,u.mobile
-        ,p.apply_status,p.remark,p.third_response
+        ,p.apply_status,p.remark,p.third_response, p.third_url
         from pay p
         left join user u on u.id = p.user_id
         <where>
@@ -276,8 +288,8 @@
         </if>
         <if test="saleIdList != null and saleIdList.size()>0">
             and sale_id in
-            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                #{saleId}
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
             </foreach>
         </if>
     </select>
@@ -314,6 +326,9 @@
         select DISTINCT user_id from pay p
         <where>
             p.create_time &lt;= #{endDate}
+            and p.user_id > 1
+            and p.type = 1
+            and p.status = 2
         </where>
         ) p
         on
@@ -325,8 +340,8 @@
             and pp.create_time &gt;= #{startDate}
             <if test="saleIdList != null and saleIdList.size()>0">
                 and pp.sale_id in
-                <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                    #{saleId}
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
                 </foreach>
             </if>
         </where>

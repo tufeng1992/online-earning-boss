@@ -9,45 +9,45 @@
 
 	<select id="list" resultType="com.powerboot.common.domain.LogDO">
 		select `id`,`user_id`,`username`,`operation`,`time`,`method`,`params`,`ip`,`gmt_create` from sys_log
-        <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-		  		  <if test="username != null and username != ''"> and username = #{username} </if>
-		  		  <if test="operation != null and operation != ''"> and operation = #{operation} </if>
-		  		  <if test="time != null and time != ''"> and time = #{time} </if>
-		  		  <if test="method != null and method != ''"> and method = #{method} </if>
-		  		  <if test="params != null and params != ''"> and params = #{params} </if>
-		  		  <if test="ip != null and ip != ''"> and ip = #{ip} </if>
-		  		  <if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-		  		</where>
-        <choose>
-            <when test="sort != null and sort.trim() != ''">
-                order by ${sort} ${order}
-            </when>
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and username = #{username} </if>
+			<if test="operation != null and operation != ''"> and operation = #{operation} </if>
+			<if test="time != null and time != ''"> and time = #{time} </if>
+			<if test="method != null and method != ''"> and method like concat('%', #{method},'%')  </if>
+			<if test="params != null and params != ''"> and params like concat('%', #{params},'%') </if>
+			<if test="ip != null and ip != ''"> and ip = #{ip} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
 			<otherwise>
-                order by id desc
+				order by id desc
 			</otherwise>
-        </choose>
+		</choose>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
- 	<select id="count" resultType="int">
+
+	<select id="count" resultType="int">
 		select count(*) from sys_log
-		 <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-		  		  <if test="username != null and username != ''"> and username = #{username} </if>
-		  		  <if test="operation != null and operation != ''"> and operation = #{operation} </if>
-		  		  <if test="time != null and time != ''"> and time = #{time} </if>
-		  		  <if test="method != null and method != ''"> and method = #{method} </if>
-		  		  <if test="params != null and params != ''"> and params = #{params} </if>
-		  		  <if test="ip != null and ip != ''"> and ip = #{ip} </if>
-		  		  <if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
-		  		</where>
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and username = #{username} </if>
+			<if test="operation != null and operation != ''"> and operation = #{operation} </if>
+			<if test="time != null and time != ''"> and time = #{time} </if>
+			<if test="method != null and method != ''"> and method like concat('%', #{method},'%')  </if>
+			<if test="params != null and params != ''"> and params like concat('%', #{params},'%') </if>
+			<if test="ip != null and ip != ''"> and ip = #{ip} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmt_create = #{gmtCreate} </if>
+		</where>
 	</select>
-	 
+
 	<insert id="save" parameterType="com.powerboot.common.domain.LogDO" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_log
 		(
@@ -72,9 +72,9 @@
 			#{gmtCreate}
 		)
 	</insert>
-	 
+
 	<update id="update" parameterType="com.powerboot.common.domain.LogDO">
-		update sys_log 
+		update sys_log
 		<set>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="username != null">`username` = #{username}, </if>
@@ -87,13 +87,13 @@
 		</set>
 		where id = #{id}
 	</update>
-	
+
 	<delete id="remove">
 		delete from sys_log where id = #{value}
 	</delete>
-	
+
 	<delete id="batchRemove">
-		delete from sys_log where id in 
+		delete from sys_log where id in
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>

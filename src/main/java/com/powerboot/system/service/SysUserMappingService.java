@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserMappingService {
@@ -22,5 +23,16 @@ public class SysUserMappingService {
 
     public int deleteBySysUserId(Long sysUserId){
         return SysUserMappingDao.deleteBySysUserId(sysUserId);
+    }
+
+    /**
+     * 查询用户关联的saleId
+     * @param sysUserId
+     * @return
+     */
+    public List<Long> getUserMappingSaleIds(Long sysUserId) {
+        List<SysUserMappingDTO> userMappingDTOS = getBySysUserId(sysUserId);
+        List<Long> saleIds = userMappingDTOS.stream().map(SysUserMappingDTO::getUserId).collect(Collectors.toList());
+        return saleIds;
     }
 }

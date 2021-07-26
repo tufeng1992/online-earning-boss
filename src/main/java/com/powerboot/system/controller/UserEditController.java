@@ -17,12 +17,7 @@ import com.powerboot.system.dto.PayExportDto;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.dto.UserDTO;
 import com.powerboot.system.response.AppUserResponse;
-import com.powerboot.system.service.AppUserService;
-import com.powerboot.system.service.BalanceService;
-import com.powerboot.system.service.FinancialOrderService;
-import com.powerboot.system.service.PayService;
-import com.powerboot.system.service.SysUserMappingService;
-import com.powerboot.system.service.UserService;
+import com.powerboot.system.service.*;
 import com.powerboot.utils.DateUtils;
 import com.powerboot.utils.ExcelExports;
 import com.powerboot.utils.RedisUtils;
@@ -71,6 +66,10 @@ public class UserEditController extends BaseController {
     @Autowired
     private FinancialOrderService financialOrderService;
 
+
+    @Autowired
+    private LoginLogService loginLogService;
+
     private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     @GetMapping()
@@ -112,6 +111,11 @@ public class UserEditController extends BaseController {
             appUserResponse.setBindStatusStr(appUserResponse.getBindStatus().equals(0) ? "未绑定" : "已绑定");
             appUserResponse.setBlackFlagStr(appUserResponse.getBlackFlag().equals(0) ? "否" : "是");
             appUserResponse.setFirstRechargeStr(appUserResponse.getFirstRecharge().equals(0) ? "未完成" : "已完成");
+            appUserResponse.setFirstTaskStr(null != appUserResponse.getFirstTask() && appUserResponse.getFirstTask().equals(0) ? "未完成" : "已完成");
+            appUserResponse.setLoginStatusStr(loginLogService.countByUserId(user.getId()) > 0 ? "已登录" : "未登录");
+            appUserResponse.setTopParentId(userService.queryTopParentId(user.getParentId()));
+            appUserResponse.setWithdrawalTotalAmount(payService.selectUserWithdrawalTotalAmont(user.getId(), null));
+            appUserResponse.setRechargeTotalAmount(payService.selectUserRechargeTotal(user.getId()));
             AppUserDO appUserDO = userService.getSaleInfo(user.getId());
             if (null != appUserDO) {
                 appUserResponse.setSaleMobile(appUserDO.getMobile());
@@ -134,7 +138,9 @@ public class UserEditController extends BaseController {
         AppUserDO user = userService.get(id);
         model.addAttribute("user", user);
         AppUserDO sale = userService.get(user.getSaleId());
-        model.addAttribute("saleMobile", sale.getMobile());
+        if (null != sale) {
+            model.addAttribute("saleMobile", sale.getMobile());
+        }
         return "system/userEdit/edit";
     }
 
@@ -172,6 +178,7 @@ public class UserEditController extends BaseController {
             balance.setType(BalanceTypeEnum.K.getCode());
             balance.setAmount(user.getBalance().subtract(appUserDO.getBalance()));
         }
+        balance.setSaleId(appUserDO.getSaleId());
         //更新开关
         if (!user.getWithdrawCheck().equals(appUserDO.getWithdrawCheck())
             || !user.getLxSwitch().equals(appUserDO.getLxSwitch())

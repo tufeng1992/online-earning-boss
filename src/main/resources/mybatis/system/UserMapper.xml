@@ -6,14 +6,16 @@
     <select id="get" resultType="com.powerboot.system.domain.UserDO">
 		select `user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,
 		`user_id_create`,`app_user_id`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,`live_address`,
-		`hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`
+		`hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`,
+		`whatsapp`
 		from sys_user where user_id = #{value}
 	</select>
 
     <select id="getByLeader" resultType="com.powerboot.system.domain.UserDO">
         select `user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,
         `user_id_create`,`app_user_id`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,`live_address`,
-        `hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`
+        `hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`,
+		`whatsapp`
         from sys_user where leader_sys_id = #{value}
     </select>
 
@@ -21,7 +23,8 @@
         select
         `user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,
         `user_id_create`,`app_user_id`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,
-        `live_address`,`hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`
+        `live_address`,`hobby`,`province`,`city`,`district`,`team_flag`,`team_leader`,`leader_sys_id`,
+        `whatsapp`
         from sys_user
         <where>
             <if test="teamFlag != null and teamFlag != ''">and team_flag = #{teamFlag}</if>
@@ -112,7 +115,8 @@
 			`hobby`, 
 			`province`, 
 			`city`, 
-			`district`
+			`district`,
+			`whatsapp`
 		)
 		values
 		(
@@ -134,7 +138,8 @@
 			#{hobby}, 
 			#{province}, 
 			#{city}, 
-			#{district}
+			#{district},
+			#{whatsapp}
 		)
 	</insert>
 
@@ -165,7 +170,8 @@
             <if test="province != null">`province` = #{province},</if>
             <if test="city != null">`city` = #{city},</if>
             <if test="district != null">`district` = #{district},</if>
-            <if test="teamLeader != null">`team_leader` = #{teamLeader}</if>
+            <if test="teamLeader != null">`team_leader` = #{teamLeader},</if>
+            <if test="whatsapp != null">`whatsapp` = #{whatsapp}</if>
         </set>
         where user_id = #{userId}
     </update>

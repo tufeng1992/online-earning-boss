@@ -1,10 +1,14 @@
 package com.powerboot.system.response;
 
 import com.powerboot.system.domain.AppUserDO;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * 用户表
  */
+@Data
 public class AppUserResponse extends AppUserDO {
 
     private String roleName;
@@ -14,6 +18,31 @@ public class AppUserResponse extends AppUserDO {
     private String firstRechargeStr;
 
     private String blackFlagStr;
+
+    /**
+     * 是否刷单
+     */
+    private String firstTaskStr;
+
+    /**
+     * 是否登录
+     */
+    private String loginStatusStr;
+
+    /**
+     * 顶级parentId
+     */
+    private Long topParentId;
+
+    /**
+     * 提现总金额
+     */
+    private BigDecimal withdrawalTotalAmount;
+
+    /**
+     * 充值总金额
+     */
+    private BigDecimal rechargeTotalAmount;
 
     public String getBlackFlagStr() {
         return blackFlagStr;

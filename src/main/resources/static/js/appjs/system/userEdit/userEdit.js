@@ -71,7 +71,9 @@ function load() {
                         lxSwitch: $("input[name='lxSwitch']:checked").val(),
                         firstRecharge: $('#firstRecharge').val(),
                         blackFlag:$('#blackFlag').val(),
+                        firstTask:$('#firstTask').val(),
                         saleId:$('#saleId').val(),
+                        haveDeviceNumber:$('#haveDeviceNumber').val(),
                         contactSaleId:$('#contactSaleId').val(),
                         email:$('#email').val(),
                         accountNumber:$('#accountNumber').val(),
@@ -122,13 +124,19 @@ function load() {
                         field: 'balance',
                         title: '余额'
                     },
+                    {    field: 'withdrawalTotalAmount',
+                        title: '提现总金额'
+                    },
+                    {    field: 'rechargeTotalAmount',
+                        title: '充值总金额'
+                    },
                     {
                         field: 'parentId',
                         title: '上级代理人id'
                     },
                     {
-                        field: 'identId',
-                        title: '身份证'
+                        field: 'topParentId',
+                        title: '源头id'
                     },
                     {
                         field: 'accountNumber',
@@ -149,6 +157,22 @@ function load() {
                     {
                         field : 'sdkType',
                         title : '注册sdk类型'
+                    },
+                    {
+                        field : 'firstRechargeStr',
+                        title : '是否首充'
+                    },
+                    {
+                        field : 'bindStatusStr',
+                        title : '是否绑卡'
+                    },
+                    {
+                        field : 'firstTaskStr',
+                        title : '是否刷单'
+                    },
+                    {
+                        field : 'loginStatusStr',
+                        title : '是否登录'
                     },
                     {
                         field: 'createTime',

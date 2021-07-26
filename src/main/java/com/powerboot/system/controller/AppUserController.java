@@ -55,6 +55,9 @@ public class AppUserController extends BaseController {
 	@Autowired
 	private SysUserMappingService sysUserMappingService;
 
+	@Autowired
+	private PayService payService;
+
 	@GetMapping()
 	@RequiresPermissions("system:appUser:appUser")
 	String User(Model model){
@@ -95,6 +98,9 @@ public class AppUserController extends BaseController {
 			appUserResponse.setBindStatusStr(appUserResponse.getBindStatus().equals(0)?"未绑定":"已绑定");
 			appUserResponse.setFirstRechargeStr(appUserResponse.getFirstRecharge().equals(0)?"未完成":"已完成");
 			appUserResponse.setBlackFlagStr(appUserResponse.getBlackFlag().equals(0)?"否":"是");
+			appUserResponse.setTopParentId(userService.queryTopParentId(user.getParentId()));
+			appUserResponse.setWithdrawalTotalAmount(payService.selectUserWithdrawalTotalAmont(user.getId(), null));
+			appUserResponse.setRechargeTotalAmount(payService.selectUserRechargeTotal(user.getId()));
 			AppUserDO appUserDO = userService.getSaleInfo(user.getId());
 			if (null != appUserDO) {
 				appUserResponse.setSaleMobile(appUserDO.getMobile());

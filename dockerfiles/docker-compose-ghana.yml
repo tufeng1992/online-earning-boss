@@ -1,0 +1,27 @@
+version: "3"
+networks:
+  earning:
+    external:
+      name: online-earning_default
+services:
+  app:
+    image: online-earning-boss:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILE:
+      TZ: "Africa/Accra"
+    networks:
+    - earning
+    container_name: online-earning-boss
+    ports:
+      - 8081:8081
+    volumes:
+      - /earning-boss/logs:/earning-boss/logs
+      - /earning-boss/static:/earning-boss/static
+      - /usr/share/zoneinfo:/usr/share/zoneinfo
+      - "/etc/localtime:/etc/localtime:ro"
+    external_links:
+      - db07:mysql
+      - redis:redis

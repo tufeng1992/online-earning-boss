@@ -4,9 +4,25 @@
 <mapper namespace="com.powerboot.system.dao.AppUserDao">
 
     <select id="selectJustRegNoLoginCount" resultType="java.lang.Integer">
-        select count(1) from user u LEFT JOIN
-        (select distinct(user_id) as user_id from login_log) t
-        on u.id = t.user_id where t.user_id is null
+        SELECT
+            count(1)
+        FROM
+            USER u
+        LEFT JOIN (
+            SELECT DISTINCT
+                (user_id) AS user_id
+            FROM
+                login_log
+        ) t ON u.id = t.user_id
+        <where>
+            t.user_id IS NULL
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and u.sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
+                </foreach>
+            </if>
+        </where>
     </select>
 
 
@@ -171,12 +187,7 @@
 
     <select id="list" resultType="com.powerboot.system.domain.AppUserDO">
         select
-        `id`,`device_number`,`nike_name`,`app_id`,`role`,`mobile`,`password`,`fund_password`,
-        `member_level`,`balance`,`parent_id`,`ident_id`,`account_number`,`account_phone`,
-        `account_ifsc`,`name`,`bind_status`,`bind_time`,`sale_id`,`referral_code`,`create_time`,
-        `update_time`,`version`,`contacts_id`,`fundAccount_id`,`first_recharge`,
-        `withdraw_check`,`sd_switch`,`lx_switch`,`email`,`address`,`black_flag`, `contact_sale_id`,
-        `first_task`, `sdk_type`
+        *
         from user
         <where>
             <if test="id != null and id != ''">and id = #{id}</if>
@@ -192,6 +203,7 @@
             <if test="parentId != null and parentId != ''">and parent_id = #{parentId}</if>
             <if test="identId != null and identId != ''">and ident_id = #{identId}</if>
             <if test="accountNumber != null  and accountNumber != ''">and account_number like concat('%', #{accountNumber},'%') </if>
+            <if test="bankCode != null  and bankCode != ''">and bank_code like concat('%', #{bankCode},'%') </if>
             <if test="email != null  and email != ''">and email like concat('%', #{email},'%')</if>
             <if test="accountPhone != null and accountPhone != ''">and account_phone = #{accountPhone}</if>
             <if test="accountIfsc != null and accountIfsc != ''">and account_ifsc = #{accountIfsc}</if>
@@ -218,6 +230,7 @@
             <if test="contactsId != null and contactsId != ''">and contacts_id = #{contactsId}</if>
             <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
             <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
+            <if test="firstTask != null and firstTask != ''">and first_task = #{firstTask}</if>
             <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
             <if test="contactSaleId != null and contactSaleId != ''">and `contact_sale_id` = #{contactSaleId}</if>
             <if test="sdkType != null and sdkType != ''">and `sdk_type` = #{sdkType}</if>
@@ -226,6 +239,16 @@
             </if>
             <if test="endDate != null">
                 and create_time &lt;= #{endDate}
+            </if>
+            <if test="haveDeviceNumber != null and haveDeviceNumber != ''">
+                <choose>
+                    <when test="haveDeviceNumber == 0">
+                        and device_number is not null
+                    </when>
+                    <when test="haveDeviceNumber == 1">
+                        and device_number is null
+                    </when>
+                </choose>
             </if>
         </where>
         <choose>
@@ -295,6 +318,17 @@
             <if test="endDate != null">
                 and create_time &lt;= #{endDate}
             </if>
+            <if test="haveDeviceNumber != null and haveDeviceNumber != ''">
+                <choose>
+                    <when test="haveDeviceNumber == 0">
+                        and device_number is not null
+                    </when>
+                    <when test="haveDeviceNumber == 1">
+                        and device_number is null
+                    </when>
+                </choose>
+            </if>
+            <if test="firstTask != null and firstTask != ''">and first_task = #{firstTask}</if>
         </where>
     </select>
 
@@ -490,8 +524,8 @@
         </if>
         <if test="saleIdList != null and saleIdList.size()>0">
             and sale_id in
-            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                #{saleId}
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
             </foreach>
         </if>
         <if test="userReferral != null">
@@ -519,8 +553,8 @@
         </if>
         <if test="saleIdList != null and saleIdList.size()>0">
             and sale_id in
-            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                #{saleId}
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
             </foreach>
         </if>
         <if test="userReferral != null">
@@ -538,6 +572,44 @@
         <if test="contactSaleId != null">
             and contact_sale_id = #{contactSaleId}
         </if>
+        <if test="saleId != null">
+            and sale_id = #{saleId}
+        </if>
+    </select>
+
+    <select id="selectActivateCount" resultType="java.lang.Integer" parameterType="map">
+       SELECT
+            count(DISTINCT u.id)
+        FROM
+            USER u
+        INNER JOIN login_log ll ON u.id = ll.user_id
+        <where>
+            u.id > 1
+            <if test="role != null">
+                and u.role = #{role}
+            </if>
+            <if test="startDate != null">
+                and u.create_time &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and u.create_time &lt;= #{endDate}
+            </if>
+            <if test="saleIdList != null and saleIdList.size()>0">
+                and u.sale_id in
+                <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                    #{sid}
+                </foreach>
+            </if>
+            <if test="firstRecharge != null">
+                and u.first_recharge = #{firstRecharge}
+            </if>
+            <if test="firstTask != null">
+                and u.first_task = #{firstTask}
+            </if>
+            <if test="contactSaleId != null">
+                and u.contact_sale_id = #{contactSaleId}
+            </if>
+        </where>
     </select>
 
     <select id="getIdByMobile" resultType="java.lang.Long">
@@ -642,8 +714,8 @@
         <if test="saleIdList != null and saleIdList.size()>0">
             and id > 1
             and sale_id in
-            <foreach collection="saleIdList" separator="," open="(" close=")" item="saleId">
-                #{saleId}
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
             </foreach>
         </if>
     </select>
