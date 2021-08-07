@@ -5,6 +5,7 @@ import com.powerboot.system.domain.PayDO;
 import com.powerboot.system.response.PayResp;
 
 import com.powerboot.system.response.RechangeResponse;
+import com.powerboot.system.response.WithdrawAuditResp;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -51,6 +52,14 @@ public interface PayService {
 	 * @return
 	 */
 	PayResp getCountByTypeStatusAndDate(List<Integer> typeList, Integer status,List<Long> saleIdList);
+
+	/**
+	 * 根据类型，状态查询
+	 * @param typeList
+	 * @param saleIdList
+	 * @return
+	 */
+	WithdrawAuditResp getCountByTypeStatusAndAudit(List<Integer> typeList, List<Long> saleIdList);
 
 	List<PayDO> getByUserIdList(List<Long> idList);
 

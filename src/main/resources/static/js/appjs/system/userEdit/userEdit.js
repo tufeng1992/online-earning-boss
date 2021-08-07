@@ -143,12 +143,12 @@ function load() {
                         title: '银行卡账号'
                     },
                     {
-                        field: 'accountPhone',
-                        title: '银行卡关联手机'
+                        field: 'email',
+                        title: '邮箱'
                     },
                     {
-                        field: 'accountIfsc',
-                        title: '银行卡IFSC账号'
+                        field: 'bankName',
+                        title: '银行名称'
                     },
                     {
                         field: 'name',

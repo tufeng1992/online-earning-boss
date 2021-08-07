@@ -13,12 +13,14 @@ import com.powerboot.system.domain.AppUserDO;
 import com.powerboot.system.domain.DictDO;
 import com.powerboot.system.domain.RoleDO;
 import com.powerboot.system.domain.UserDO;
+import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.dto.UserDTO;
 import com.powerboot.system.response.TaskResponse;
 import com.powerboot.system.response.UserCountResp;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.powerboot.utils.DateUtils;
 import com.powerboot.utils.RedisUtils;
@@ -47,6 +49,9 @@ public class AppUserService {
 
     @Autowired
     private BlackUserLogService blackUserLogService;
+
+    @Autowired
+    private SysUserMappingService sysUserMappingService;
 
     public TaskResponse getUserLoginRes(Integer userCount, List<Long> saleIdList) {
         Integer allNoLogin = userDao.selectJustRegNoLoginCount(saleIdList);
@@ -417,6 +422,18 @@ public class AppUserService {
 
     public int updateUserVIP(Long userId, Integer memberLevel) {
         return userDao.updateUserVIP(userId, memberLevel);
+    }
+
+
+    public Set<Long> getBySysUserId(Long sysUserId) {
+        List<SysUserMappingDTO> userMappingDTOS = sysUserMappingService.getBySysUserId(sysUserId);
+        List<Long> userIds = userMappingDTOS.stream().map(SysUserMappingDTO::getUserId).collect(Collectors.toList());
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("saleIdList", userIds);
+        List<AppUserDO> list = userDao.list(params);
+        Set<Long> userIdSets = Sets.newHashSet();
+        list.forEach(appUserDO -> userIdSets.add(appUserDO.getId()));
+        return userIdSets;
     }
 
     /**

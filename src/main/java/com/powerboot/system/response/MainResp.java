@@ -23,6 +23,8 @@ public class MainResp implements Serializable {
     private PayResp withdraw;
     //实际提现(含税)
     private PayResp relWithdraw;
+    //提现审核
+    private WithdrawAuditResp withdrawAudit;
     //实际提现(扣税)
     private PayResp relWithdrawTaxDeduction;
     //净利润

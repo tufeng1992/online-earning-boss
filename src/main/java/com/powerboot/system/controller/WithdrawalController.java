@@ -148,6 +148,22 @@ public class WithdrawalController extends BaseController {
         return R.error();
     }
 
+    @ResponseBody
+    @RequestMapping("/batchAuditSuccess")
+    @RequiresPermissions("system:withdrawal:auditSuccess")
+    @Log
+    public R batchAuditSuccess(@RequestParam("orderNoList[]") List<String> orderNoList) {
+        for (String orderNo : orderNoList) {
+            if (StringUtils.isBlank(orderNo)) {
+                continue;
+            }
+            ApplyRequest request = new ApplyRequest();
+            request.setOrderNo(orderNo);
+            payService.apply(request,true);
+        }
+        return R.ok();
+    }
+
     @GetMapping("/auditFail/{orderNo}")
     @RequiresPermissions("system:withdrawal:auditFail")
     String auditFailPage(@PathVariable("orderNo") String orderNo, Model model) {

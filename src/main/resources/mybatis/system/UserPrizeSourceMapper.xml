@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.UserPrizeSourceDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.UserPrizeSourceDO">
+		select `id`,`user_id`,`prize_source_user_id`,`user_prize_id`,`create_time`,`update_time` from user_prize_source where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.UserPrizeSourceDO">
+		select `id`,`user_id`,`prize_source_user_id`,`user_prize_id`,`create_time`,`update_time` from user_prize_source
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="prizeSourceUserId != null and prizeSourceUserId != ''"> and prize_source_user_id = #{prizeSourceUserId} </if>
+		  		  <if test="userPrizeId != null and userPrizeId != ''"> and user_prize_id = #{userPrizeId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from user_prize_source
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="prizeSourceUserId != null and prizeSourceUserId != ''"> and prize_source_user_id = #{prizeSourceUserId} </if>
+		  		  <if test="userPrizeId != null and userPrizeId != ''"> and user_prize_id = #{userPrizeId} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.powerboot.system.domain.UserPrizeSourceDO" useGeneratedKeys="true" keyProperty="id">
+		insert into user_prize_source
+		(
+			`user_id`, 
+			`prize_source_user_id`, 
+			`user_prize_id`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{userId}, 
+			#{prizeSourceUserId}, 
+			#{userPrizeId}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.powerboot.system.domain.UserPrizeSourceDO">
+		update user_prize_source 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="prizeSourceUserId != null">`prize_source_user_id` = #{prizeSourceUserId}, </if>
+			<if test="userPrizeId != null">`user_prize_id` = #{userPrizeId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from user_prize_source where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from user_prize_source where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

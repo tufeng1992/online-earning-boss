@@ -13,12 +13,14 @@ import com.powerboot.system.domain.PayDO;
 import com.powerboot.system.domain.UserDO;
 import com.powerboot.system.response.PayResp;
 import com.powerboot.system.response.RechangeResponse;
+import com.powerboot.system.response.WithdrawAuditResp;
 import com.powerboot.system.service.AppUserService;
 import com.powerboot.system.service.BalanceService;
 import com.powerboot.system.service.PayService;
 import com.powerboot.system.vo.PayVO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -156,6 +158,19 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    public WithdrawAuditResp getCountByTypeStatusAndAudit(List<Integer> typeList, List<Long> saleIdList) {
+        WithdrawAuditResp resp = new WithdrawAuditResp();
+        LocalDate nowDate = LocalDate.now();
+        PayVO nowPass = payDao.getCountByTypeStatusAndAudit(typeList, null, nowDate, nowDate.plusDays(1), saleIdList, Collections.singletonList(2));
+        resp.setPassCount(nowPass.getCount());
+        resp.setPassAmount(nowPass.getAmount() == null ? BigDecimal.ZERO : nowPass.getAmount());
+        PayVO nowWaitPass = payDao.getCountByTypeStatusAndAudit(typeList, null, nowDate, nowDate.plusDays(1), saleIdList, Collections.singletonList(1));
+        resp.setWaitCount(nowWaitPass.getCount());
+        resp.setWaitAmount(nowWaitPass.getAmount() == null ? BigDecimal.ZERO : nowWaitPass.getAmount());
+        return resp;
+    }
+
+    @Override
     public List<PayDO> getByUserIdList(List<Long> idList) {
         return payDao.getByUserIdList(idList);
     }
@@ -170,6 +185,7 @@ public class PayServiceImpl implements PayService {
         PayDO update = new PayDO();
         update.setId(payDO.getId());
         update.setStatus(PayEnum.PAID.getCode());
+        update.setApplyStatus(2);
         int success = update(update);
         if (success <= 0) {
             return false;
@@ -190,17 +206,6 @@ public class PayServiceImpl implements PayService {
             AppUserDO userDO = appUserService.get(payDO.getUserId());
             if (userDO != null && userDO.getFirstRecharge() == 0 && relPayAmount.compareTo(new BigDecimal("300")) >= 0
                 && userDO.getParentId() != null) {
-//                BalanceDO parent = new BalanceDO();
-//                parent.setAmount(new BigDecimal("50"));
-//                parent.setType(BalanceTypeEnum.C.getCode());
-//                parent.setUserId(userDO.getParentId());
-//                parent.setWithdrawAmount(BigDecimal.ZERO);
-//                parent.setServiceFee(BigDecimal.ZERO);
-//                parent.setStatus(StatusTypeEnum.SUCCESS.getCode());
-//                parent.setCreateTime(new Date());
-//                parent.setUpdateTime(new Date());
-//                parent.setOrderNo(payDO.getOrderNo());
-//                balanceService.addBalanceDetail(parent);
                 addParentBalance(1, userDO, new Date(), payDO.getOrderNo());
             }
             appUserService.updateFirstRechargeById(userDO.getId());

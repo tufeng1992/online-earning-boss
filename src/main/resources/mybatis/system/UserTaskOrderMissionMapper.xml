@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.UserTaskOrderMissionDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.UserTaskOrderMissionDO">
+		select `id`,`user_id`,`task_order_num`,`task_order_amount`,`create_time`,`update_time` from user_task_order_mission where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.UserTaskOrderMissionDO">
+		select `id`,`user_id`,`task_order_num`,`task_order_amount`,`create_time`,`update_time` from user_task_order_mission
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="taskOrderNum != null and taskOrderNum != ''"> and task_order_num = #{taskOrderNum} </if>
+		  		  <if test="taskOrderAmount != null and taskOrderAmount != ''"> and task_order_amount = #{taskOrderAmount} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from user_task_order_mission
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="taskOrderNum != null and taskOrderNum != ''"> and task_order_num = #{taskOrderNum} </if>
+		  		  <if test="taskOrderAmount != null and taskOrderAmount != ''"> and task_order_amount = #{taskOrderAmount} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.powerboot.system.domain.UserTaskOrderMissionDO" useGeneratedKeys="true" keyProperty="id">
+		insert into user_task_order_mission
+		(
+			`user_id`, 
+			`task_order_num`, 
+			`task_order_amount`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{userId}, 
+			#{taskOrderNum}, 
+			#{taskOrderAmount}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.powerboot.system.domain.UserTaskOrderMissionDO">
+		update user_task_order_mission 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="taskOrderNum != null">`task_order_num` = #{taskOrderNum}, </if>
+			<if test="taskOrderAmount != null">`task_order_amount` = #{taskOrderAmount}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from user_task_order_mission where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from user_task_order_mission where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

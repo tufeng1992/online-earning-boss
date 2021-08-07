@@ -231,6 +231,7 @@
             <if test="orderNo != null">`order_no` = #{orderNo},</if>
             <if test="createTime != null">`create_time` = #{createTime},</if>
             <if test="saleId != null">`sale_id` = #{saleId},</if>
+            <if test="applyStatus != null">`apply_status` = #{applyStatus},</if>
             <if test="updateTime != null">`update_time` = #{updateTime}</if>
         </set>
         where id = #{id}
@@ -277,6 +278,38 @@
         <foreach collection="typeList" separator="," open="(" close=")" item="item">
             #{item}
         </foreach>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="startDate != null">
+            and create_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            and create_time &lt;= #{endDate}
+        </if>
+        <if test="saleIdList != null and saleIdList.size()>0">
+            and sale_id in
+            <foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+                #{sid}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getCountByTypeStatusAndAudit" resultType="com.powerboot.system.vo.PayVO">
+        select sum(amount) as amount,count(*) as count
+        from pay
+        where
+        user_id > 1
+        and type in
+        <foreach collection="typeList" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+        <if test="applyStatusList != null and applyStatusList.size()>0">
+            and apply_status in
+            <foreach collection="applyStatusList" separator="," open="(" close=")" item="applyS">
+                #{applyS}
+            </foreach>
+        </if>
         <if test="status != null">
             and status = #{status}
         </if>

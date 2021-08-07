@@ -92,6 +92,7 @@ public class MainController extends BaseController {
         resp.setFinOrderResp(financialOrderService.getFinOrderResp(saleIdList));
         resp.setSysPayOut(new BigDecimal(dictService.getByKey("SYS_PAY_OUT").getValue()));
         resp.setRegisterCountResp(balanceService.selectRegisterResp(saleIdList));
+        resp.setWithdrawAudit(payService.getCountByTypeStatusAndAudit(Arrays.asList(99), saleIdList));
 
         PayResp relCharge = resp.getRelCharge();
 
@@ -138,9 +139,9 @@ public class MainController extends BaseController {
         resp.getVIPPay().setAmount(resp.getVIPPay().getAmount().multiply(AmountConstants.RECHARGE_RATE));
         resp.getVIPPay().setLocalAmount(resp.getVIPPay().getLocalAmount().multiply(AmountConstants.RECHARGE_RATE));
         resp.getVIPPay().setYesterdayAmount(resp.getVIPPay().getYesterdayAmount().multiply(AmountConstants.RECHARGE_RATE));
-        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
+        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().add(new BigDecimal(resp.getRelWithdraw().getCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().add(new BigDecimal(resp.getRelWithdraw().getLocalCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().add(new BigDecimal(resp.getRelWithdraw().getYesterdayCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
 
 
         PayResp netProfit = new PayResp();

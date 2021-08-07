@@ -55,6 +55,10 @@ public interface PayDao {
 		@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,
 		@Param("saleIdList") List<Long> saleIdList);
 
+	PayVO getCountByTypeStatusAndAudit(@Param("typeList") List<Integer> typeList, @Param("status") Integer status,
+									   @Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,
+									   @Param("saleIdList") List<Long> saleIdList, @Param("applyStatusList") List<Integer> applyStatusList);
+
 	List<PayDO> getByUserIdList(@Param("list") List<Long> idList);
 
 	List<PayImportDo> selectImportPay(@Param("payId") Long payId,@Param("createTimeStart") Date createTimeStart,

@@ -110,9 +110,9 @@ public class TeamDataController extends BaseController {
         resp.getVIPPay().setLocalAmount(resp.getVIPPay().getLocalAmount().multiply(AmountConstants.RECHARGE_RATE));
         resp.getVIPPay().setYesterdayAmount(resp.getVIPPay().getYesterdayAmount().multiply(AmountConstants.RECHARGE_RATE));
         //提现金额加上3%手续费
-        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
+        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().add(new BigDecimal(resp.getRelWithdraw().getCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().add(new BigDecimal(resp.getRelWithdraw().getLocalCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().add(new BigDecimal(resp.getRelWithdraw().getYesterdayCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
 
         List<UserDO> userDOList = userService.getByLeader(sysUserId);
         String userList = "";
@@ -176,9 +176,9 @@ public class TeamDataController extends BaseController {
         resp.getVIPPay().setLocalAmount(resp.getVIPPay().getLocalAmount().multiply(AmountConstants.RECHARGE_RATE));
         resp.getVIPPay().setYesterdayAmount(resp.getVIPPay().getYesterdayAmount().multiply(AmountConstants.RECHARGE_RATE));
         //提现金额加上3%手续费
-        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
-        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().multiply(AmountConstants.WITHDRAW_REAL_RATE));
+        resp.getRelWithdraw().setAmount(resp.getRelWithdraw().getAmount().add(new BigDecimal(resp.getRelWithdraw().getCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setLocalAmount(resp.getRelWithdraw().getLocalAmount().add(new BigDecimal(resp.getRelWithdraw().getLocalCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
+        resp.getRelWithdraw().setYesterdayAmount(resp.getRelWithdraw().getYesterdayAmount().add(new BigDecimal(resp.getRelWithdraw().getYesterdayCount()).multiply(AmountConstants.WITHDRAW_REAL_RATE)));
 
         model.addAttribute("resp", resp);
         return "system/team/personMain";

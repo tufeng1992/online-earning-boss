@@ -43,6 +43,7 @@
                `account_phone`,
                `account_ifsc`,
                `name`,
+               `email`,
                `bind_status`,
                `bind_time`,
                `sale_id`,
@@ -283,7 +284,9 @@
             <if test="balance != null and balance != ''">and balance = #{balance}</if>
             <if test="parentId != null and parentId != ''">and parent_id = #{parentId}</if>
             <if test="identId != null and identId != ''">and ident_id = #{identId}</if>
-            <if test="accountNumber != null  and accountNumber != ''">and account_number = #{accountNumber}</if>
+            <if test="accountNumber != null  and accountNumber != ''">and account_number like concat('%', #{accountNumber},'%') </if>
+            <if test="bankCode != null  and bankCode != ''">and bank_code like concat('%', #{bankCode},'%') </if>
+            <if test="email != null  and email != ''">and email like concat('%', #{email},'%')</if>
             <if test="accountPhone != null and accountPhone != ''">and account_phone = #{accountPhone}</if>
             <if test="accountIfsc != null and accountIfsc != ''">and account_ifsc = #{accountIfsc}</if>
             <if test="name != null and name != ''">and name = #{name}</if>
@@ -309,6 +312,7 @@
             <if test="contactsId != null and contactsId != ''">and contacts_id = #{contactsId}</if>
             <if test="fundaccountId != null and fundaccountId != ''">and fundAccount_id = #{fundaccountId}</if>
             <if test="firstRecharge != null and firstRecharge != ''">and first_recharge = #{firstRecharge}</if>
+            <if test="firstTask != null and firstTask != ''">and first_task = #{firstTask}</if>
             <if test="blackFlag != null and blackFlag != ''">and black_flag = #{blackFlag}</if>
             <if test="contactSaleId != null and contactSaleId != ''">and `contact_sale_id` = #{contactSaleId}</if>
             <if test="sdkType != null and sdkType != ''">and `sdk_type` = #{sdkType}</if>
@@ -328,7 +332,6 @@
                     </when>
                 </choose>
             </if>
-            <if test="firstTask != null and firstTask != ''">and first_task = #{firstTask}</if>
         </where>
     </select>
 
@@ -411,6 +414,7 @@
             <if test="accountPhone != null">`account_phone` = #{accountPhone},</if>
             <if test="accountIfsc != null">`account_ifsc` = #{accountIfsc},</if>
             <if test="name != null">`name` = #{name},</if>
+            <if test="email != null">`email` = #{email},</if>
             <if test="bindStatus != null">`bind_status` = #{bindStatus},</if>
             <if test="bindTime != null">`bind_time` = #{bindTime},</if>
             <if test="saleId != null">`sale_id` = #{saleId},</if>

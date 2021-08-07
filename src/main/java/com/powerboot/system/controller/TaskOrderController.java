@@ -47,7 +47,7 @@ public class TaskOrderController {
 		//查询列表数据
         Query query = new Query(params);
 		UserDO userDO = ShiroUtils.getUser();
-		Set<Long> ids = appUserService.getAuthByParentId(userDO);
+		Set<Long> ids = appUserService.getBySysUserId(userDO.getUserId());
 		if (CollectionUtils.isNotEmpty(ids)) {
 			query.put("userIds", ids);
 		}

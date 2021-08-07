@@ -47,6 +47,9 @@ function load() {
                 // 返回false将会终止请求
                 columns: [
                     {
+                        checkbox: true
+                    },
+                    {
                         field: 'id',
                         title: '提现订单id'
                     },
@@ -157,6 +160,48 @@ function auditSuccess(orderNo) {
             }
         });
     })
+}
+
+/**
+ * 批量审批通过
+ */
+function batchAuditSuccess() {
+    var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+    if (rows.length == 0) {
+        layer.msg("请选择要修改的数据");
+        return;
+    }
+    layer.confirm('确定审核通过选中的记录？', {
+        btn : [ '确定', '取消' ]
+    }, function(value, index, elem) {
+        var orderNoList = new Array();
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.each(rows, function (i, row) {
+            if(row['withdrawalAuditStatus'] == 1) {
+                orderNoList[i] = row['orderNo'];
+            }
+        });
+        if (orderNoList.length == 0) {
+            layer.msg("请选择待审核的数据");
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            data: {
+                "orderNoList": orderNoList
+            },
+            url: prefix + '/batchAuditSuccess',
+            success: function (r) {
+                if (r.code == 0) {
+                    layer.msg(r.msg);
+                    reLoad();
+                } else {
+                    layer.msg(r.msg);
+                }
+            }
+        });
+        layer.close(index);
+    });
 }
 
 function reLoad() {
