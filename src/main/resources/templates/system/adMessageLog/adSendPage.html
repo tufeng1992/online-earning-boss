@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="col-sm-12">
+		<div class="ibox">
+			<div class="ibox-body">
+				<form id="sendForm" class="avatar-form" action="/system/adMessageLog/adSendBatch" enctype="multipart/form-data" method="post">
+					<div class="avatar-body">
+						<div class="sendFile">
+							<label for="sendFile">选取号码文件</label>
+							<input class="btn" id="sendFile" name="sendFile" type="file">
+							<label for="msgFile">选取内容文件</label>
+							<input class="btn" id="msgFile" name="msgFile" type="file">
+						</div>
+						<div class="col-md-3">
+							<button class="btn btn-primary btn-block" type="button" onclick="sendBatch()">提交</button>
+						</div>
+					</div>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+	<script type="text/javascript">
+        var s_edit_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var s_resetPwd_h = 'hidden';
+	</script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+</body>
+<script>
+    var uploading = false;
+    function sendBatch() {
+        if(uploading){
+            alert("文件正在上传中，请稍候");
+            return false;
+        }
+        var formdata = new FormData();
+        formdata.append('sendFile', $('#sendFile').prop('files')[0]);
+        formdata.append('msgFile', $('#msgFile').prop('files')[0]);
+        $.ajax({
+            url: "/system/adMessageLog/adSendBatch",
+            type: 'POST',
+            cache: false,
+            data: formdata,
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+                uploading = true;
+            },
+            success : function(r) {
+                layer.msg(r.msg);
+                uploading = false;
+            }
+        });
+	}
+</script>
+</html>

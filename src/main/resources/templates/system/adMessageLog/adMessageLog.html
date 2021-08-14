@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="col-sm-12">
+		<div class="ibox">
+			<div class="ibox-body">
+				<div class="fixed-table-toolbar">
+					<div class="columns pull-left">
+						<button shiro:hasPermission="system:adMessageLog:add" type="button" class="btn  btn-primary" onclick="add()">
+							<i class="fa fa-plus" aria-hidden="true"></i>添加
+						</button>
+						<button shiro:hasPermission="system:adMessageLog:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+							<i class="fa fa-trash" aria-hidden="true"></i>删除
+						</button>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="mobile" type="text" class="form-control" placeholder="发送手机号">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="msg" type="text" class="form-control" placeholder="发送内容">
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<select id="sendStatus" class="form-control">
+								<option value="">发送状态</option>
+								<option value="0">发送成功</option>
+								<option value="2">发送失败</option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-6 nopadding">
+							<input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="开始时间" id="startTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+							<span class="columns pull-left col-md-1" style="width: 20px;"> ~ </span>
+							<input class="input-medium search-query form-control columns pull-left col-md-1" placeholder="结束时间" id="endTime" type="text" style="width:160px"  data-date-format="yyyy-mm-dd hh:ii:ss" readonly/>
+						</div>
+					</div>
+					<div class="columns pull-right">
+						<button class="btn btn-success" onclick="reLoad()">查询</button>
+					</div>
+				</div>
+				<table id="exampleTable" data-mobile-responsive="true">
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+	<script type="text/javascript">
+        var s_edit_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var s_resetPwd_h = 'hidden';
+	</script>
+</div>
+<div shiro:hasPermission="system:adMessageLog:edit">
+	<script type="text/javascript">
+        s_edit_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="system:adMessageLog:remove">
+	<script type="text/javascript">
+        var s_remove_h = '';
+	</script>
+</div>
+<div shiro:hasPermission="system:adMessageLog:resetPwd">
+	<script type="text/javascript">
+        var s_resetPwd_h = '';
+	</script>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/system/adMessageLog/adMessageLog.js"></script>
+</body>
+</html>

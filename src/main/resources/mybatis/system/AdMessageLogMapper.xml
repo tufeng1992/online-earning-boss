@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.AdMessageLogDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.AdMessageLogDO">
+		select `id`,`mobile`,`from`,`send_status`,`msg`,`mvno`,`create_time`,`update_time` from ad_message_log where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.AdMessageLogDO">
+		select `id`,`mobile`,`from`,`send_status`,`msg`,`mvno`,`create_time`,`update_time` from ad_message_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="mobile != null and mobile != ''"> and mobile like concat('%', #{mobile},'%') </if>
+			<if test="from != null and from != ''"> and from = #{from} </if>
+			<if test="sendStatus != null and sendStatus != ''"> and send_status = #{sendStatus} </if>
+			<if test="msg != null and msg != ''"> and msg like concat('%', #{msg},'%')  </if>
+			<if test="mvno != null and mvno != ''"> and mvno = #{mvno} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="startTime != null and startTime != ''">
+				and create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and create_time &lt;= #{endTime}
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from ad_message_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="mobile != null and mobile != ''"> and mobile like concat('%', #{mobile},'%') </if>
+			<if test="from != null and from != ''"> and from = #{from} </if>
+			<if test="sendStatus != null and sendStatus != ''"> and send_status = #{sendStatus} </if>
+			<if test="msg != null and msg != ''"> and msg like concat('%', #{msg},'%')  </if>
+			<if test="mvno != null and mvno != ''"> and mvno = #{mvno} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="startTime != null and startTime != ''">
+				and create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and create_time &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.powerboot.system.domain.AdMessageLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into ad_message_log
+		(
+			`mobile`, 
+			`from`, 
+			`send_status`, 
+			`msg`, 
+			`mvno`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{mobile}, 
+			#{from}, 
+			#{sendStatus}, 
+			#{msg}, 
+			#{mvno}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.powerboot.system.domain.AdMessageLogDO">
+		update ad_message_log
+		<set>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="from != null">`from` = #{from}, </if>
+			<if test="sendStatus != null">`send_status` = #{sendStatus}, </if>
+			<if test="msg != null">`msg` = #{msg}, </if>
+			<if test="mvno != null">`mvno` = #{mvno}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from ad_message_log where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from ad_message_log where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

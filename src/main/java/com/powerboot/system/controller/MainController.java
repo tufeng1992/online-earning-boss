@@ -106,8 +106,8 @@ public class MainController extends BaseController {
 
         PayResp userAmount = new PayResp();
         BigDecimal userAllAmount = appUserService.getAllAmount(saleIdList);
-        BigDecimal finAmount = financialOrderService.getAmountByStatus(1, saleIdList);
-        userAmount.setAmount(userAllAmount.add(finAmount));
+//        BigDecimal finAmount = financialOrderService.getAmountByStatus(1, saleIdList);
+        userAmount.setAmount(userAllAmount);
         userAmount.setLocalAmount(BigDecimal.ZERO);
         userAmount.setYesterdayAmount(BigDecimal.ZERO);
 
@@ -116,10 +116,10 @@ public class MainController extends BaseController {
         Integer yesterdayUserCount = 0;
         if (CollectionUtils.isNotEmpty(dataBossVos)) {
             if (dataBossVos.size() > 0) {
-                userAmount.setLocalAmount(userAmount.getAmount().subtract(dataBossVos.get(0).getFinancialProfitCountAmount()).subtract(dataBossVos.get(0).getVipBalanceCount()));
+                userAmount.setLocalAmount(userAmount.getAmount().subtract(dataBossVos.get(0).getVipBalanceCount()));
             }
             if (dataBossVos.size() > 1) {
-                userAmount.setYesterdayAmount(dataBossVos.get(0).getVipBalanceCount().add(dataBossVos.get(0).getFinancialProfitCountAmount()).subtract(dataBossVos.get(1).getVipBalanceCount()).subtract(dataBossVos.get(1).getFinancialProfitCountAmount()));
+                userAmount.setYesterdayAmount(dataBossVos.get(0).getVipBalanceCount().subtract(dataBossVos.get(1).getVipBalanceCount()));
                 yesterdayNetProfit = dataBossVos.get(0).getRechargeAmount().subtract(dataBossVos.get(0).getWithdrawAmount()).add(dataBossVos.get(0).getVipPayAmount());
                 yesterdayUserCount = dataBossVos.get(0).getVipCount();
             }

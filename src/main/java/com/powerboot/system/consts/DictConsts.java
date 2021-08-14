@@ -152,4 +152,19 @@ public class DictConsts {
     //首冲上级返现金额
     public static final String FIRST_RECHARGE_PARENT_AMOUNT_LEVEL3 = "FIRST_RECHARGE_PARENT_AMOUNT_LEVEL3";
 
+    /**
+     * infobip api key
+     */
+    public static final String INFOBIP_VOICE_MESSAGE_API_KEY = "INFOBIP_VOICE_MESSAGE_API_KEY";
+
+    /**
+     * infobip base url
+     */
+    public static final String INFOBIP_VOICE_MESSAGE_BASE_URL = "INFOBIP_VOICE_MESSAGE_BASE_URL";
+
+    /**
+     * infobip from
+     */
+    public static final String INFOBIP_VOICE_MESSAGE_FROM = "INFOBIP_VOICE_MESSAGE_FROM";
+
 }
