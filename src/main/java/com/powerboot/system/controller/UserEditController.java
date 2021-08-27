@@ -9,10 +9,7 @@ import com.powerboot.common.utils.Query;
 import com.powerboot.common.utils.R;
 import com.powerboot.common.utils.ShiroUtils;
 import com.powerboot.system.consts.*;
-import com.powerboot.system.domain.AppUserDO;
-import com.powerboot.system.domain.BalanceDO;
-import com.powerboot.system.domain.PayImportDo;
-import com.powerboot.system.domain.UserDO;
+import com.powerboot.system.domain.*;
 import com.powerboot.system.dto.PayExportDto;
 import com.powerboot.system.dto.SysUserMappingDTO;
 import com.powerboot.system.dto.UserDTO;
@@ -66,6 +63,8 @@ public class UserEditController extends BaseController {
     @Autowired
     private FinancialOrderService financialOrderService;
 
+    @Autowired
+    private UserShuntLogService userShuntLogService;
 
     @Autowired
     private LoginLogService loginLogService;
@@ -116,6 +115,8 @@ public class UserEditController extends BaseController {
             appUserResponse.setTopParentId(userService.queryTopParentId(user.getParentId()));
             appUserResponse.setWithdrawalTotalAmount(payService.selectUserWithdrawalTotalAmont(user.getId(), null));
             appUserResponse.setRechargeTotalAmount(payService.selectUserRechargeTotal(user.getId()));
+            UserShuntLogDO userShuntLogDO = userShuntLogService.selectByAppUserId(user.getId());
+            appUserResponse.setShuntType(null == userShuntLogDO ? 3 : userShuntLogDO.getShuntType());
             AppUserDO appUserDO = userService.getSaleInfo(user.getId());
             if (null != appUserDO) {
                 appUserResponse.setSaleMobile(appUserDO.getMobile());

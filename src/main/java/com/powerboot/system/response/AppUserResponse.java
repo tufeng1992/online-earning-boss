@@ -44,6 +44,9 @@ public class AppUserResponse extends AppUserDO {
      */
     private BigDecimal rechargeTotalAmount;
 
+    //分流类型 1.系统分配、2.后台分配、3.用户邀请
+    private Integer shuntType;
+
     public String getBlackFlagStr() {
         return blackFlagStr;
     }

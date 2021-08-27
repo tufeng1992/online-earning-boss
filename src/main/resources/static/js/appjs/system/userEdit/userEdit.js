@@ -102,7 +102,14 @@ function load() {
                     },
                     {
                         field : 'contactSaleId',
-                        title : '联系销售人员id'
+                        title : '联系销售人员id',
+                        formatter: function (value, row, index) {
+                            if (value == '1') {
+                                return '<span class="glyphicon glyphicon-remove" style="color: red;"></span>';
+                            } else {
+                                return '<span class="glyphicon glyphicon-ok" style="color: green;"></span>';
+                            }
+                        }
                     },
                     {
                         field: 'mobile',
@@ -157,6 +164,19 @@ function load() {
                     {
                         field : 'sdkType',
                         title : '注册sdk类型'
+                    },
+                    {
+                        field : 'shuntType',
+                        title : '分流类型',
+                        formatter: function (value, row, index) {
+                            if (value == '2') {
+                                return '后台分配';
+                            } else if (value == '3'){
+                                return '注册邀请';
+                            } else {
+                                return '系统分配';
+                            }
+                        }
                     },
                     {
                         field : 'firstRechargeStr',

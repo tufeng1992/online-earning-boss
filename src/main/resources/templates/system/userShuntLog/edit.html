@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${userShuntLog.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">销售人员id：</label>
+								<div class="col-sm-8">
+									<input id="saleId" name="saleId" th:value="${userShuntLog.saleId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">分流类型 1.系统分配、2.后台分配、3.用户邀请：</label>
+								<div class="col-sm-8">
+									<input id="shuntType" name="shuntType" th:value="${userShuntLog.shuntType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户id：</label>
+								<div class="col-sm-8">
+									<input id="userId" name="userId" th:value="${userShuntLog.userId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createTime" name="createTime" th:value="${userShuntLog.createTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">更新时间：</label>
+								<div class="col-sm-8">
+									<input id="updateTime" name="updateTime" th:value="${userShuntLog.updateTime}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/system/userShuntLog/edit.js">
+	</script>
+</body>
+</html>

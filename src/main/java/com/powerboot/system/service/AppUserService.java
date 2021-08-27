@@ -36,6 +36,9 @@ public class AppUserService {
     private AppUserDao userDao;
 
     @Autowired
+    private UserShuntLogService userShuntLogService;
+
+    @Autowired
     private DictService dictService;
 
     @Autowired
@@ -412,6 +415,7 @@ public class AppUserService {
             appUserDO.setId(id);
             appUserDO.setSaleId(saleId);
             res += userDao.update(appUserDO);
+            userShuntLogService.addUserShuntLogs(appUserDO);
         }
         return res;
     }

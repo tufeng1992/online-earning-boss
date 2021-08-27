@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.powerboot.system.dao.UserShuntLogDao">
+
+	<select id="get" resultType="com.powerboot.system.domain.UserShuntLogDO">
+		select `id`,`sale_id`,`shunt_type`,`user_id`,`create_time`,`update_time` from user_shunt_log where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.powerboot.system.domain.UserShuntLogDO">
+		select `id`,`sale_id`,`shunt_type`,`user_id`,`create_time`,`update_time` from user_shunt_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="saleId != null and saleId != ''"> and sale_id = #{saleId} </if>
+			<if test="shuntType != null and shuntType != ''"> and shunt_type = #{shuntType} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="startTime != null and startTime != ''">
+				and create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and create_time &lt;= #{endTime}
+			</if>
+			<if test="saleIdList != null and saleIdList.size()>0">
+				and sale_id in
+				<foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+					#{sid}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from user_shunt_log
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="saleId != null and saleId != ''"> and sale_id = #{saleId} </if>
+			<if test="shuntType != null and shuntType != ''"> and shunt_type = #{shuntType} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="startTime != null">
+				and create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				and create_time &lt;= #{endTime}
+			</if>
+			<if test="saleIdList != null and saleIdList.size()>0">
+				and sale_id in
+				<foreach collection="saleIdList" separator="," open="(" close=")" item="sid">
+					#{sid}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.powerboot.system.domain.UserShuntLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into user_shunt_log
+		(
+			`sale_id`, 
+			`shunt_type`, 
+			`user_id`
+		)
+		values
+		(
+			#{saleId}, 
+			#{shuntType}, 
+			#{userId}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.powerboot.system.domain.UserShuntLogDO">
+		update user_shunt_log
+		<set>
+			<if test="saleId != null">`sale_id` = #{saleId}, </if>
+			<if test="shuntType != null">`shunt_type` = #{shuntType}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from user_shunt_log where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from user_shunt_log where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
